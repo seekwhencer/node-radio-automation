@@ -2,8 +2,8 @@ const
     path = require('path'),
     fs = require('fs-extra');
 
-global.P = function(dir){
-    if(dir.substring(0, 1) === '/'){
+global.P = function (dir) {
+    if (dir.substring(0, 1) === '/') {
         return path.resolve(dir);
     } else {
         if (STORAGE.path.substring(0, 1) === '/') {
@@ -24,19 +24,19 @@ global.P = function(dir){
  * @constructor
  */
 global.RDIRSYNC = function (folder, recursive, includes, excludes) {
-    var data = [];
-    var walk = function (folder, recursive) {
+    let data = [];
+    const walk = function (folder, recursive) {
         if (fs.existsSync(folder)) {
-            var dir = fs.readdirSync(folder + '');
+            const dir = fs.readdirSync(folder + '');
 
             dir.forEach(function (i) {
-                var insert = folder + '/' + i;
+                let insert = folder + '/' + i;
                 if (fs.existsSync(insert)) {
                     try {
-                        var xstat = fs.statSync(insert);
+                        const xstat = fs.statSync(insert);
                         if (!xstat.isDirectory()) {
-                            var filename = path.basename(insert).replace(path.extname(insert), '');
-                            var extension = path.extname(insert).replace('.', '');
+                            let filename = path.basename(insert).replace(path.extname(insert), '');
+                            let extension = path.extname(insert).replace('.', '');
                             if (includes.includes(extension)) {
                                 data.push({
                                     id: filename,
@@ -55,18 +55,33 @@ global.RDIRSYNC = function (folder, recursive, includes, excludes) {
                             }
                         }
                     } catch (err) {
-                        LOG(that.name, 'NOT READABLE', insert, err);
+                        LOG('RDIRSYNC NOT READABLE', insert, err);
                         walk(folder + '/' + i, recursive);
                     }
                 } else {
-                    LOG(that.name, 'NOT EXISTS', insert);
+                    LOG('RDIRSYNC NOT EXISTS', insert);
                     walk(folder + '/' + i, recursive);
                 }
             });
         } else {
-            LOG(that.name, 'NOT EXISTS ', folder);
+            LOG(' RDIRSYNC NOT EXISTS ', folder);
         }
     };
     walk(folder, recursive);
     return data;
+};
+
+global.SHUFFLE = function (a) {
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+};
+
+global.RANDOM = function (max, min) {
+    if(!min)
+        min = 0;
+
+    return Math.floor((Math.random() * max) + min);
 };

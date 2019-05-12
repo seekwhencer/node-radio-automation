@@ -5,15 +5,17 @@ module.exports = {
 
     items: [
         {
-            name: "Electricity",
+            name: "Breaks",
             music: {
-                folder: "electro",
+                folder: "breaks",
+                recursive: false,
             }
         },
         {
             name: "Lounge",
             music: {
                 folder: "lounge",
+                recursive: true
             }
         }
     ]

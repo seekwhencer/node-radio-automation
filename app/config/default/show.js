@@ -29,8 +29,8 @@ module.exports = {
         hot_rotation: {
             enable: true,
             only: false,
-            age_days: 100,
-            latest_tracks: 1,
+            age_days: false,
+            latest_tracks: 100,
             at_beginning: true,
             shuffle_beginning: true,
             multiplier: 5,

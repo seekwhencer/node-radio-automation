@@ -22,10 +22,15 @@ module.exports = class Channel extends Module {
                 channel: this,
                 options: this.options.mpd
             });
+
             this.mpd.run();
             this.mpc = false;
 
             this.save();
+
+            // set default show by config file
+            this.setDefaultShow();
+
             resolve(this);
         });
     }
@@ -71,6 +76,20 @@ module.exports = class Channel extends Module {
         save.mpd = R.merge(save.mpd, this.mpd.options);
         fs.writeJsonSync(this.options.conf_file, save);
     }
+
+    setShow(match, field) {
+        this.show = (SHOWS.get(match, field)); // @TODO clone it here
+        this.show.channel = this;
+        LOG(this.label, this.name, 'SELECTING SHOW', this.show.name);
+    }
+
+    setDefaultShow() {
+        if (this.options.show) {
+            const field = Object.keys(this.options.show)[0];
+            this.setShow(this.options.show[field], field);
+        }
+    }
+
 
 
     get path() {
