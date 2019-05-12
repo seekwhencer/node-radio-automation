@@ -63,19 +63,19 @@ module.exports = class Shows extends Module {
      *
      * possible fields: id, slug, name
      */
-    get(value, field) {
+    get(match, field) {
         if(!field){
-            field = 'id';
+            field = 'slug';
         }
         if (typeof field === 'string') {
-            return this.data.filter(function (show) {
-                if (show[field] === value) {
+            return this.items.filter(show => {
+                 if (show[field] === match) {
                     return show;
                 }
             })[0];
         }
         if (typeof field === 'number') {
-            return this.data[key];
+            return this.items[field];
         }
     };
 };

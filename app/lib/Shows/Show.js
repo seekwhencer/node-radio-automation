@@ -2,7 +2,8 @@ const
     fs = require('fs-extra'),
     slugify = require('slugify'),
     crypto = require('crypto'),
-    Module = require('../Module');
+    Module = require('../Module'),
+    Playlist = require('./Playlist');
 
 module.exports = class Show extends Module {
 
@@ -12,6 +13,12 @@ module.exports = class Show extends Module {
         this.label = 'SHOW';
         this.mergeOptions();
         LOG(this.label, 'INIT', this.name);
+
+        this.playlist = new Playlist({
+            options: {},
+            show: this
+        });
+
         this.save();
     }
 
@@ -42,6 +49,17 @@ module.exports = class Show extends Module {
         fs.writeJsonSync(this.options.conf_file, this.options);
     }
 
+    get channel() {
+        return this._channel;
+    }
+
+    set channel(channel) {
+        this._channel = channel;
+        if (this.channel) {
+            this.playlist.show = this;
+            this.playlist.generate();
+        }
+    }
 
 
 };
