@@ -18,6 +18,7 @@ module.exports = class AppConfig {
         this.config_dir = `${APP_DIR}/config/${ENV}`;
         this.load();
         LOG(this.label, '>>> READY');
+        LOG('');
         return this.data;
     }
 

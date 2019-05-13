@@ -96,7 +96,7 @@ module.exports = class Iceccast extends Module {
         this.process.stderr.setEncoding('utf8');
 
         this.process.stderr.on('data', chunk => {
-            LOG(this.label, 'GOT MESSAGE', chunk.trim());
+            LOG(this.label, 'TTY', chunk.trim());
         });
 
         this.process.stderr.on('end', () => {
@@ -130,6 +130,7 @@ module.exports = class Iceccast extends Module {
             res.on('end', () => {
                 this.emit('ready', json);
                 LOG(this.label, '>>> READY');
+                LOG('');
             });
         }).on('error', err => {
             LOG(this.label, 'IS NOT RUNNING', JSON.stringify(err));

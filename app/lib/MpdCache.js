@@ -34,8 +34,9 @@ module.exports = class MpdCache extends Mpd {
                 setTimeout(() => {
                     this.process.kill();
                     LOG(this.label, '>>> READY');
+                    LOG('');
                     resolve(this);
-                }, 1000);
+                }, 200);
             });
             this.run();
         });

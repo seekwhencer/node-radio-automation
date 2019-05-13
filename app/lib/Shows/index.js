@@ -27,6 +27,7 @@ module.exports = class Shows extends Module {
                 this.buildFromOptions();
             }
             LOG(this.label, '>>> READY');
+            LOG('');
             resolve(this);
         });
     }

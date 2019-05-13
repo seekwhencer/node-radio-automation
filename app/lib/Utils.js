@@ -64,7 +64,7 @@ global.RDIRSYNC = function (folder, recursive, includes, excludes) {
                 }
             });
         } else {
-            LOG(' RDIRSYNC NOT EXISTS ', folder);
+            LOG('RDIRSYNC NOT EXISTS ', folder);
         }
     };
     walk(folder, recursive);
@@ -80,7 +80,7 @@ global.SHUFFLE = function (a) {
 };
 
 global.RANDOM = function (max, min) {
-    if(!min)
+    if (!min)
         min = 0;
 
     return Math.floor((Math.random() * max) + min);

@@ -18,6 +18,12 @@ module.exports = class Channel extends Module {
             this.path = `${this.options.conf_path}/${this.id}`;
             STORAGE.createFolder(this.path);
 
+            this.on('ready', () => {
+                LOG(this.label, '>>> READY');
+                LOG('');
+                resolve(this);
+            });
+
             this.mpd = new Mpd({
                 channel: this,
                 options: this.options.mpd
@@ -31,7 +37,8 @@ module.exports = class Channel extends Module {
             // set default show by config file
             this.setDefaultShow();
 
-            resolve(this);
+            this.emit('ready');
+
         });
     }
 
