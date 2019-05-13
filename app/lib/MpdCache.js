@@ -31,7 +31,7 @@ module.exports = class MpdCache extends Mpd {
             this.on('ready', () => {
                 setTimeout(() => {
                     this.shutdown();
-                }, this.options.shutdown_time);
+                }, this.options.shutdown_time * 1000);
 
                 LOG(this.label, '>>> READY');
                 LOG('');
