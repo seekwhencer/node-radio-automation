@@ -10,6 +10,10 @@ module.exports = class Module {
         this.args = args;
         this.options = {};
         this.event = new Event();
+
+        this.on('ready', () => {
+            this.ready = true;
+        });
     }
 
     mergeOptions() {
@@ -59,9 +63,9 @@ module.exports = class Module {
 
     set ready(ready) {
         this._ready = ready;
-        if (this.ready === true) {
-            this.emit('ready', this);
-        }
+        //if (this.ready === true) {
+        //    this.emit('ready', this);
+        //}
     }
 
     get options() {

@@ -7,6 +7,7 @@ const
 
 
 module.exports = class Mpd extends Module {
+
     constructor(args) {
         super(args);
         this.name = 'mpd';
@@ -15,39 +16,38 @@ module.exports = class Mpd extends Module {
         LOG(this.label, 'INIT', this.name);
         this.process = false;
         this.saveConfig();
+
+        this.on('ready', () => {
+            LOG(this.label, 'READY >>>', this.ready);
+        });
+
+        this.on('connecting', () => {
+            this.emit('ready');
+        });
     }
 
     mergeOptions() {
         super.mergeOptions();
         this.options = R.mergeDeepLeft(this.args.options, CONFIG.mpd);
         this.channel = this.args.channel;
-
         this.id = this.options.id;
         this.name = this.options.name;
         this.slug = this.options.slug;
-
         this.path = `${this.channel.path}`;
         this.db_path = `${this.path}`;
         this.log_path = `${this.path}`;
         this.pid_path = `${this.path}`;
-
         this.options.config.playlist_directory = this.channel.path;
         this.options.config.music_directory = P(`${APP_DIR}/${CONFIG.station.path.audio}/${this.options.music_path}`);
-
         this.options.config.db_file = `${this.db_path}/mpd.cache`;
         this.options.config.pid_file = `${this.pid_path}/mpd.pid`;
         this.options.config.log_file = `${this.log_path}/mpd.log`;
-
-        // if a filename is set, it is a shared database
-        if (this.options.db_filename) {
+        if (this.options.db_filename) { // if a filename is set, it is a shared database
             this.options.config.db_file = `${STORAGE.path}/mpd_${this.options.db_filename}.cache`;
         }
-
         this.options.config.audio_output.name = this.name;
         this.options.config.zeroconf_name = this.id;
-
         this.options.conf_file = `${this.path}/mpd.conf`;
-
     };
 
     saveConfig() {
@@ -82,12 +82,12 @@ module.exports = class Mpd extends Module {
     };
 
     run(complete_event) {
-        const options = [this.options.conf_file, '--no-daemon', '--verbose',/* '--stdout',*/ '--stderr'];
+        const options = [this.options.conf_file, '--no-daemon', '--verbose', /* '--stdout',*/ '--stderr'];
         LOG(this.label, this.name, 'STARTING WITH OPTIONS', JSON.stringify(options));
 
         const match = {
             updating: new RegExp(/update: starting/),
-            updated: new RegExp(/update: finished/),
+            updated: new RegExp(/update:\sfinished/),
 
             collision: new RegExp(/Local name collision/),
             address: new RegExp(/Address already in use/),
@@ -123,13 +123,10 @@ module.exports = class Mpd extends Module {
         this.process.stderr.on('end', function () {
             this.emit('shutdown', this);
         });
-        this.process.stdout.setEncoding('utf8');
-        this.process.stdout.on('data', (chunk) => {
-            LOG(this.label, 'STDOUT', chunk.trim());
-        });
     };
 
     shutdown() {
+        LOG(this.label, 'SHUTTING DOWN');
         const options = [this.options.conf_file, '--kill'];
         spawn(this.options.bin, options);
     };

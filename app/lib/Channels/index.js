@@ -27,7 +27,6 @@ module.exports = class Channels extends Module {
                 LOG('');
                 resolve(this);
             });
-
             if (this.options.load_on_startup === true) {
                 this.buildFromStorage()
                     .then(() => {
