@@ -1,8 +1,6 @@
 const
     fs = require('fs-extra'),
     spawn = require('child_process').spawn,
-    slugify = require('slugify'),
-    crypto = require('crypto'),
     Module = require('../Module');
 
 
@@ -121,7 +119,7 @@ module.exports = class Mpd extends Module {
         });
 
         this.process.stderr.on('end', function () {
-            
+
         });
     };
 
