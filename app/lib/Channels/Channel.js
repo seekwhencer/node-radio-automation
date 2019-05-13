@@ -3,7 +3,8 @@ const
     slugify = require('slugify'),
     crypto = require('crypto'),
     Module = require('../Module'),
-    Mpd = require('./Mpd.js');
+    Mpd = require('./Mpd'),
+    Mpc = require('./Mpc');
 
 module.exports = class Channel extends Module {
 
@@ -21,18 +22,30 @@ module.exports = class Channel extends Module {
 
             this.on('ready', () => {
                 LOG(this.label, '>>> READY');
+
+                if (this.options.autostart === true) {
+                    this.initPlaylist();
+                }
+
                 this.ready = true;
                 resolve(this);
             });
 
+            // Music Player Daemon
             this.mpd = new Mpd({
                 channel: this,
                 options: this.options.mpd
             });
-
             this.mpd.run();
-            this.mpc = false;
 
+            // Music Player Client
+            this.mpc = new Mpc({
+                channel: this,
+                options: this.options.mpc
+            });
+            this.mpc.run();
+
+            // save the channel as json
             this.save();
 
             // set default show by config file
@@ -98,14 +111,18 @@ module.exports = class Channel extends Module {
 
     checkReady() {
         LOG(this.label,this.name, 'CHECK IF MPD AND MPC IS READY...', this.mpd.ready, this.mpc.ready);
-        //@TODO if (this.mpd.ready && this.mpc.ready) {
-        if (this.mpd.ready) {
+        if (this.mpd.ready && this.mpc.ready) {
+        //if (this.mpd.ready) {
             this.emit('ready');
         } else {
             setTimeout(() => {
                 this.checkReady();
             }, this.options.checkup_delay);
         }
+    }
+
+    initPlaylist() {
+        this.mpc.initPlaylist();
     }
 
     get path() {
