@@ -90,8 +90,6 @@ module.exports = class Channel extends Module {
         }
     }
 
-
-
     get path() {
         return this._path;
     }

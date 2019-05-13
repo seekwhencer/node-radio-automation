@@ -1,4 +1,4 @@
 .idea
 app/node_modules
 app/config/custom
-storage
+/storage

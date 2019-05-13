@@ -27,12 +27,9 @@ module.exports = class Iceccast extends Module {
             this.saveConfig();
             this.run();
 
-
             this.on('ready', () => {
                 resolve(this);
             });
-
- //           resolve(this);
         });
     }
 
@@ -98,7 +95,7 @@ module.exports = class Iceccast extends Module {
         this.process.stdout.setEncoding('utf8');
         this.process.stderr.setEncoding('utf8');
 
-        this.process.stderr.on('data', (chunk) => {
+        this.process.stderr.on('data', chunk => {
             LOG(this.label, 'GOT MESSAGE', chunk.trim());
         });
 
@@ -127,14 +124,14 @@ module.exports = class Iceccast extends Module {
             path: '/' + this.options.status_endpoint
         }, (res) => {
             let json = '';
-            res.on('data', (data) => {
+            res.on('data', data => {
                 json += data;
             });
             res.on('end', () => {
                 this.emit('ready', json);
                 LOG(this.label, '>>> READY');
             });
-        }).on('error', (err) => {
+        }).on('error', err => {
             LOG(this.label, 'IS NOT RUNNING', JSON.stringify(err));
             setTimeout(() => {
                     this.checkProcess()
