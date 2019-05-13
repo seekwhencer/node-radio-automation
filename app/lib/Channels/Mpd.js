@@ -101,7 +101,7 @@ module.exports = class Mpd extends Module {
         this.process = spawn(this.options.bin, options);
         this.process.stderr.setEncoding('utf8');
         this.process.stderr.on('data', (chunk) => {
-            LOG(this.label, this.name, 'TTY', chunk.trim());
+            //LOG(this.label, this.name, 'TTY', chunk.trim());
             this.emit('data', chunk);
 
             Object.keys(match).forEach((key) => {
@@ -121,7 +121,7 @@ module.exports = class Mpd extends Module {
         });
 
         this.process.stderr.on('end', function () {
-            this.emit('end', this);
+            
         });
     };
 
