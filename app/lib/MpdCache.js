@@ -1,5 +1,5 @@
 const
-    Event = require('events'),
+
     Mpd = require('./Channels/Mpd');
 
 module.exports = class MpdCache extends Mpd {
@@ -8,31 +8,27 @@ module.exports = class MpdCache extends Mpd {
         return new Promise((resolve, reject) => {
 
             const args = {
-                options: {
-                    name: 'mpdcacache',
-                    mpd: {
-                        config: {}
-                    }
-                },
+                options: CONFIG.mpdcache,
                 channel: {
                     path: STORAGE.path
                 }
             };
 
             super(args);
-            this.name = 'mpd';
+            this.name = 'mpdcache';
             this.label = 'MPDCACHE';
             this.defaults = {};
-            this.mergeOptions();
+
             LOG(this.label, 'INIT', this.name);
 
             this.event.removeAllListeners();
 
             this.on('ready', () => {
-                setTimeout(() => {
-                    this.shutdown();
-                }, this.options.shutdown_time * 1000);
-
+                if (this.options.shutdown_time > 0) {
+                    setTimeout(() => {
+                        this.shutdown();
+                    }, this.options.shutdown_time * 1000);
+                }
                 LOG(this.label, '>>> READY');
                 LOG('');
                 resolve(this);
@@ -43,12 +39,17 @@ module.exports = class MpdCache extends Mpd {
                 this.emit('ready');
             });
 
+            this.on('end', () => {
+                this.shutdown();
+            });
+
             this.run();
         });
     }
 
     mergeOptions() {
         super.mergeOptions();
+        this.options.config.zeroconf_name = this.name;
         this.options.config.pid_file = `${this.pid_path}/mpd_shared.pid`;
         this.options.config.log_file = `${this.log_path}/mpd_shared.log`;
         this.options.conf_file = `${this.path}/mpd_shared.conf`;

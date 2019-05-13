@@ -121,7 +121,7 @@ module.exports = class Mpd extends Module {
         });
 
         this.process.stderr.on('end', function () {
-            this.emit('shutdown', this);
+            this.emit('end', this);
         });
     };
 
