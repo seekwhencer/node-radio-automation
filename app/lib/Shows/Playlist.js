@@ -43,11 +43,7 @@ module.exports = class Playlist extends Module {
         this.addSpot();
         this.addIntro();
         this.buildM3U();
-        LOG(this.label, 'BUILD:');
-        LOG('');
-        LOG(this.playlist);
-        LOG('');
-        LOG(this.label, 'COMPLETE');
+        LOG(this.label, 'BUILD:', this.playlist.length, 'COMPLETE');
     };
 
     buildM3U() {
