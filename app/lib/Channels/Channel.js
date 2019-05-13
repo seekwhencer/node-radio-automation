@@ -13,10 +13,17 @@ module.exports = class Channel extends Module {
             this.name = 'channel';
             this.label = 'CHANNEL';
             this.mergeOptions();
+            LOG('');
             LOG(this.label, 'INIT', this.name);
 
             this.path = `${this.options.conf_path}/${this.id}`;
             STORAGE.createFolder(this.path);
+
+            this.on('ready', () => {
+                LOG(this.label, '>>> READY');
+                this.ready = true;
+                resolve(this);
+            });
 
             this.mpd = new Mpd({
                 channel: this,
@@ -30,13 +37,12 @@ module.exports = class Channel extends Module {
 
             // set default show by config file
             this.setDefaultShow();
-
-            resolve(this);
+            this.checkReady();
         });
     }
 
     mergeOptions() {
-        this.options = R.mergeDeepLeft(this.args.options, CONFIG.channel.defaults);
+        this.options = R.mergeDeepLeft(this.args.options, CONFIG.channel);
 
         if (!this.options.slug)
             this.options.slug = slugify(this.options.name, {replacement: '_', lower: true});
@@ -87,6 +93,18 @@ module.exports = class Channel extends Module {
         if (this.options.show) {
             const field = Object.keys(this.options.show)[0];
             this.setShow(this.options.show[field], field);
+        }
+    }
+
+    checkReady() {
+        LOG(this.label,this.name, 'CHECK IF MPD AND MPC IS READY...', this.mpd.ready, this.mpc.ready);
+        //@TODO if (this.mpd.ready && this.mpc.ready) {
+        if (this.mpd.ready) {
+            this.emit('ready');
+        } else {
+            setTimeout(() => {
+                this.checkReady();
+            }, this.options.checkup_delay);
         }
     }
 

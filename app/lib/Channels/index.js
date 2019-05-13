@@ -22,12 +22,22 @@ module.exports = class Channels extends Module {
             }
             STORAGE.createFolder(this.path);
 
+            this.on('ready', () => {
+                LOG(this.label, '>>> READY');
+                LOG('');
+                resolve(this);
+            });
             if (this.options.load_on_startup === true) {
-                this.buildFromStorage();
+                this.buildFromStorage()
+                    .then(() => {
+                        this.emit('ready');
+                    });
             } else {
-                this.buildFromOptions();
+                this.buildFromOptions()
+                    .then(() => {
+                        this.emit('ready');
+                    });
             }
-            resolve(this);
         });
     }
 
@@ -40,8 +50,7 @@ module.exports = class Channels extends Module {
         LOG(this.label, 'BUILD FROM STORAGE');
         const channels = STORAGE.fetch.channels(this.path);
         if (channels.length === 0) {
-            this.buildFromOptions();
-            return false;
+            return this.buildFromOptions();
         }
         return this.build(0, channels);
     }

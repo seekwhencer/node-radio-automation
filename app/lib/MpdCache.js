@@ -1,4 +1,5 @@
 const
+    Event = require('events'),
     Mpd = require('./Channels/Mpd');
 
 module.exports = class MpdCache extends Mpd {
@@ -25,24 +26,31 @@ module.exports = class MpdCache extends Mpd {
             this.mergeOptions();
             LOG(this.label, 'INIT', this.name);
 
-            this.on('updated', () => {
-                LOG(this.label, 'UPDATED');
+            this.event.removeAllListeners();
+
+            this.on('ready', () => {
+                setTimeout(() => {
+                    this.shutdown();
+                }, this.options.shutdown_time * 1000);
+
+                LOG(this.label, '>>> READY');
+                LOG('');
+                resolve(this);
             });
 
-            this.on('connecting', () => {
-                this.shutdown();
-                setTimeout(() => {
-                    this.process.kill();
-                    LOG(this.label, '>>> READY');
-                    resolve(this);
-                }, 1000);
+            this.on('updated', () => {
+                LOG(this.label, 'UPDATED');
+                this.emit('ready');
             });
+
             this.run();
         });
     }
 
     mergeOptions() {
         super.mergeOptions();
+        this.options.config.pid_file = `${this.pid_path}/mpd_shared.pid`;
+        this.options.config.log_file = `${this.log_path}/mpd_shared.log`;
+        this.options.conf_file = `${this.path}/mpd_shared.conf`;
     }
-
 };

@@ -13,7 +13,7 @@ module.exports = class Playlist extends Module {
         LOG(this.label, 'INIT', this.show.name);
 
         this.show = null;
-        this.data = [];
+        this.items = [];
         this.playlist = null;
         this.music = null;
         this.podcast = null;
@@ -43,17 +43,17 @@ module.exports = class Playlist extends Module {
         this.addSpot();
         this.addIntro();
         this.buildM3U();
-        LOG(this.label, 'BUILD:', this.playlist.length, 'COMPLETE');
+        LOG(this.label, 'BUILD:', this.items.length, 'COMPLETE');
     };
 
     buildM3U() {
         this.playlist = '';
-        if (this.data.length === 0) {
+        if (this.items.length === 0) {
             LOG(this.label, 'NO AUDIO FILES GIVEN');
             return;
         }
         this.playlist = '';
-        this.data.forEach(i => {
+        this.items.forEach(i => {
             if (i)
                 if (i.file_path)
                     this.playlist += i.file_path + '\n';
@@ -79,7 +79,7 @@ module.exports = class Playlist extends Module {
             offset = 0;
 
         let i = 0, c = 0;
-        this.data.forEach(d => {
+        this.items.forEach(d => {
             if ((c === nth - 1 || i === offset - 1) && i >= offset - 1) {
                 //const insert = add[_.random(add.length - 1)];
                 const insert = add[RANDOM(add.length - 1)];
@@ -90,7 +90,7 @@ module.exports = class Playlist extends Module {
             build.push(d);
             i++;
         });
-        this.data = build;
+        this.items = build;
     };
 
     addMusic() {
@@ -99,7 +99,7 @@ module.exports = class Playlist extends Module {
             return;
 
         this.music = this.order(this.music, opts.order_by, opts.order_direction);
-        this.data = this.music;
+        this.items = this.music;
     };
 
     addHotRotation() {
@@ -129,8 +129,8 @@ module.exports = class Playlist extends Module {
             data = data.concat(source);
         }
 
-        this.data = this.data.concat(data);
-        this.data = SHUFFLE(this.data);
+        this.items = this.items.concat(data);
+        this.items = SHUFFLE(this.items);
     };
 
     addPodcast() {
@@ -154,8 +154,8 @@ module.exports = class Playlist extends Module {
 
         let rand = RANDOM(this.intro.length - 1);
         let insert = this.intro[rand];
-        let build = [insert].concat(this.data);
-        this.data = build;
+        let build = [insert].concat(this.items);
+        this.items = build;
     };
 
     order(arr, order_by, order_direction) {

@@ -21,6 +21,7 @@ module.exports = class Storage extends Module {
             }
             this.createFolder();
             LOG(this.label, '>>> READY');
+            LOG('');
             resolve(this);
         });
 
