@@ -29,9 +29,12 @@ module.exports = class Mpd extends Module {
             }
         });
 
-        this.on('playing', (chunk) => {
-            this.channel.playing = chunk.trim().replace(/player: played /, '').replace(/"/g, '');
-            LOG(this.label, this.name, 'PLAYING', this.channel.playing);
+        this.on('queued', (chunk) => {
+            let source = chunk.trim().split('\n')[0].replace(/playlist: queue song /, '');
+            let number = parseInt(source.split(':')[0].replace(/"/g, ''));
+            let file = source.split(':')[1].replace(/"/g, '');
+            this.channel.queued = file;
+            LOG(this.label, this.name, 'QUEUED', this.channel.queued);
         });
     }
 
@@ -106,7 +109,7 @@ module.exports = class Mpd extends Module {
             established: new RegExp(/successfully established/),
             connecting: new RegExp(/Client is CONNECTING/),
 
-            playing: new RegExp(/player: played/),
+            queued: new RegExp(/playlist:\squeue\ssong\s/),
         };
 
         this.process = spawn(this.options.bin, options);

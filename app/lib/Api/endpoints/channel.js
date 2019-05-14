@@ -10,7 +10,7 @@ router.get('/:channel', (req, res) => {
         id: channel.id,
         name: channel.name,
         mount: channel.mpd.options.config.audio_output.mount,
-        playing: channel.playing
+        ...{options: channel.options}
     };
     res.json(out);
 });

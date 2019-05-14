@@ -62,6 +62,15 @@ Set the playlist track crossfade to the given seconds.
 ### `/channel/CHANNEL-ID/repeat`
 Set the playlist in repeat mode.
 
+### `/channel/CHANNEL-ID/shutdown`
+Shutting down the channel and the music player daemon.
+
+### `/channel/CHANNEL-ID/spawn`
+Starting the channel.
+
+### `/channel/CHANNEL-ID/respawn`
+Shutting down and starting the channel again.
+
 
 ## Shows Listing
 ### `/shows`

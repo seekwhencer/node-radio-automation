@@ -1,6 +1,6 @@
 module.exports = {
     bin: "/usr/bin/mpd",
-    log_tty: true,
+    log_tty: false,
     ready_delay: 200,
     skip_timeout: 10000,
 
@@ -19,7 +19,7 @@ module.exports = {
         pid_file: "",
         log_file: "",
         buffer_before_play: "80%",
-        audio_buffer_size: 8192,
+        audio_buffer_size: 102400,
         port: 6600,
         log_level: "verbose", // secure
         bind_to_address: "0.0.0.0",
