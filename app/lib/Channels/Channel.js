@@ -125,6 +125,55 @@ module.exports = class Channel extends Module {
         this.mpc.initPlaylist();
     }
 
+    loadPlaylist(playlist) {
+        this.mpc.loadPlaylist(playlist);
+    };
+
+    updateDatabase() {
+        this.mpc.updateDatabase();
+    };
+
+    updatePlaylist(playlist) {
+        this.mpc.updatePlaylist(playlist);
+    };
+
+    setCrossfade(seconds) {
+        this.mpc.setCrossfade(seconds);
+    };
+
+    play(number) {
+        this.mpc.play(number);
+    };
+
+    repeat() {
+        this.mpc.repeat();
+    };
+
+    pause() {
+        this.mpc.pause();
+    };
+
+    stop() {
+        this.mpc.stop();
+    };
+
+    status() {
+        this.mpc.status();
+    };
+
+    crop() {
+        this.mpc.crop();
+    };
+
+    shuffle() {
+        this.mpc.shuffle();
+    };
+
+    skip() {
+        this.mpc.skip();
+    };
+
+
     get path() {
         return this._path;
     }

@@ -93,6 +93,7 @@ module.exports = class Mpc extends Module {
 
     updatePlaylist(playlist) {
         LOG(this.label, this.name, 'UPDATE PLAYLIST');
+        this.channel.show.playlist.generate();
         this.playlist = this.channel.show.id;
 
         if (!playlist)
