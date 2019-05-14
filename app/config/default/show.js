@@ -22,12 +22,12 @@ module.exports = {
             folder: "electro",
             path: "",
             recursive: true,
-            order_by: "shuffle", // time or name,
-            order_direction: "asc" // or desc
+            order_by: "shuffle", // time,name,shuffle
+            order_direction: "asc" // asc or desc
         },
 
         hot_rotation: {
-            enable: true,
+            enable: false,
             only: false,
             age_days: false,
             latest_tracks: 100,
@@ -57,7 +57,7 @@ module.exports = {
             folder: "station",
             path: "",
             recursive: false,
-            nth: 5,
+            nth: 2,
             offset: 2,
             latest_tracks: 100,
             random_first: true,

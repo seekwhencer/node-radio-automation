@@ -97,7 +97,6 @@ module.exports = class Playlist extends Module {
         let opts = this.show.options.music;
         if (opts.enable !== true)
             return;
-
         this.music = this.order(this.music, opts.order_by, opts.order_direction);
         this.items = this.music;
     };
