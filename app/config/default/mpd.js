@@ -1,10 +1,11 @@
 module.exports = {
     bin: "/usr/bin/mpd",
+    log_tty: true,
     ready_delay: 200,
     skip_timeout: 10000,
 
-    debug : {
-        stderr : false
+    debug: {
+        stderr: false
     },
 
     music_path: '',

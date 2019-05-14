@@ -22,6 +22,17 @@ module.exports = class Mpd extends Module {
         this.on('connecting', () => {
             this.emit('ready');
         });
+
+        this.on('data', (chunk) => {
+            if (this.options.log_tty) {
+                LOG(this.label, this.name, 'TTY', chunk.trim());
+            }
+        });
+
+        this.on('playing', (chunk) => {
+            this.channel.playing = chunk.trim().replace(/player: played /, '').replace(/"/g, '');
+            LOG(this.label, this.name, 'PLAYING', this.channel.playing);
+        });
     }
 
     mergeOptions() {
@@ -94,23 +105,24 @@ module.exports = class Mpd extends Module {
             added: new RegExp(/update: added /),
             established: new RegExp(/successfully established/),
             connecting: new RegExp(/Client is CONNECTING/),
+
+            playing: new RegExp(/player: played/),
         };
 
         this.process = spawn(this.options.bin, options);
         this.process.stderr.setEncoding('utf8');
         this.process.stderr.on('data', (chunk) => {
-            //LOG(this.label, this.name, 'TTY', chunk.trim());
             this.emit('data', chunk);
 
             Object.keys(match).forEach((key) => {
                 if (match[key].length === undefined) {
                     if (chunk.match(match[key])) {
-                        this.emit(key, this, chunk);
+                        this.emit(key, chunk);
                     }
                 } else {
                     match[key].forEach((event) => {
                         if (chunk.match(event)) {
-                            this.emit(key, this, chunk);
+                            this.emit(key, chunk);
                         }
                     });
                 }
