@@ -1,5 +1,11 @@
-const
+/**
+ * This is a mpd instance to build the shared mp3 file index database.
+ * Shared means that one mpd database is used by all channels - at the moment.
+ *
+ *
+ */
 
+const
     Mpd = require('./Channels/Mpd');
 
 module.exports = class MpdCache extends Mpd {

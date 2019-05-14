@@ -23,7 +23,7 @@ module.exports = class Show extends Module {
     }
 
     mergeOptions() {
-        this.options = R.mergeLeft(this.args.options, CONFIG.show.defaults);
+        this.options = R.mergeDeepLeft(this.args.options, CONFIG.show.defaults);
 
         if (!this.options.slug)
             this.options.slug = slugify(this.options.name, {replacement: '_', lower: true});
