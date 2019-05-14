@@ -68,4 +68,20 @@ module.exports = class Channels extends Module {
             return this.build(index + 1, channels);
         });
     }
+
+    get(match, field) {
+        if(!field){
+            field = 'slug';
+        }
+        if (typeof field === 'string') {
+            return this.items.filter(show => {
+                if (show[field] === match) {
+                    return show;
+                }
+            })[0];
+        }
+        if (typeof field === 'number') {
+            return this.items[field];
+        }
+    };
 };

@@ -4,7 +4,8 @@ const
     MpdCache = require('./MpdCache'),
     Icecast = require('./Icecast'),
     Shows = require('./Shows'),
-    Channels = require('./Channels');
+    Channels = require('./Channels'),
+    Api = require('./Api');
 
 
 module.exports = class Station extends Module {
@@ -31,6 +32,10 @@ module.exports = class Station extends Module {
             })
             .then(channels => {
                 global.CHANNELS = channels;
+                return new Api();
+            })
+            .then(api => {
+                global.API = api;
             });
 
     }
