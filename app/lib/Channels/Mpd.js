@@ -42,6 +42,7 @@ module.exports = class Mpd extends Module {
         super.mergeOptions();
         this.options = R.mergeDeepLeft(this.args.options, CONFIG.mpd);
         this.channel = this.args.channel;
+
         this.id = this.options.id;
         this.name = this.options.name;
         this.slug = this.options.slug;
@@ -49,6 +50,7 @@ module.exports = class Mpd extends Module {
         this.db_path = `${this.path}`;
         this.log_path = `${this.path}`;
         this.pid_path = `${this.path}`;
+
         this.options.config.playlist_directory = this.channel.path;
         this.options.config.music_directory = P(`${APP_DIR}/${CONFIG.station.path.audio}/${this.options.music_path}`);
         this.options.config.db_file = `${this.db_path}/mpd.cache`;
@@ -77,7 +79,7 @@ module.exports = class Mpd extends Module {
             }
         });
 
-        if (CONFIG.station.bluetooth == true) {
+        if (CONFIG.station.bluetooth === true) {
             this.options.bluetooth.audio_output.name = 'audio_' + this.id;
             Object.keys(this.options.bluetooth).forEach((i) => {
                 if (typeof this.options.bluetooth[i] === 'object') {
@@ -93,7 +95,7 @@ module.exports = class Mpd extends Module {
         fs.writeFileSync(this.options.conf_file, conf);
     };
 
-    run(complete_event) {
+    run() {
         const options = [this.options.conf_file, '--no-daemon', '--verbose', /* '--stdout',*/ '--stderr'];
         LOG(this.label, this.name, 'STARTING WITH OPTIONS', JSON.stringify(options));
 
@@ -107,7 +109,7 @@ module.exports = class Mpd extends Module {
 
             added: new RegExp(/update: added /),
             established: new RegExp(/successfully established/),
-            connecting: new RegExp(/Client is CONNECTING/),
+            connecting: new RegExp(/Client\sis\sCONNECTING/),
 
             queued: new RegExp(/playlist:\squeue\ssong\s/),
         };

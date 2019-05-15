@@ -1,6 +1,6 @@
 module.exports = {
     shutdown_time: 30, // false (endless running) or seconds<
-    name: 'mpdcacache',
+    name: 'mpdcache',
     load_on_startup: true,
     log_tty: true,
     config: { // override the mpd config

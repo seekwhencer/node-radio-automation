@@ -14,10 +14,10 @@ module.exports = class Channel extends Module {
             this.name = 'channel';
             this.label = 'CHANNEL';
             this.mergeOptions();
+
             LOG('');
             LOG(this.label, 'INIT', this.name);
 
-            this.path = `${this.options.conf_path}/${this.id}`;
             STORAGE.createFolder(this.path);
 
             this.on('ready', () => {
@@ -75,6 +75,7 @@ module.exports = class Channel extends Module {
         this.options.mpd.id = this.options.id;
         this.options.mpd.name = this.options.name;
         this.options.mpd.slug = this.options.slug;
+
         this.options.mpd.autostart = this.options.autostart;
 
         if (!this.options.mpc)
@@ -83,11 +84,14 @@ module.exports = class Channel extends Module {
         this.options.mpc.id = this.options.id;
         this.options.mpc.name = this.options.name;
         this.options.mpc.slug = this.options.slug;
+
         this.options.mpc.port = this.options.mpd.config.port;
         this.options.mpc.host = this.options.mpd.config.bind_to_address;
 
         this.options.conf_path = this.args.path;
         this.options.conf_file = P(`${this.options.conf_path}/${this.id}.json`);
+
+        this.path = `${this.options.conf_path}/${this.id}`;
     }
 
     save() {
