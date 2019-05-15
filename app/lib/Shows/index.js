@@ -14,6 +14,7 @@ module.exports = class Shows extends Module {
             LOG(this.label, 'INIT');
             this.mergeOptions();
             this.items = [];
+
             this.path = P(`${STORAGE.path}/${this.options.path}`);
 
             if (this.options.flush_on_startup === true) {

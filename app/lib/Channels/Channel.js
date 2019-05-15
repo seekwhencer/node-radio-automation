@@ -3,6 +3,7 @@ const
     slugify = require('slugify'),
     crypto = require('crypto'),
     Module = require('../Module'),
+    Show = require('../Shows//Show'),
     Mpd = require('./Mpd'),
     Mpc = require('./Mpc');
 
@@ -101,7 +102,11 @@ module.exports = class Channel extends Module {
     }
 
     setShow(match, field) {
-        this.show = (SHOWS.get(match, field)); // @TODO clone it here
+        const show = SHOWS.get(match, field);
+        this.show = new Show({
+            path: this.path,
+            options: show.options
+        });
         this.show.channel = this;
         LOG(this.label, this.name, 'SELECTING SHOW', this.show.name);
     }
@@ -114,9 +119,9 @@ module.exports = class Channel extends Module {
     }
 
     checkReady() {
-        LOG(this.label,this.name, 'CHECK IF MPD AND MPC IS READY...', this.mpd.ready, this.mpc.ready);
+        LOG(this.label, this.name, 'CHECK IF MPD AND MPC IS READY...', this.mpd.ready, this.mpc.ready);
         if (this.mpd.ready && this.mpc.ready) {
-        //if (this.mpd.ready) {
+            //if (this.mpd.ready) {
             this.emit('ready');
         } else {
             setTimeout(() => {
