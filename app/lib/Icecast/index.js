@@ -97,7 +97,7 @@ module.exports = class Iceccast extends Module {
         });
         conf += '</icecast>\n';
         fs.writeFileSync(this.options.xml_file, conf);
-        LOG(this.label, 'CONFIG SAVED', this.options.xml_file);
+        LOG(this.label, 'XML SAVED', this.options.xml_file);
         this.emit('saved', this);
     };
 

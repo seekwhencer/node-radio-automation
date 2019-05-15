@@ -46,9 +46,20 @@ module.exports = class MpdCache extends Mpd {
                 resolve(this);
             });
 
-            this.on('updated', () => {
-                LOG(this.label, 'UPDATED');
-                this.emit('ready');
+            if (fs.existsSync(this.options.config.db_file)) {
+                this.on('connecting', () => {
+                    this.emit('ready');
+                });
+            } else {
+                this.on('updated', () => {
+                    LOG(this.label, 'UPDATED');
+                    this.emit('ready');
+                });
+            }
+            this.on('data', (chunk) => {
+                if (this.options.log_tty) {
+                    LOG(this.label, this.name, 'TTY', chunk.trim());
+                }
             });
 
             this.on('end', () => {
@@ -64,10 +75,10 @@ module.exports = class MpdCache extends Mpd {
         super.mergeOptions();
         this.path = `${STORAGE.path}`;
         this.options.config.zeroconf_name = this.name;
-        this.options.config.pid_file = `${this.pid_path}/mpd_shared.pid`;
-        this.options.config.log_file = `${this.log_path}/mpd_shared.log`;
-        this.options.conf_file = `${this.path}/mpd_shared.conf`;
-        this.options.json_file = `${this.path}/mpd_shared.json`;
+        this.options.config.pid_file = `${this.pid_path}/${this.name}.pid`;
+        this.options.config.log_file = `${this.log_path}/${this.name}.log`;
+        this.options.conf_file = `${this.path}/${this.name}.conf`;
+        this.options.json_file = `${this.path}/${this.name}.json`;
     }
 
     save() {
