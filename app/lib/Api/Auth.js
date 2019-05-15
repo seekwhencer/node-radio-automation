@@ -16,38 +16,40 @@ module.exports = class Auth extends Module {
             this.mergeOptions();
             LOG(this.label, 'INIT');
 
-            APIAPP.use(bodyParser.json());
-            APIAPP.use(bodyParser.urlencoded({extended: true}));
-            APIAPP.use(formidable());
-
             APIAPP.use((req, res, next) => {
 
                 // public routes without token check
-                if (['/login'].includes(req.originalUrl))
+                if (['login', 'internal', 'js', 'css', 'images'].includes(req.originalUrl.split('/')[1])) {
                     return next();
+                }
 
                 // token check
                 const token = req.headers['access-token'];
                 if (token) {
                     jwt.verify(token, this.options.secret, (err, decoded) => {
                         if (err) {
-                            return res.send('nope');
+                            return this.sendError('token invalid', res);
                         } else {
                             req.decoded = decoded;
+                            req.user = decoded.user;
                             next();
                         }
                     });
                 } else {
-                    return res.send('nope');
+                    return this.sendError('no token given', res);
                 }
             });
 
             // the login page
             APIAPP.post('/login', (req, res) => {
-                if (req.fields.username === this.options.username) {
-                    if (req.fields.password === this.options.password) {
+                const username = `${req.fields.username || req.body.username}`;
+                const password = `${req.fields.password || req.body.password}`;
+
+                if (username === this.options.username) {
+                    if (password === this.options.password) {
                         const payload = {
-                            check: true
+                            check: true,
+                            user: username
                         };
                         const token = jwt.sign(payload, this.options.secret, {
                             expiresIn: this.options.expires
@@ -57,15 +59,25 @@ module.exports = class Auth extends Module {
                             token: token
                         });
                     } else {
-                        return res.send('nope');
+                        return this.sendError('wrong password', res);
                     }
                 } else {
-                    return res.send('nope');
+                    return this.sendError('wrong username', res);
                 }
             });
 
             resolve(this);
 
+        });
+    }
+
+    sendError(message, res, data) {
+        if(!data)
+            data = {};
+
+        res.json({
+            error: message,
+            ...data
         });
     }
 
