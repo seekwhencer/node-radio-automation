@@ -6,6 +6,7 @@
  */
 
 const
+    fs = require('fs-extra'),
     Mpd = require('./Channels/Mpd');
 
 module.exports = class MpdCache extends Mpd {
@@ -25,7 +26,12 @@ module.exports = class MpdCache extends Mpd {
             this.label = 'MPDCACHE';
             this.defaults = {};
 
+            this.mergeOptions();
             LOG(this.label, 'INIT', this.name);
+
+            if (this.options.load_on_startup) {
+                this.setOptionsFromStorage();
+            }
 
             this.event.removeAllListeners();
 
@@ -49,15 +55,34 @@ module.exports = class MpdCache extends Mpd {
                 this.shutdown();
             });
 
+            this.save();
             this.run();
         });
     }
 
     mergeOptions() {
         super.mergeOptions();
+        this.path = `${STORAGE.path}`;
         this.options.config.zeroconf_name = this.name;
         this.options.config.pid_file = `${this.pid_path}/mpd_shared.pid`;
         this.options.config.log_file = `${this.log_path}/mpd_shared.log`;
         this.options.conf_file = `${this.path}/mpd_shared.conf`;
+        this.options.json_file = `${this.path}/mpd_shared.json`;
+    }
+
+    save() {
+        let save = this.options;
+        fs.writeJsonSync(this.options.json_file, save);
+        LOG(this.label, 'JSON SAVED', this.options.json_file);
+    }
+
+    setOptionsFromStorage() {
+        LOG(this.label, 'BUILD FROM STORAGE');
+        const options = STORAGE.fetch.one(this.options.json_file);
+        if (!options) {
+            return false;
+        }
+        this.args = options; // override the existing options
+        this.mergeOptions();
     }
 };

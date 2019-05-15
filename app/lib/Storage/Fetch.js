@@ -72,6 +72,53 @@ module.exports = class StorageFetch extends Module {
         return data;
     }
 
+    icecast(folder) {
+        if (!fs.existsSync(folder))
+            return false;
+
+        const files = RDIRSYNC(folder, false, ['json']);
+        if (files.length === 0) {
+            return false;
+        }
+        const data = fs.readJsonSync(files[0].file_path);
+
+        if (data) {
+            LOG(this.label, 'GOT ICECAST CONFIG', files[0].file_path);
+            return data;
+        }
+
+        return false;
+    }
+
+    all(folder) {
+        const files = RDIRSYNC(folder, false, ['json']);
+        if (!files) {
+            return false;
+        }
+        LOG(this.label, 'GOT ALL', files.length, folder);
+
+        let data = [];
+        files.forEach(i => {
+            const item = fs.readJsonSync(i.file_path);
+            data.push(item);
+        });
+
+        if (data.length > 0) {
+            return data;
+        }
+        return false;
+    }
+
+    one(file_path) {
+        if (!fs.existsSync(file_path)) {
+            return false;
+        }
+        const item = fs.readJsonSync(file_path);
+        if (!item) {
+            return false;
+        }
+    }
+
 
     get path() {
         return this._path;
