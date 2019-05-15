@@ -4,6 +4,7 @@ module.exports = {
 
     path: 'icecast',
     flush_on_startup: true,
+    load_on_startup: true,
 
     autostart: true,
     checkup_delay: 500,

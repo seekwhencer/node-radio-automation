@@ -12,19 +12,23 @@ module.exports = class Iceccast extends Module {
             super(args);
             this.name = 'icecast';
             this.label = 'ICECAST';
-            LOG(this.label, 'INIT');
-            this.mergeOptions();
 
-            this.path = P(`${STORAGE.path}/${this.options.paths.config}`);
-            this.conf_file = `${this.path}/${this.options.name}.xml`;
-            this.log_dir = `${this.path}/${this.options.paths.logdir}`;
+            this.mergeOptions();
+            LOG(this.label, 'INIT');
 
             if (this.options.flush_on_startup === true) {
                 STORAGE.flush(this.path);
             }
+
             STORAGE.createFolder(this.path);
-            STORAGE.createFolder(this.log_dir);
-            this.saveConfig();
+            STORAGE.createFolder(this.options.log_dir);
+
+            if (this.options.load_on_startup === true && this.options.flush_on_startup !== true) {
+                this.setOptionsFromStorage();
+            }
+
+            this.save();
+            this.saveXML();
             this.run();
 
             this.on('ready', () => {
@@ -33,32 +37,42 @@ module.exports = class Iceccast extends Module {
         });
     }
 
-    saveConfig() {
-        const Icecast = this;
-        let conf = '<icecast>\n';
+    mergeOptions() {
+        super.mergeOptions();
+        this.path = P(`${STORAGE.path}/${this.options.paths.config}`);
 
         // make paths absolute
-        Object.keys(Icecast.options.paths).forEach(function (i) {
-            Icecast.options.config.paths[i] = Icecast.options.paths[i];
+        Object.keys(this.options.paths).forEach(i => {
+            this.options.config.paths[i] = this.options.paths[i];
         });
-        Icecast.options.config.paths.config = `${Icecast.path}`;
-        Icecast.options.config.paths.logdir = `${Icecast.path}/${Icecast.options.paths.logdir}`;
+        this.options.config.paths.config = `${this.path}`;
+        this.options.config.paths.logdir = `${this.path}/${this.options.paths.logdir}`;
 
-        Object.keys(Icecast.options.config).forEach(function (i) {
-            if (typeof Icecast.options.config[i] === 'string' || typeof Icecast.options.config[i] === 'number') {
-                conf += '    <' + i + '>' + Icecast.options.config[i] + '</' + i + '>\n';
+        this.options.log_dir = `${this.path}/${this.options.paths.logdir}`;
+        this.options.xml_file = `${this.path}/${this.options.name}.xml`;
+        this.options.conf_file = `${this.path}/${this.options.name}.json`;
+
+        STORAGE.createFolder(this.path);
+        STORAGE.createFolder(this.options.log_dir);
+    }
+
+    saveXML() {
+        let conf = '<icecast>\n';
+        Object.keys(this.options.config).forEach(i => {
+            if (typeof this.options.config[i] === 'string' || typeof this.options.config[i] === 'number') {
+                conf += '    <' + i + '>' + this.options.config[i] + '</' + i + '>\n';
             }
-            if (typeof Icecast.options.config[i] === 'object') {
+            if (typeof this.options.config[i] === 'object') {
                 conf += '    <' + i + '>\n';
-                Object.keys(Icecast.options.config[i]).forEach(function (ii) {
-                    if (typeof Icecast.options.config[i][ii] === 'string' || typeof Icecast.options.config[i][ii] === 'number') {
-                        conf += '        <' + ii + '>' + Icecast.options.config[i][ii] + '</' + ii + '>\n';
+                Object.keys(this.options.config[i]).forEach(ii => {
+                    if (typeof this.options.config[i][ii] === 'string' || typeof this.options.config[i][ii] === 'number') {
+                        conf += '        <' + ii + '>' + this.options.config[i][ii] + '</' + ii + '>\n';
                     }
-                    if (typeof Icecast.options.config[i][ii] === 'object') {
+                    if (typeof this.options.config[i][ii] === 'object') {
                         const attr = [];
-                        if (Icecast.options.config[i][ii].forEach) {
-                            Icecast.options.config[i][ii].forEach(function (iii) {
-                                Object.keys(iii).forEach(function (k) {
+                        if (this.options.config[i][ii].forEach) {
+                            this.options.config[i][ii].forEach(iii => {
+                                Object.keys(iii).forEach(k => {
                                     attr.push(k + '="' + iii[k] + '"');
                                 });
                             });
@@ -66,9 +80,9 @@ module.exports = class Iceccast extends Module {
                             conf += '        <' + ii + ' ' + s + '/>\n';
                         } else {
                             conf += `        <${ii}>\n`;
-                            Object.keys(Icecast.options.config[i][ii]).forEach(function (iii) {
+                            Object.keys(this.options.config[i][ii]).forEach(iii => {
                                 //Object.keys(iii).forEach(function (k) {
-                                attr.push(`            <${iii}>${Icecast.options.config[i][ii][iii]}</${iii}>`);
+                                attr.push(`            <${iii}>${this.options.config[i][ii][iii]}</${iii}>`);
                                 //});
                             });
                             //const s = attr.join(' ');
@@ -82,13 +96,13 @@ module.exports = class Iceccast extends Module {
             }
         });
         conf += '</icecast>\n';
-        fs.writeFileSync(this.conf_file, conf);
-        LOG(this.label, 'CONFIG SAVED', this.conf_file);
+        fs.writeFileSync(this.options.xml_file, conf);
+        LOG(this.label, 'CONFIG SAVED', this.options.xml_file);
         this.emit('saved', this);
     };
 
     run() {
-        const options = ['-c', this.conf_file];
+        const options = ['-c', this.options.xml_file];
         LOG(this.label, 'STARTING', this.options.bin, 'WITH CONFIG', options.join(' '));
 
         this.process = spawn(this.options.bin, options);
@@ -140,5 +154,21 @@ module.exports = class Iceccast extends Module {
             );
         });
     };
+
+    save() {
+        let save = this.options;
+        fs.writeJsonSync(this.options.conf_file, save);
+        LOG(this.label, 'JSON SAVED', this.options.conf_file);
+    }
+
+    setOptionsFromStorage() {
+        LOG(this.label, 'BUILD FROM STORAGE');
+        const options = STORAGE.fetch.one(this.options.conf_file);
+        if (!options) {
+            return false;
+        }
+        this.args = options; // override the existing options
+        this.mergeOptions();
+    }
 
 };
