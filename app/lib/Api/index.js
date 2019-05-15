@@ -1,5 +1,7 @@
 const
     http = require('http'),
+    bodyParser = require('body-parser'),
+    formidable = require('express-formidable'),
     Module = require('../Module.js'),
     Auth = require('./Auth.js');
 
@@ -23,14 +25,16 @@ module.exports = class Api extends Module {
                     resolve(this);
                 });
 
+                APIAPP.use(bodyParser.json());
+                APIAPP.use(bodyParser.urlencoded({extended: true}));
+                APIAPP.use(formidable());
+
                 // json web token auth
                 this.auth = new Auth(this.options.auth);
 
-                APIAPP.use('/station', require('./endpoints/station.js'));
-                APIAPP.use('/channels', require('./endpoints/channels.js'));
-                APIAPP.use('/channel', require('./endpoints/channel.js'));
-                APIAPP.use('/internal', require('./endpoints/internal.js'));
-                APIAPP.use('/m3u', require('./endpoints/m3u.js'));
+                // autoloads the routes.
+                // the filename without extension equals a top level route
+                this.addRoutes();
 
                 APIAPP.use((req, res, next) => {
                     const err = new Error('Not Found');
@@ -56,7 +60,16 @@ module.exports = class Api extends Module {
         this.http.close(() => {
             LOG(this.label, 'CLOSED');
         });
+    };
+
+    addRoutes() {
+        const routeFolder = `${APP_DIR}/lib/Api/routes`;
+        const routeFiles = RDIRSYNC(routeFolder, false, ['js']);
+        routeFiles.forEach(route => {
+            const LoadedRoute = require(route.file_path);
+            APIAPP.use(`/${route.filename}`, new LoadedRoute());
+            LOG(this.label, 'ROUTE ADDED', `/${route.filename}`);
+        });
+        LOG(this.label, routeFiles.length, 'ROUTE FILES ADDED');
     }
-    ;
-}
-;
+};

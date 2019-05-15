@@ -1,9 +1,9 @@
 const
     router = EXPRESS.Router(),
-    Health = require('../lib/health.js'),
-    Metrics = require('../lib/metrics.js'),
-    Ping = require('../lib/ping.js'),
-    Release = require('../lib/release.js');
+    Health = require('../lib/internal/health.js'),
+    Metrics = require('../lib/internal/metrics.js'),
+    Ping = require('../lib/internal/ping.js'),
+    Release = require('../lib/internal/release.js');
 
 router.get('/', (req, res) => {
     res.json({
