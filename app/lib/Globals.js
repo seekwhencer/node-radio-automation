@@ -53,4 +53,4 @@ LOG('');
 global.CONFIG = new Config();
 global.R = R;
 global.EXPRESS = Express;
-global.APP = EXPRESS();
+global.APIAPP = EXPRESS();
