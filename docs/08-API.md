@@ -1,36 +1,58 @@
 # Api
 
 The Api runs on the given port in **`app/config/ENV/api.js`**
-```
+```javascript
 port: 8200
 ```
-## Channel Listing
 
+## Login
+### `/login`
+wants a posted multipart form data or json body:
+```json
+{
+    "username": "...",
+    "password": "..."
+}
+```
+Response:
+```json
+{
+    "message": "authenticated",
+    "token": "TOKEN"
+}
+```
+Store this token in your API-Client (Frontend App or Insomnia) and use it as Header Paramer:
+```json
+{
+    "access-token": "TOKEN"
+}
+```
+
+## Channel Listing
 ### `/channels`
 Returns a json array with channel objects
-```
+```json
 [
     {
-        "id": "4b7242e55b28eae45dbaf92301aa099a"
-        "name": "One"
+        "id": "4b7242e55b28eae45dbaf92301aa099a",
+        "name": "One",
         "mount": "/one"
     },
     {
-        "id": "4b7242e55b28eae45dbaf92301aa099a"
-        "name": "Two"
+        "id": "4b7242e55b28eae45dbaf92301aa099a",
+        "name": "Two",
         "mount": "/two"
     }
 ]
 ```
 
 ## Channel
-
 ### `/channel/CHANNEL-ID`
 Returns one channel object
-```
+```json
 {
-    "id": "4b7242e55b28eae45dbaf92301aa099a"
-    "name": "One"
+    "id": "4b7242e55b28eae45dbaf92301aa099a",
+    "name": "One",
     "mount": "/one"
 }
 ```
@@ -75,14 +97,14 @@ Shutting down and starting the channel again.
 ## Shows Listing
 ### `/shows`
 Returns a json array with show objects
-```
+```json
 [
     {
-        "id": "4b7242e55b28eae45dbaf92301aa099a"
+        "id": "4b7242e55b28eae45dbaf92301aa099a",
         "name": "One"
     },
     {
-        "id": "4b7242e55b28eae45dbaf92301aa099a"
+        "id": "4b7242e55b28eae45dbaf92301aa099a",
         "name": "Two"
     }
 ]
@@ -92,9 +114,9 @@ Returns a json array with show objects
 
 ### `/show/SHOW-ID`
 Returns one show object
-```
+```json
 {
-    "id": "4b7242e55b28eae45dbaf92301aa099a"
+    "id": "4b7242e55b28eae45dbaf92301aa099a",
     "name": "One"
 }
 ```
