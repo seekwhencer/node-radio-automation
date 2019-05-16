@@ -58,8 +58,7 @@ module.exports = class Show extends Module {
     set channel(channel) {
         this._channel = channel;
         if (this.channel) {
-            this.playlist.show = this;
-            this.playlist.generate();
+            this.playlist.show = this; //  playlist 'show' setter
         }
     }
 

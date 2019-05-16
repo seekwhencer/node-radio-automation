@@ -12,13 +12,14 @@ module.exports = class Playlist extends Module {
         this.mergeOptions();
         LOG(this.label, 'INIT', this.show.name);
 
-        this.show = null;
         this.items = [];
         this.playlist = null;
         this.music = null;
         this.podcast = null;
         this.intro = null;
         this.spot = null;
+
+        this.build();
     }
 
     mergeOptions() {
@@ -67,7 +68,6 @@ module.exports = class Playlist extends Module {
     };
 
     save() {
-        this.options.playlist_path = P(`${this.show.channel.mpd.options.config.playlist_directory}/${this.show.id}.m3u`);
         LOG(this.label, 'SAVING', this.options.playlist_path);
         fs.writeFileSync(this.options.playlist_path, this.playlist);
         this.emit('saved-playlist', this.playlist);
@@ -180,6 +180,11 @@ module.exports = class Playlist extends Module {
 
     set show(show) {
         this._show = show;
+        if (this.show.channel) {
+            this.channel = this.show.channel;
+            this.options.playlist_path = P(`${this.channel.mpd.options.config.playlist_directory}/${this.show.id}.m3u`);
+            this.generate();
+        }
     }
 
 };

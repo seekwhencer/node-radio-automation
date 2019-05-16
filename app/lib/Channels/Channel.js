@@ -25,7 +25,9 @@ module.exports = class Channel extends Module {
                 LOG(this.label, '>>> READY');
                 this.ready = true;
                 if (this.options.autostart === true) {
-                    this.initPlaylist();
+                    setTimeout(() => {
+                        this.initPlaylist();
+                    }, 5000);
                 }
                 resolve(this);
             });
@@ -99,6 +101,19 @@ module.exports = class Channel extends Module {
         fs.writeJsonSync(this.options.conf_file, save);
     }
 
+    /**
+     * this is an important function!
+     * this function assign a show to a channel
+     * watch the setters: 'show.channel' and 'playlist.show'
+     *
+     * If you set a show to a channel, the playlist of a show will be:
+     *  - generated instantly
+     *  - saved and
+     *  - played
+     *
+     * @param match
+     * @param field
+     */
     setShow(match, field) {
         const show = SHOWS.get(match, field);
         LOG(this.label, this.name, 'SELECTING SHOW', show.name);
@@ -106,7 +121,7 @@ module.exports = class Channel extends Module {
             path: this.path,
             options: show.options
         });
-        this.show.channel = this;
+        this.show.channel = this; // whatch show channel setter
     }
 
     setDefaultShow() {
