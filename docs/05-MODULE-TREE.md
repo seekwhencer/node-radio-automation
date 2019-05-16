@@ -31,6 +31,11 @@ STORAGE.fetch.inputs()
 This is a mpd instance to build and update the shared audio file database.
 Mpd crawls the folder structure and save a own database.
 
+## `ICECAST`
+
+Is the audio streaming server. This module creates a xml configuraton for the program how it needs.
+Icecast will be started with the app start.
+
 ## `SHOWS`
 ```
 SHOWS.items
@@ -121,4 +126,53 @@ stores the m3u file.
 ### `playlist.generate()`
 build and store
  
+
+## `CHANNELS`
+```
+CHANNELS.items
+CHANNELS.buildFromOptions()
+CHANNELS.buildFromStorage()
+CHANNELS.build()
+CHANNELS.get(match, field)
+```
+ 
+These are the ... channels. stored in `CHANNELS.items`
+
+
+## `CHANNELS`
+
+A channel can get: `CHANNELS.get(match,field)`. That returns an element of `CHANNELS.items`.
+
+```
+channel.id
+channel.name
+channel.slug
+channel.options
+channel.mpd
+channel.mpc
+channel.show
+channel.mergeOptions()
+channel.save()
+channel.setShow(match,field)
+channel.setDefaultShow()
+channel.initPlaylist()
+channel.loadPlaylist()
+channel.updatePlaylist()
+channel.updateDatabase()
+channel.setCrossfade(seconds)
+channel.play(number)
+channel.repeat()
+channel.pause()
+channel.stop()
+channel.status()
+channel.crop()
+channel.shuffle()
+channel.skip()
+```
+
+### `channel.mpd`
+### `channel.mpc`
+### `channel.show`
+### `channel.show.playlist`
+
 
