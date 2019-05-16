@@ -5,22 +5,21 @@ module.exports = class extends RouteSet {
     constructor() {
         super();
 
-        // get the channel listing
+        // get the show listing
         this.router.get('/', (req, res) => {
-            if (!CHANNELS.items) {
+            if (!SHOWS.items) {
                 res.json({
                     message: 'no channels found'
                 });
                 return;
             }
-            const channels = CHANNELS.items.map((channel) => {
+            const shows = SHOWS.items.map((show) => {
                 return {
-                    id: channel.id,
-                    name: channel.name,
-                    mount: channel.mpd.options.config.audio_output.mount
+                    id: show.id,
+                    name: show.name
                 };
             });
-            res.json(channels);
+            res.json(shows);
         });
 
         return this.router;

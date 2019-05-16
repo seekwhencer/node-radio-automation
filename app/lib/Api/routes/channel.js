@@ -1,10 +1,16 @@
-module.exports = class Route {
+const
+    RouteSet = require('../RouteSet.js');
+
+module.exports = class extends RouteSet {
     constructor() {
-        this.router = EXPRESS.Router();
+        super();
+
+        this.param = 'channel';
+        this.source = CHANNELS;
 
         // get one channel
         this.router.get('/:channel', (req, res) => {
-            const channel = this.getChannel(req, res);
+            const channel = this.one(req, res);
             if (!channel)
                 return;
 
@@ -19,7 +25,7 @@ module.exports = class Route {
 
         // skip track
         this.router.get('/:channel/skip', (req, res) => {
-            const channel = this.getChannel(req, res);
+            const channel = this.one(req, res);
             if (!channel)
                 return;
 
@@ -28,8 +34,8 @@ module.exports = class Route {
         });
 
         // update mpc music database
-        this.router.get('/:channel/update-database', function (req, res) {
-            const channel = this.getChannel(req, res);
+        this.router.get('/:channel/update-database', (req, res) => {
+            const channel = this.one(req, res);
             if (!channel)
                 return;
 
@@ -39,7 +45,7 @@ module.exports = class Route {
 
         // load playlist only
         this.router.get('/:channel/load-playlist', (req, res) => {
-            const channel = this.getChannel(req, res);
+            const channel = this.one(req, res);
             if (!channel)
                 return;
 
@@ -49,7 +55,7 @@ module.exports = class Route {
 
         // update playlist and play
         this.router.get('/:channel/update-playlist', (req, res) => {
-            const channel = this.getChannel(req, res);
+            const channel = this.one(req, res);
             if (!channel)
                 return;
 
@@ -59,7 +65,7 @@ module.exports = class Route {
 
         // play
         this.router.get('/:channel/play', (req, res) => {
-            const channel = this.getChannel(req, res);
+            const channel = this.one(req, res);
             if (!channel)
                 return;
 
@@ -69,7 +75,7 @@ module.exports = class Route {
 
         // play track number
         this.router.get('/:channel/play/:number', (req, res) => {
-            const channel = this.getChannel(req, res);
+            const channel = this.one(req, res);
             if (!channel)
                 return;
 
@@ -79,7 +85,7 @@ module.exports = class Route {
 
         // pause playing
         this.router.get('/:channel/pause', (req, res) => {
-            const channel = this.getChannel(req, res);
+            const channel = this.one(req, res);
             if (!channel)
                 return;
 
@@ -89,7 +95,7 @@ module.exports = class Route {
 
         // stop playing
         this.router.get('/:channel/stop', (req, res) => {
-            const channel = this.getChannel(req, res);
+            const channel = this.one(req, res);
             if (!channel)
                 return;
 
@@ -99,7 +105,7 @@ module.exports = class Route {
 
         // set crossfade in seconds
         this.router.get('/:channel/crossfade/:seconds', (req, res) => {
-            const channel = this.getChannel(req, res);
+            const channel = this.one(req, res);
             if (!channel)
                 return;
 
@@ -109,7 +115,7 @@ module.exports = class Route {
 
         // reboot channel
         this.router.get('/:channel/respawn', (req, res) => {
-            const channel = this.getChannel(req, res);
+            const channel = this.one(req, res);
             if (!channel)
                 return;
 
@@ -119,7 +125,7 @@ module.exports = class Route {
 
         // shutdown channel
         this.router.get('/:channel/shutdown', (req, res) => {
-            const channel = this.getChannel(req, res);
+            const channel = this.one(req, res);
             if (!channel)
                 return;
 
@@ -129,7 +135,7 @@ module.exports = class Route {
 
         // spawn channel
         this.router.get('/:channel/spawn', (req, res) => {
-            const channel = this.getChannel(req, res);
+            const channel = this.one(req, res);
             if (!channel)
                 return;
 
@@ -138,21 +144,5 @@ module.exports = class Route {
         });
 
         return this.router;
-    }
-
-    getChannel(req, res) {
-        const match = req.params.channel;
-        const channel = CHANNELS.get(match, 'id');
-        if (!channel) {
-            res.json({
-                error: 'no channel found',
-                search: {
-                    match: match,
-                    field: 'id'
-                }
-            });
-            return false;
-        }
-        return channel;
     }
 };
