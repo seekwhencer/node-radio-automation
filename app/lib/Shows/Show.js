@@ -14,6 +14,8 @@ module.exports = class Show extends Module {
         this.mergeOptions();
         LOG(this.label, 'INIT', this.name);
 
+        this.setOptionsFromStorage();
+
         this.playlist = new Playlist({
             options: {},
             show: this
@@ -56,9 +58,18 @@ module.exports = class Show extends Module {
     set channel(channel) {
         this._channel = channel;
         if (this.channel) {
-            this.playlist.show = this;
-            this.playlist.generate();
+            this.playlist.show = this; //  playlist 'show' setter
         }
+    }
+
+    setOptionsFromStorage() {
+        LOG(this.label, 'BUILD FROM STORAGE');
+        const options = STORAGE.fetch.one(this.options.conf_file);
+        if (!options) {
+            return false;
+        }
+        this.args = options; // override the existing options
+        this.mergeOptions();
     }
 
 

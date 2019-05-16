@@ -3,6 +3,7 @@ const
     slugify = require('slugify'),
     crypto = require('crypto'),
     Module = require('../Module'),
+    Show = require('../Shows//Show'),
     Mpd = require('./Mpd'),
     Mpc = require('./Mpc');
 
@@ -22,12 +23,12 @@ module.exports = class Channel extends Module {
 
             this.on('ready', () => {
                 LOG(this.label, '>>> READY');
-
-                if (this.options.autostart === true) {
-                    this.initPlaylist();
-                }
-
                 this.ready = true;
+                if (this.options.autostart === true) {
+                    setTimeout(() => {
+                        this.initPlaylist();
+                    }, 5000);
+                }
                 resolve(this);
             });
 
@@ -100,10 +101,27 @@ module.exports = class Channel extends Module {
         fs.writeJsonSync(this.options.conf_file, save);
     }
 
+    /**
+     * this is an important function!
+     * this function assign a show to a channel
+     * watch the setters: 'show.channel' and 'playlist.show'
+     *
+     * If you set a show to a channel, the playlist of a show will be:
+     *  - generated instantly
+     *  - saved and
+     *  - played
+     *
+     * @param match
+     * @param field
+     */
     setShow(match, field) {
-        this.show = (SHOWS.get(match, field)); // @TODO clone it here
-        this.show.channel = this;
-        LOG(this.label, this.name, 'SELECTING SHOW', this.show.name);
+        const show = SHOWS.get(match, field);
+        LOG(this.label, this.name, 'SELECTING SHOW', show.name);
+        this.show = new Show({
+            path: this.path,
+            options: show.options
+        });
+        this.show.channel = this; // whatch show channel setter
     }
 
     setDefaultShow() {
@@ -114,10 +132,10 @@ module.exports = class Channel extends Module {
     }
 
     checkReady() {
-        LOG(this.label,this.name, 'CHECK IF MPD AND MPC IS READY...', this.mpd.ready, this.mpc.ready);
+        LOG(this.label, this.name, 'CHECK IF MPD AND MPC IS READY...', this.mpd.ready, this.mpc.ready);
         if (this.mpd.ready && this.mpc.ready) {
-        //if (this.mpd.ready) {
             this.emit('ready');
+            return;
         } else {
             setTimeout(() => {
                 this.checkReady();

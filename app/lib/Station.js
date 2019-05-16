@@ -13,7 +13,10 @@ module.exports = class Station extends Module {
     constructor(args) {
         super(args);
 
-        new Storage()
+        this.name = 'station';
+        this.label = 'STATION';
+
+        return new Storage()
             .then(storage => {
                 global.STORAGE = storage;
                 return new Icecast();
@@ -36,10 +39,31 @@ module.exports = class Station extends Module {
             })
             .then(api => {
                 global.API = api;
+
+                LOG('');
+                LOG('//////////////////');
+                LOG('');
+                LOG(this.label, '>>> IS UP AND RUNNING ...');
+                LOG('');
+                LOG('', 'Icecast on Port:', `${ICECAST.options.config["listen-socket"].port}`);
+                LOG('', 'Api on Port:    ', `${API.options.port}`);
+                LOG('');
+                LOG('', 'Shows:');
+                SHOWS.items.forEach((show) => {
+                    LOG(' ', '>', show.name, '<', '| Tracks:', '>', show.playlist.items.length, '<');
+                });
+                LOG('');
+                LOG('', 'Channels:');
+                CHANNELS.items.forEach((channel) => {
+                    LOG(' ', '>', channel.name, '<', '| Mount:', `:${ICECAST.options.config["listen-socket"].port}${channel.mpd.options.config.audio_output.mount}`, '| Show:', '>', channel.show.name, '<', '| Tracks:', '>', channel.show.playlist.items.length, '<');
+                });
+                LOG('');
+                LOG('//////////////////');
+                LOG('');
+                LOG('');
+
+                return Promise.resolve(this);
             });
 
     }
-
-
-
 };

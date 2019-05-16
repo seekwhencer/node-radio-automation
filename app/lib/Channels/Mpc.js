@@ -11,8 +11,6 @@ module.exports = class Mpc extends Module {
         this.mergeOptions();
         LOG(this.label, 'INIT', this.channel.name);
 
-        this.queueIndex = 0;
-
         this.on('status', (chunk) => {
             const chunkArr = chunk.split("\n");
             const status = chunkArr[0].replace(/ -  - /g, '').replace(/"/g, '').split(/ - /);
@@ -44,11 +42,11 @@ module.exports = class Mpc extends Module {
     }
 
     updateDatabase() {
-        this.queue(['update', '--wait']).resetQueue();
+        this.query(['update', '--wait']);
     };
 
     setCrossfade(seconds) {
-        this.queue(['crossfade', seconds]).resetQueue();
+        this.query(['crossfade', seconds]);
     };
 
     play(number) {
@@ -56,23 +54,23 @@ module.exports = class Mpc extends Module {
         if (number) {
             options = ['play', number]
         }
-        this.queue(options).resetQueue();
+        this.query(options);
     };
 
     repeat() {
-        this.queue(['repeat']).resetQueue();
+        this.query(['repeat']);
     };
 
     pause() {
-        this.queue(['pause']).resetQueue();
+        this.query(['pause']);
     };
 
     stop() {
-        this.queue(['stop']).resetQueue();
+        this.query(['stop']);
     };
 
     loadPlaylist(playlist) {
-        this.queue(['load', playlist]).resetQueue();
+        this.query(['load', playlist]);
     };
 
     status() {
@@ -80,20 +78,19 @@ module.exports = class Mpc extends Module {
     };
 
     crop() {
-        this.queue(['crop']).resetQueue();
+        this.query(['crop']);
     };
 
     shuffle() {
-        this.queue(['shuffle']).resetQueue();
+        this.query(['shuffle']);
     };
 
     skip() {
-        this.queue(['next']).resetQueue();
+        this.query(['next']);
     };
 
     updatePlaylist(playlist) {
         LOG(this.label, this.name, 'UPDATE PLAYLIST');
-        this.channel.show.playlist.generate();
         this.playlist = this.channel.show.id;
 
         if (!playlist)
@@ -102,9 +99,8 @@ module.exports = class Mpc extends Module {
         this.crop();
         this.loadPlaylist(playlist);
         this.setCrossfade(8);
-        this.play(2);
         this.repeat();
-        this.resetQueue();
+        this.play(2);
     };
 
     initPlaylist() {
@@ -114,7 +110,6 @@ module.exports = class Mpc extends Module {
         this.setCrossfade(8);
         this.repeat();
         this.play(1);
-        this.resetQueue();
     };
 
     query(query) {
@@ -124,7 +119,6 @@ module.exports = class Mpc extends Module {
         this.process = spawn(this.options.bin, options);
         this.process.stdout.setEncoding('utf8');
         this.process.stdout.on('data', (chunk) => {
-            //LOG(this.label, 'STDOUT TTY', chunk.trim());
             const match = {
                 status: new RegExp(/-  -/)
             };
@@ -141,22 +135,10 @@ module.exports = class Mpc extends Module {
                     });
                 }
             });
-            this.emit('data', chunk, this);
+            this.emit('data', chunk.trim(), this);
         });
         this.process.stderr.on('end', () => {
             this.emit('exit', this);
         });
     };
-
-    queue(query) {
-        setTimeout(() => {
-            this.query(query);
-            this.queueIndex = this.queueIndex+1;
-        }, this.queueIndex * this.options.query_delay);
-        return this;
-    }
-
-    resetQueue(){
-        this.queueIndex = 0;
-    }
 };
