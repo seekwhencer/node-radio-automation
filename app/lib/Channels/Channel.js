@@ -23,12 +23,10 @@ module.exports = class Channel extends Module {
 
             this.on('ready', () => {
                 LOG(this.label, '>>> READY');
-
+                this.ready = true;
                 if (this.options.autostart === true) {
                     this.initPlaylist();
                 }
-
-                this.ready = true;
                 resolve(this);
             });
 
@@ -103,12 +101,12 @@ module.exports = class Channel extends Module {
 
     setShow(match, field) {
         const show = SHOWS.get(match, field);
+        LOG(this.label, this.name, 'SELECTING SHOW', show.name);
         this.show = new Show({
             path: this.path,
             options: show.options
         });
         this.show.channel = this;
-        LOG(this.label, this.name, 'SELECTING SHOW', this.show.name);
     }
 
     setDefaultShow() {
@@ -121,8 +119,8 @@ module.exports = class Channel extends Module {
     checkReady() {
         LOG(this.label, this.name, 'CHECK IF MPD AND MPC IS READY...', this.mpd.ready, this.mpc.ready);
         if (this.mpd.ready && this.mpc.ready) {
-            //if (this.mpd.ready) {
             this.emit('ready');
+            return;
         } else {
             setTimeout(() => {
                 this.checkReady();
