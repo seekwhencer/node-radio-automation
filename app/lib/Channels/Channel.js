@@ -195,6 +195,18 @@ module.exports = class Channel extends Module {
         this.mpc.skip();
     };
 
+    spawn(){
+
+    }
+
+    respawn(){
+
+    }
+
+    shutdown(){
+
+    }
+
 
     get path() {
         return this._path;

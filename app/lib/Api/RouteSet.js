@@ -18,4 +18,12 @@ module.exports = class RouteSet {
         }
         return item;
     }
+
+    success(req, res, message, data) {
+        res.json({
+            message: message,
+            ...{data: data}
+        });
+    }
+
 };

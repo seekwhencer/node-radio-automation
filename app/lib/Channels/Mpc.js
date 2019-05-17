@@ -70,6 +70,13 @@ module.exports = class Mpc extends Module {
     };
 
     loadPlaylist(playlist) {
+        LOG(this.label, this.name, 'LOAD PLAYLIST');
+        this.playlist = this.channel.show.id;
+
+        if (!playlist)
+            playlist = this.playlist;
+
+        this.crop();
         this.query(['load', playlist]);
     };
 
@@ -78,7 +85,7 @@ module.exports = class Mpc extends Module {
     };
 
     crop() {
-        this.query(['crop']);
+        this.query(['crop']); // crops the playlist to the one actual playing track
     };
 
     shuffle() {

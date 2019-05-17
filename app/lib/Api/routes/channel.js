@@ -30,7 +30,7 @@ module.exports = class extends RouteSet {
                 return;
 
             channel.skip();
-            res.send(channel.name + ' skipped');
+            this.success(req, res, `Skipped on Channel: ${channel.name} with Show: ${channel.show.name}`);
         });
 
         // update mpc music database
@@ -40,7 +40,7 @@ module.exports = class extends RouteSet {
                 return;
 
             channel.updateDatabase();
-            res.send(channel.name + ' database updating');
+            this.success(req, res, channel.name + `MPD Database Update on Channel: ${channel.name} with Show: ${channel.show.name}`);
         });
 
         // load playlist only
@@ -50,7 +50,7 @@ module.exports = class extends RouteSet {
                 return;
 
             channel.loadPlaylist();
-            res.send(channel.name + ' playlist loaded');
+            this.success(req, res, `Playlist loaded on Channel: ${channel.name} with Show: ${channel.show.name}`);
         });
 
         // update playlist and play
@@ -60,7 +60,7 @@ module.exports = class extends RouteSet {
                 return;
 
             channel.updatePlaylist();
-            res.send(channel.name + ' playlist updated');
+            this.success(req, res, `Playlist updated on Channel: ${channel.name} with Show: ${channel.show.name}`);
         });
 
         // play
@@ -70,7 +70,7 @@ module.exports = class extends RouteSet {
                 return;
 
             channel.play();
-            res.send(channel.name + ' playing');
+            this.success(req, res, `PLaying on Channel: ${channel.name} with Show: ${channel.show.name}`);
         });
 
         // play track number
@@ -80,7 +80,7 @@ module.exports = class extends RouteSet {
                 return;
 
             channel.play(req.params.number);
-            res.send(channel.name + ' playing');
+            this.success(req, res, `Play at Position ${req.params.number} on Channel: ${channel.name} with Show: ${channel.show.name}`);
         });
 
         // pause playing
@@ -90,7 +90,7 @@ module.exports = class extends RouteSet {
                 return;
 
             channel.pause();
-            res.send(channel.name + ' paused');
+            this.success(req, res, `Pause on Channel: ${channel.name} with Show: ${channel.show.name}`);
         });
 
         // stop playing
@@ -100,7 +100,7 @@ module.exports = class extends RouteSet {
                 return;
 
             channel.stop();
-            res.send(channel.name + ' stopped');
+            this.success(req, res, `Stopped on Channel: ${channel.name} with Show: ${channel.show.name}`);
         });
 
         // set crossfade in seconds
@@ -110,7 +110,7 @@ module.exports = class extends RouteSet {
                 return;
 
             channel.setCrossfade(req.params.seconds);
-            res.send(channel.name + ' setting crossfade to: ' + req.params.seconds + ' seconds');
+            this.success(req, res, `Crossfade set to ${req.params.seconds} on Channel: ${channel.name} with Show: ${channel.show.name}`);
         });
 
         // reboot channel
@@ -120,7 +120,7 @@ module.exports = class extends RouteSet {
                 return;
 
             channel.respawn();
-            res.send(channel.name + ' respawning');
+            this.success(req, res, `Respawning Channel: ${channel.name}`);
         });
 
         // shutdown channel
@@ -130,7 +130,7 @@ module.exports = class extends RouteSet {
                 return;
 
             channel.shutdown();
-            res.send(channel.name + ' shutting down');
+            this.success(req, res, `Shutting down Channel: ${channel.name}`);
         });
 
         // spawn channel
@@ -140,7 +140,7 @@ module.exports = class extends RouteSet {
                 return;
 
             channel.spawn();
-            res.send(channel.name + ' spawning');
+            this.success(req, res, `Spawn Channel: ${channel.name} with Show: ${channel.show.name}`);
         });
 
         return this.router;

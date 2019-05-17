@@ -3,7 +3,7 @@ module.exports = {
     bin: "/usr/bin/icecast2",
 
     path: 'icecast',
-    flush_on_startup: true,
+    flush_on_startup: false,
     load_on_startup: true,
 
     autostart: true,
