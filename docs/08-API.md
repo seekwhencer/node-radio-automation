@@ -14,6 +14,7 @@ wants a posted multipart form data or json body:
     "password": "..."
 }
 ```
+ 
 Response:
 ```json
 {
@@ -21,10 +22,22 @@ Response:
     "token": "TOKEN"
 }
 ```
+ 
 Store this token in your API-Client (Frontend App or Insomnia) and use it as Header Paramer:
 ```json
 {
     "access-token": "TOKEN"
+}
+```
+ 
+Login data can be changed in `app/config/ENV/api.js`
+
+```
+auth: {
+    secret: 'simsalabim',
+    username: 'admin',
+    password: 'change!me',
+    expires: 1440
 }
 ```
 
@@ -42,7 +55,8 @@ Returns a json array with channel objects
         "id": "4b7242e55b28eae45dbaf92301aa099a",
         "name": "Two",
         "mount": "/two"
-    }
+    },
+    ...
 ]
 ```
 
@@ -53,7 +67,8 @@ Returns one channel object
 {
     "id": "4b7242e55b28eae45dbaf92301aa099a",
     "name": "One",
-    "mount": "/one"
+    "mount": "/one",
+    ...
 }
 ```
 
@@ -106,7 +121,8 @@ Returns a json array with show objects
     {
         "id": "4b7242e55b28eae45dbaf92301aa099a",
         "name": "Two"
-    }
+    },
+    ...
 ]
 ```
 
@@ -117,8 +133,26 @@ Returns one show object
 ```json
 {
     "id": "4b7242e55b28eae45dbaf92301aa099a",
-    "name": "One"
+    "name": "One",
+    ...
 }
 ```
+
+## Insomnia
+
+You can use the `Insomnia.json` file to load it into - [Insomnia](...)
+Manage the environments and edit the environment of the running dev version:
+
+```
+{
+  "base_url": "{{ protocol }}://{{host}}",
+  "host": "",
+  "protocol": "http",
+  "token": ""
+}
+```
+ 
+Fill it with life and change the `host`. After a login you can put the token in the environment.
+This token will be use as header parameter `access-token`.
 
 
