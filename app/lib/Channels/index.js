@@ -70,7 +70,7 @@ module.exports = class Channels extends Module {
     }
 
     get(match, field) {
-        if(!field){
+        if (!field) {
             field = 'slug';
         }
         if (typeof field === 'string') {
@@ -84,4 +84,14 @@ module.exports = class Channels extends Module {
             return this.items[field];
         }
     };
+
+    create(args) {
+        return new Channel({
+            path: this.path,
+            options: args
+        }).then(channel => {
+            this.items.push(channel);
+            return Promise.resolve(channel);
+        });
+    }
 };

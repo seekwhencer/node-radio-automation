@@ -26,4 +26,14 @@ module.exports = class RouteSet {
         });
     }
 
+    error(message, res, data) {
+        if(!data)
+            data = {};
+
+        res.json({
+            error: message,
+            ...data
+        });
+    }
+
 };

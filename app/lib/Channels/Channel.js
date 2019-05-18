@@ -55,8 +55,9 @@ module.exports = class Channel extends Module {
         });
     }
 
-    mergeOptions() {
-        this.options = R.mergeDeepLeft(this.args.options, CONFIG.channel);
+    mergeOptions(ignoreMerge) {
+        if (!ignoreMerge)
+            this.options = R.mergeDeepLeft(this.args.options, CONFIG.channel);
 
         if (!this.options.slug)
             this.options.slug = slugify(this.options.name, {replacement: '_', lower: true});
@@ -122,6 +123,27 @@ module.exports = class Channel extends Module {
             options: show.options
         });
         this.show.channel = this; // whatch show channel setter
+
+        let update = {
+            id: this.show.id
+        };
+        this.update('show', update);
+    }
+
+    update(field, update) {
+        const includes = ['id', 'name', 'slug', 'show', 'options'];
+        if (!includes.includes(field))
+            return false;
+
+        LOG(this.label, 'UPDATING', field);
+
+        switch (field) {
+            case 'show':
+                this.options.show = update;
+                break;
+        }
+
+        this.save();
     }
 
     setDefaultShow() {
@@ -195,15 +217,15 @@ module.exports = class Channel extends Module {
         this.mpc.skip();
     };
 
-    spawn(){
+    spawn() {
 
     }
 
-    respawn(){
+    respawn() {
 
     }
 
-    shutdown(){
+    shutdown() {
 
     }
 
