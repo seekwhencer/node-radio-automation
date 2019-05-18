@@ -1,8 +1,10 @@
 const
+    slugify = require('slugify'),
     RouteSet = require('../RouteSet.js');
 
 module.exports = class extends RouteSet {
     constructor() {
+
         super();
 
         // get the channel listing
@@ -17,10 +19,70 @@ module.exports = class extends RouteSet {
                 return {
                     id: channel.id,
                     name: channel.name,
-                    mount: channel.mpd.options.config.audio_output.mount
+                    mount: channel.mpd.options.config.audio_output.mount,
+                    show: channel.show.name
                 };
             });
             res.json(channels);
+        });
+
+        /**
+         * Create a new Channel
+         *
+         * possible multipart fields could be:
+         *
+         *   name                   // must be free. no channel with this name can be exists
+         *   show                   // the initial show, if no match field is set, is means the 'id
+         *   show_match_field       // possible matchig fields are: 'id','name','slug
+         *   mount                  // if not given, the mount point equals the slugified name
+         *
+         */
+        this.router.post('/create', (req, res) => {
+            const name = req.fields.name;
+            if (!name)
+                return this.error(`No name given`, res);
+
+            const existingChannel = CHANNELS.get(name, 'name');
+            if (existingChannel)
+                return this.error(`Channel with name: ${name} exists. No channel created`, res);
+
+            let mount = req.fields.mount;
+            if (!mount)
+                mount = `/${slugify(name, {replacement: '-', lower: true})}`;
+
+            let newChannel = {
+                name: name,
+                mpd: {
+                    config: {
+                        port: CHANNELS.getFreeMpdPort(),
+                        audio_output: {
+                            mount: mount
+                        }
+                    }
+                }
+            };
+
+            const showMatch = req.fields.show;
+            if (showMatch) {
+                const showField = req.fields.show_match_field || 'id';
+                const show = SHOWS.get(showMatch, showField);
+                if (!show) {
+                    return this.error(`Show not exists. { ${showField}:${showMatch} } No channel created`, res);
+                }
+                newChannel.show = {};
+                newChannel.show[showField] = showMatch;
+            }
+
+            CHANNELS
+                .create(newChannel)
+                .then(channel => {
+                    this.success(req, res, 'New Channel created', {
+                        id: channel.id,
+                        name: channel.name,
+                        mount: channel.mpd.options.config.audio_output.mount,
+                        ...{options: channel.options}
+                    });
+                });
         });
 
         return this.router;
