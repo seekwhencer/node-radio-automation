@@ -111,4 +111,12 @@ module.exports = class Channels extends Module {
         return this.items.map(i => i.mpd.options.config.audio_output.mount).filter(i => mount ? i : false).includes(mount);
     }
 
+    delete(id) {
+        const name = this.get(id, 'id').name;
+        this.items = this.items.filter(i => {
+            return i.id !== id;
+        });
+        LOG(this.label, 'DELETED CHANNEL', name, this.items.length);
+    }
+
 };
