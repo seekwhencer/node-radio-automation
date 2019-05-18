@@ -166,6 +166,7 @@ module.exports = class Channel extends Module {
 
     setShowsFromStorage() {
         const options = {
+            id : false, // create a new one
             load_on_startup: true,
             flush_on_startup: false,
             path: `channels/${this.id}/shows`

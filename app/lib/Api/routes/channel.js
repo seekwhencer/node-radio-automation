@@ -177,6 +177,25 @@ module.exports = class extends RouteSet {
 
         });
 
+        // get the show listing
+        this.router.get('/:channel/shows', (req, res) => {
+            const channel = this.one(req, res);
+
+            if (!channel.shows.items) {
+                res.json({
+                    message: 'no channels found'
+                });
+                return;
+            }
+            const shows = channel.shows.items.map((show) => {
+                return {
+                    id: show.id,
+                    name: show.name
+                };
+            });
+            res.json(shows);
+        });
+
         return this.router;
     }
 };
