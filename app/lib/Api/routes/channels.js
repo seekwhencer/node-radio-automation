@@ -47,8 +47,15 @@ module.exports = class extends RouteSet {
                 return this.error(`Channel with name: ${name} exists. No channel created`, res);
 
             let mount = req.fields.mount;
-            if (!mount)
+            const existingMount = CHANNELS.mountExists(mount);
+
+            if (existingMount)
+                return this.error(`Channel with mount point: ${mount} exists. No channel created`, res);
+
+            if (!mount) {
                 mount = `/${slugify(name, {replacement: '-', lower: true})}`;
+            }
+
 
             let newChannel = {
                 name: name,

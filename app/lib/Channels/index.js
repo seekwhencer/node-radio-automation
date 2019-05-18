@@ -106,4 +106,9 @@ module.exports = class Channels extends Module {
         LOG(this.label, ' GET FREE MPD PORT', port, ports);
         return port;
     }
+
+    mountExists(mount) {
+        return this.items.map(i => i.mpd.options.config.audio_output.mount).filter(i => mount ? i : false).includes(mount);
+    }
+
 };

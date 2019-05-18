@@ -218,17 +218,25 @@ module.exports = class Channel extends Module {
     };
 
     spawn() {
-
+        this.mpd.run();
+        setTimeout(() => {
+            LOG(this.label, this.name, '1 SECOND IDLE BEFORE UPDATE PLAYLIST');
+            this.updatePlaylist();
+        }, 1000);
     }
 
-    respawn() {
 
+    respawn() {
+        this.shutdown();
+        LOG(this.label, this.name, '5 SECONDS IDLE BEFORE RESTART');
+        setTimeout(() => {
+            this.spawn();
+        }, 5000);
     }
 
     shutdown() {
-
+        this.mpd.shutdown();
     }
-
 
     get path() {
         return this._path;
