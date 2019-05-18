@@ -55,7 +55,7 @@ module.exports = class Mpd extends Module {
         this.log_path = `${this.path}`;
         this.pid_path = `${this.path}`;
 
-        this.options.config.playlist_directory = this.channel.path;
+        this.options.config.playlist_directory = `${this.channel.path}/playlists`;
         this.options.config.music_directory = P(`${APP_DIR}/${CONFIG.station.path.audio}/${this.options.music_path}`);
         this.options.config.db_file = `${this.db_path}/mpd.cache`;
         this.options.config.pid_file = `${this.pid_path}/mpd.pid`;

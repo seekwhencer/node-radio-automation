@@ -3,6 +3,7 @@ const
     slugify = require('slugify'),
     crypto = require('crypto'),
     Module = require('../Module'),
+    Shows = require('../Shows'),
     Show = require('../Shows//Show'),
     Mpd = require('./Mpd'),
     Mpc = require('./Mpc');
@@ -50,8 +51,11 @@ module.exports = class Channel extends Module {
             this.save();
 
             // set default show by config file
-            this.setDefaultShow();
-            this.checkReady();
+            this.setShowsFromStorage().then(() => {
+                this.setDefaultShow();
+                this.checkReady();
+            });
+
         });
     }
 
@@ -107,6 +111,7 @@ module.exports = class Channel extends Module {
         this.shutdown();
         setTimeout(() => {
             fs.removeSync(this.path);
+            fs.removeSync(this.options.conf_file);
             CHANNELS.delete(this.id);
         }, 5000);
     }
@@ -125,19 +130,16 @@ module.exports = class Channel extends Module {
      * @param field
      */
     setShow(match, field) {
-        const show = SHOWS.get(match, field);
+        const show = this.shows.get(match, field);
         LOG(this.label, this.name, 'SELECTING SHOW', show.name);
-        this.show = new Show({
-            path: this.path,
-            options: show.options
-        });
-        this.show.channel = this; // whatch show channel setter
-
+        this.show = show;
+        this.show.channel = this; // watch show channel setter
         let update = {
             id: this.show.id
         };
         this.update('show', update);
     }
+
 
     update(field, update) {
         const includes = ['id', 'name', 'slug', 'show', 'options'];
@@ -160,6 +162,25 @@ module.exports = class Channel extends Module {
             const field = Object.keys(this.options.show)[0];
             this.setShow(this.options.show[field], field);
         }
+    }
+
+    setShowsFromStorage() {
+        const options = {
+            load_on_startup: true,
+            flush_on_startup: false,
+            path: `channels/${this.id}/shows`
+        };
+        return new Shows(options)
+            .then((shows) => {
+                this.shows = shows;
+                this.shows.items.forEach(i => {
+                    i.channel = this;
+                });
+                //return Promise.resolve(this);
+            })
+            .catch(err =>{
+
+            });
     }
 
     checkReady() {
