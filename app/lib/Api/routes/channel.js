@@ -154,7 +154,7 @@ module.exports = class extends RouteSet {
             if (!show_id)
                 return this.error('Show ID not given', res);
 
-            const show = SHOWS.get(show_id, 'id');
+            const show = channel.shows.get(show_id, 'id');
             if (!show)
                 return this.error('Show not found', res);
 
@@ -180,12 +180,12 @@ module.exports = class extends RouteSet {
         // get the show listing
         this.router.get('/:channel/shows', (req, res) => {
             const channel = this.one(req, res);
+            if (!channel)
+                return this.error('Channel not found', res);
 
             if (!channel.shows.items) {
-                res.json({
-                    message: 'no channels found'
-                });
-                return;
+                if (!channel)
+                    return this.error('Channel has no shows', res);
             }
             const shows = channel.shows.items.map((show) => {
                 return {

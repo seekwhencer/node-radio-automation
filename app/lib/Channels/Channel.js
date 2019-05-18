@@ -177,10 +177,7 @@ module.exports = class Channel extends Module {
                 this.shows.items.forEach(i => {
                     i.channel = this;
                 });
-                //return Promise.resolve(this);
-            })
-            .catch(err =>{
-
+                return Promise.resolve(this);
             });
     }
 

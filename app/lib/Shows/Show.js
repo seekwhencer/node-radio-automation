@@ -8,6 +8,7 @@ const
 module.exports = class Show extends Module {
 
     constructor(args) {
+
         super(args);
         this.name = 'show';
         this.label = 'SHOW';
@@ -20,7 +21,6 @@ module.exports = class Show extends Module {
             options: {},
             show: this
         });
-
         this.save();
     }
 
