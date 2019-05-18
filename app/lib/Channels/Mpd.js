@@ -36,6 +36,10 @@ module.exports = class Mpd extends Module {
             this.channel.queued = file;
             LOG(this.label, this.name, 'QUEUED', this.channel.queued);
         });
+
+        this.on('exited', () => {
+            LOG(this.label,this.name, 'EXITED');
+        });
     }
 
     mergeOptions() {
@@ -135,13 +139,13 @@ module.exports = class Mpd extends Module {
 
         });
 
-        this.process.stderr.on('end', function () {
-
+        this.process.stderr.on('end', () => {
+            this.emit('exited');
         });
     };
 
     shutdown() {
-        LOG(this.label, 'SHUTTING DOWN');
+        LOG(this.label, this.name, 'SHUTTING DOWN');
         const options = [this.options.conf_file, '--kill'];
         spawn(this.options.bin, options);
     };

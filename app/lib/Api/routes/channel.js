@@ -144,23 +144,37 @@ module.exports = class extends RouteSet {
         });
 
         // set show
-        this.router.post('/:channel/set-show', (req, res) => {
+        this.router.post('/:channel/show', (req, res) => {
             const channel = this.one(req, res);
             const show_id = req.fields.id || false;
 
             if (!channel)
-                return this.error('Channel not found',res);
+                return this.error('Channel not found', res);
 
             if (!show_id)
-                return this.error('Show ID not given',res);
+                return this.error('Show ID not given', res);
 
             const show = SHOWS.get(show_id, 'id');
             if (!show)
-                return this.error('Show not found',res);
+                return this.error('Show not found', res);
 
-            channel.setShow(show.id,'id');
+            channel.setShow(show.id, 'id');
             channel.updatePlaylist();
             this.success(req, res, `Channel: ${channel.name} got Show: ${channel.show.name} now.`);
+        });
+
+        this.router.get('/:channel/show', (req, res) => {
+            const channel = this.one(req, res);
+            if (!channel)
+                return this.error('Channel not found', res);
+
+            if (!channel.show)
+                return this.error('Channel has no Show', res);
+
+            this.success(req, res, `Channel: ${channel.name} has Show: ${channel.show.name}.`, {
+                ...channel.show.options
+            });
+
         });
 
         return this.router;
