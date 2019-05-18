@@ -102,6 +102,15 @@ module.exports = class Channel extends Module {
         fs.writeJsonSync(this.options.conf_file, save);
     }
 
+
+    delete() {
+        this.shutdown();
+        setTimeout(() => {
+            fs.removeSync(this.path);
+            CHANNELS.delete(this.id);
+        }, 5000);
+    }
+
     /**
      * this is an important function!
      * this function assign a show to a channel
@@ -237,6 +246,7 @@ module.exports = class Channel extends Module {
     shutdown() {
         this.mpd.shutdown();
     }
+
 
     get path() {
         return this._path;
