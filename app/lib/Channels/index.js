@@ -94,4 +94,16 @@ module.exports = class Channels extends Module {
             return Promise.resolve(channel);
         });
     }
+
+    getFreeMpdPort() {
+        const ports = this.items.map(i => i.mpd.options.config.port).filter(i => i).sort();
+        const arr = ports.slice(0);
+        arr.sort((a, b) => a - b);
+        const port = arr.reduce((lowest, num, i) => {
+            const seqIndex = (i * this.options.mpd_port_step) + this.options.mpd_start_port;
+            return num !== seqIndex && seqIndex < lowest ? seqIndex : lowest
+        }, (arr.length * this.options.mpd_port_step) + this.options.mpd_start_port);
+        LOG(this.label, ' GET FREE MPD PORT', port, ports);
+        return port;
+    }
 };

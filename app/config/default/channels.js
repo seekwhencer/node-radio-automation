@@ -2,6 +2,8 @@ module.exports = {
     path: 'channels',
     flush_on_startup: false,
     load_on_startup: true,
+    mpd_start_port: 6100,
+    mpd_port_step: 10,
 
     items: [
         {
@@ -12,7 +14,7 @@ module.exports = {
             },
             mpd: {
                 config: {
-                    port: 6110,
+                    port: 6100,
                     audio_output: {
                         mount: "/breaks",
                         port: 8100
@@ -29,7 +31,7 @@ module.exports = {
             },
             mpd: {
                 config: {
-                    port: 6120,
+                    port: 6110,
                     audio_output: {
                         mount: "/lounge",
                         port: 8100
