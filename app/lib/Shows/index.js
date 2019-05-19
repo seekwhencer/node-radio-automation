@@ -37,10 +37,12 @@ module.exports = class Shows extends Module {
     buildFromOptions() {
         LOG(this.label, 'BUILD FROM OPTIONS');
         this.options.items.forEach((options) => {
-            this.items.push(new Show({
+            const newShow = new Show({
                 path: this.path,
                 options: options
-            }));
+            });
+            newShow.shows = this;
+            this.items.push(newShow);
         });
     }
 
@@ -52,22 +54,33 @@ module.exports = class Shows extends Module {
             return false;
         }
         shows.forEach((show) => {
-            this.items.push(new Show({
+            const newShow = new Show({
                 path: this.path,
                 options: show
-            }));
+            });
+            newShow.shows = this;
+            this.items.push(newShow);
         });
     }
 
     create(args) {
         return new Promise((resolve, reject) => {
-            const show = new Show({
+            const newShow = new Show({
                 path: this.path,
                 options: args
             });
-            this.items.push(show);
-            resolve(show);
+            newShow.shows = this;
+            this.items.push(newShow);
+            resolve(newShow);
         });
+    }
+
+    delete(id) {
+        const name = this.get(id, 'id').name;
+        this.items = this.items.filter(i => {
+            return i.id !== id;
+        });
+        LOG(this.label, 'DELETED SHOW', name, this.items.length);
     }
 
     /**

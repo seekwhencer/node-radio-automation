@@ -46,7 +46,7 @@ module.exports = class extends RouteSet {
                 stream_meta: req.fields.stream_meta,
                 color: req.fields.color,
 
-                path : {
+                path: {
                     music: req.fields.path_music,
                     intro: req.fields.path_intro,
                     spot: req.fields.path_spot,
@@ -72,6 +72,22 @@ module.exports = class extends RouteSet {
                         ...{options: show.options}
                     });
                 });
+        });
+
+        this.router.post('/delete', (req, res) => {
+            const id = req.fields.id;
+            if (!id)
+                return this.error('No Show Id given', res);
+
+            const show = SHOWS.get(id, 'id');
+            if (!show)
+                return this.error(`Show with id ${id} not exists. No Show deleted`, res);
+
+            show.delete();
+            this.success(req, res, `Show ${show.name} deleted`, {
+                id: show.id,
+                name: show.name
+            });
         });
 
         return this.router;
