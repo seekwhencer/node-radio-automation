@@ -41,7 +41,7 @@ auth: {
 }
 ```
 
-## Channel Listing
+## Channels
 ### `/channels`
 Returns a json array with channel objects
 ```json
@@ -49,14 +49,15 @@ Returns a json array with channel objects
     {
         "id": "4b7242e55b28eae45dbaf92301aa099a",
         "name": "One",
-        "mount": "/one"
+        "mount": "/one",
+        "show": "Name"
     },
     {
         "id": "4b7242e55b28eae45dbaf92301aa099a",
         "name": "Two",
-        "mount": "/two"
-    },
-    ...
+        "mount": "/two",
+        "show": "show"
+    }
 ]
 ```
 
@@ -73,6 +74,11 @@ Create a new channel. POST mutltipart parameters are:
 - If no `show_match_field` is given, the default is `id`.
 - Is a show given, but not found, no channel will be created.
 
+### `/channels/delete`
+Detele a Channel with **ALL** stored data. POST multipart
+```
+id
+```
 
 ## Channel
 #### `/channel/CHANNEL-ID`
@@ -83,9 +89,9 @@ Returns one channel object
     "name": "One",
     "mount": "/one",
     "show": "Breaks"
-    ...
 }
 ```
+
 ### Channel Playback
 
 #### `/channel/CHANNEL-ID/update-database`
@@ -126,15 +132,50 @@ Starting the channel.
 #### `/channel/CHANNEL-ID/respawn`
 Shutting down and starting the channel again.
 
-#### `channel/CHANNEL-ID/set-show`
-Assign a global Show to a channel. POST mutltipart parameters are:
+### Shows of a Channel
+
+A Channel contains:
+```
+channel.show
+channel.shows
+```
+
+The `show` is the actual chosen and playing show. The `shows` are all individual shows for this channel.
+`show` is only a linked one and equals one of the `shows` list. If the app starts, global and channel shows
+will be created from the defaults in: `app/config/ENV/shows.js` in `options.items`. For both: `SHOWS` and `channel.shows`. 
+
+#### `channel/CHANNEL-ID/shows`
+Returns all Shows of a Channel
+```
+[
+  {
+    "id": "3cae644d49e45625faa18933fb61ea95",
+    "name": "Breaks"
+  },
+  {
+    "id": "1ec12895fa5f8d7c619fb4f3db03dec5",
+    "name": "Lounge"
+  }
+]
+```
+
+#### `channel/CHANNEL-ID/show`
+Assign a playing Show - a global OR a channel show to a channel. POST mutltipart parameters are:
+```
+id
+```
+#### `channel/CHANNEL-ID/show`
+Get the running show of a channel.
 ```
 id
 ```
 
 
-## Shows Listing
+## Shows (global)
 ### `/shows`
+
+This is the global show pool. Later it will be used to duplicate a channel show from it.
+
 Returns a json array with show objects
 ```json
 [
@@ -145,20 +186,88 @@ Returns a json array with show objects
     {
         "id": "4b7242e55b28eae45dbaf92301aa099a",
         "name": "Two"
-    },
-    ...
+    }
 ]
 ```
 
-## Show
+### `/shows/create`
+Create a show.
+ 
+The final audio file folder is a combination from
+```
+STATION.config.path.audio   / path_music      / music_folder
+STATION.config.path.audio   / path_intro      / intro_folder
+STATION.config.path.audio   / path_spot       / spot_folder
+STATION.config.path.audio   / path_podcast    / podcast_folder
+```
+POST multipart
+```
+name                        // string
+enable                      // 1 or 0
+description                 // text
+stream_description          // text
+color                       // string
+ 
+// type root path
+path_music                  // string
+path_intro                  // string
+path_spot                   // string
+path_podcast                // string
+ 
+// music
+music_folder                // string
+music_enable                // 1 or 0
+music_order_by              // shuffle, name, time
+music_order_direction       // asc or desc
+ 
+// hot rotation
+hot_rotation_enable         // 1 or 0
+hot_rotation_only           // 1 or 0
+hot_rotation_age_days       // int
+hot_rotation_latest_tracks  // int
+hot_rotation_at_beginning   // 1 or 0
+hot_rotation_multiplier     // int
+ 
+// podcast
+podcast_enable              // 1 or 0
+podcast_folder              // string
+podcast_recursive           // 1 or 0
+podcast_nth                 // int
+podcast_offset              // int
+podcast_age_days            // int
+podcast_latest_tracks       // int
+podcast_random_first        // 1 or 0
+podcast_order_by            // shuffle, name, time
+podcast_order_direction     // asc or desc
+ 
+// spots
+spot_enable                 // 1 or 0
+spot_folder                 // string
+spot_recursive              // 1 or 0
+spot_nth                    // int
+spot_offset                 // int
+spot_latest_tracks          
+spot_random_first           // 1 or 0
+spot_order_by               // shuffle, name, time
+spot_order_direction        // asc or desc
+ 
+// intro
+intro_enable                 // 1 or 0
+intro_folder                 // string
+intro_recursive              // 1 or 0
+intro_order_by               // shuffle, name, time
+intro_order_direction        // asc or desc
+
+```
+
+## Show (global)
 
 ### `/show/SHOW-ID`
 Returns one show object
 ```json
 {
     "id": "4b7242e55b28eae45dbaf92301aa099a",
-    "name": "One",
-    ...
+    "name": "One"
 }
 ```
 
