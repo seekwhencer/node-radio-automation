@@ -75,7 +75,7 @@ module.exports = class Channels extends Module {
         }
         if (typeof field === 'string') {
             return this.items.filter(show => {
-                if (show[field] === match) {
+                if (show[field].toLowerCase() === match.toLowerCase()) {
                     return show;
                 }
             })[0];

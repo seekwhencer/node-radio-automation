@@ -33,7 +33,9 @@ This app is a multichannel playlist audio streaming automation.
 - who wants more then a shuffled playlist, who wants a hot rotation with more newest track as older ones
 - who wants to use intros and spots for an audio identity
 - who wants to spread podcast files between the tracks, automatically downloaded from podcast feeds
-- who want to use his own bought music files (a )
+- who want to use his own bought music files, captured from the disc or from vinyl 
+- who wants, that his / her music files exists forever. that they do not disappear suddenly.
+- who wants to play handpicked tracks
 
 ## See the [Documentation](docs/README.md)
 
