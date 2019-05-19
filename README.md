@@ -27,10 +27,29 @@ This app is a multichannel playlist audio streaming automation.
 ## Whom helps this?
 
 - who wants to run a automated, multi channel internet radio. locally, in an intranet or public.
+- who is crying for a "Auto DJ" for his / her web radio.
 - who wants to sound an event or a location (like a night bar) with different schemes
 - while doing this, who wants to have so less as possible personnel expense
 - who wants more then a shuffled playlist, who wants a hot rotation with more newest track as older ones
 - who wants to use intros and spots for an audio identity
-- who wants to spread podcast files between the tracks, automatically downloaded from a podcast feed
+- who wants to spread podcast files between the tracks, automatically downloaded from podcast feeds
+- who want to use his own bought music files (a )
 
 ## See the [Documentation](docs/README.md)
+
+## Future Things
+
+At the moment, the app is usable how it is described in the docs - or
+better - what is possible with the Insomnia export.
+ 
+- API Features: create, update channel shows
+- API Features: duplicate Channel, Shows
+- Scheduling: let a show on channel begin by a week scheme with week day, hour and minute.
+- API Features: scheduling
+- Backup the complete storage folder
+- Podcast downloader
+- API Feature: Podcasts
+- Frontend App with Vue
+- Docker (Compose) Setup
+- Much more ...
+ 
