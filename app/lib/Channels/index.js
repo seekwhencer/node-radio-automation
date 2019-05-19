@@ -108,7 +108,10 @@ module.exports = class Channels extends Module {
     }
 
     mountExists(mount) {
-        return this.items.map(i => i.mpd.options.config.audio_output.mount).filter(i => mount ? i : false).includes(mount);
+        return this.items
+            .map(i => i.mpd.options.config.audio_output.mount.toLowerCase())
+            .filter(i => mount.toLowerCase() ? i.toLowerCase() : false)
+            .includes(mount.toLowerCase());
     }
 
     delete(id) {

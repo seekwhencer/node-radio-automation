@@ -47,14 +47,16 @@ module.exports = class extends RouteSet {
                 return this.error(`Channel with name: ${name} exists. No channel created`, res);
 
             let mount = req.fields.mount;
-            const existingMount = CHANNELS.mountExists(mount);
+            let existingMount = false;
+            if (mount) {
+                existingMount = CHANNELS.mountExists(mount);
+            } else {
+                mount = `/${slugify(name, {replacement: '-', lower: true})}`;
+                existingMount = CHANNELS.mountExists(mount);
+            }
 
             if (existingMount)
-                return this.error(`Channel with mount point: ${mount} exists. No channel created`, res);
-
-            if (!mount) {
-                mount = `/${slugify(name, {replacement: '-', lower: true})}`;
-            }
+                return this.error(`Channel with mount point: ${mount.toLowerCase()} exists. No channel created`, res);
 
             let newChannel = {
                 name: name,
@@ -62,7 +64,7 @@ module.exports = class extends RouteSet {
                     config: {
                         port: CHANNELS.getFreeMpdPort(),
                         audio_output: {
-                            mount: mount
+                            mount: mount.toLowerCase()
                         }
                     }
                 }

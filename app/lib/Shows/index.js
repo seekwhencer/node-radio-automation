@@ -78,6 +78,9 @@ module.exports = class Shows extends Module {
      * possible fields: id, slug, name
      */
     get(match, field) {
+        if (!['id', 'name', 'slug'].includes(field))
+            return false;
+
         if (!field) {
             field = 'slug';
         }

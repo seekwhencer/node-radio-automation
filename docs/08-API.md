@@ -5,6 +5,34 @@ The Api runs on the given port in **`app/config/ENV/api.js`**
 port: 8200
 ```
 
+## Response Scheme
+
+If something will be modified with a POST, the success response equals:
+
+```
+{
+    "message": "...",
+    "data": {}
+}
+```
+
+`message ` contains a success message what happens. 
+`data` contains some feedback data.
+ 
+On an error, the response looks like:
+```
+{
+    "error": "...",
+    "data": {}
+}
+```
+ 
+Vice versa.
+ 
+On a simple GET to get some data,
+the success response contains **no** `message` field.
+Only the pure requested data get back.
+
 ## Login
 ### `/login`
 wants a posted multipart form data or json body:
