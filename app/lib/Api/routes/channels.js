@@ -104,8 +104,7 @@ module.exports = class extends RouteSet {
             this.success(req, res, `Channel ${channel.name} deleted`, {
                 id: channel.id,
                 name: channel.name,
-                mount: channel.mpd.options.config.audio_output.mount,
-                ...{options: channel.options}
+                mount: channel.mpd.options.config.audio_output.mount
             });
         });
 
