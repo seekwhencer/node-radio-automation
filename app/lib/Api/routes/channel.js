@@ -163,6 +163,88 @@ module.exports = class extends RouteSet {
             this.success(req, res, `Channel: ${channel.name} got Show: ${channel.show.name} now.`);
         });
 
+
+        // duplicate show with new name
+        this.router.post('/:channel/show/duplicate', (req, res) => {
+            const channel = this.one(req, res);
+            const show_id = req.fields.id || false;
+            let name = req.fields.name || false;
+
+            if (!channel)
+                return this.error('Channel not found', res);
+
+            if (!show_id)
+                return this.error('Show ID not given', res);
+
+            const sourceShow = channel.shows.get(show_id, 'id');
+            if (!sourceShow)
+                return this.error('Show not found', res);
+
+            name = name ? name : sourceShow.options.name;
+
+            const existingShowName = channel.shows.get(name, 'name');
+            if (existingShowName)
+                return this.error(`Show with name ${name} exists `, res);
+
+            channel.shows
+                .create({
+                    ...sourceShow.options,
+                    name: name,
+                    id: false,
+                    slug: false
+                })
+                .then(show => {
+                    this.success(req, res, 'New Show created from global', {
+                        id: show.id,
+                        name: show.name,
+                        slug: show.slug,
+
+                        ...{options: show.options}
+                    });
+                });
+        });
+
+
+        // set from global show
+        this.router.post('/:channel/show/global', (req, res) => {
+            const channel = this.one(req, res);
+            const show_id = req.fields.id || false;
+            let name = req.fields.name || false;
+
+            if (!channel)
+                return this.error('Channel not found', res);
+
+            if (!show_id)
+                return this.error('Show ID not given', res);
+
+            const globalShow = SHOWS.get(show_id, 'id');
+            if (!globalShow)
+                return this.error('Show not found', res);
+
+            name = name ? name : globalShow.options.name;
+
+            const existingShowName = channel.shows.get(name, 'name');
+            if (existingShowName)
+                return this.error(`Show with name ${name} exists `, res);
+
+            channel.shows
+                .create({
+                    ...globalShow.options,
+                    name: name,
+                    id: false,
+                    slug: false
+                })
+                .then(show => {
+                    this.success(req, res, 'New Show created from global', {
+                        id: show.id,
+                        name: show.name,
+                        slug: show.slug,
+
+                        ...{options: show.options}
+                    });
+                });
+        });
+
         this.router.get('/:channel/show', (req, res) => {
             const channel = this.one(req, res);
             if (!channel)

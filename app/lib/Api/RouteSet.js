@@ -6,7 +6,7 @@ module.exports = class RouteSet {
     one(req, res) {
         const match = req.params[this.param];
         const item = this.source.get(match, 'id');
-        if (!item) {
+        /*if (!item) {
             res.json({
                 error: `no ${this.param} found`,
                 search: {
@@ -15,7 +15,7 @@ module.exports = class RouteSet {
                 }
             });
             return false;
-        }
+        }*/
         return item;
     }
 

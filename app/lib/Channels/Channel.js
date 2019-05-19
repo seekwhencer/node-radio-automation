@@ -166,7 +166,7 @@ module.exports = class Channel extends Module {
 
     setShowsFromStorage() {
         const options = {
-            id : false, // create a new one
+            id: false, // create a new one
             load_on_startup: true,
             flush_on_startup: false,
             path: `channels/${this.id}/shows`
@@ -249,7 +249,7 @@ module.exports = class Channel extends Module {
         this.mpd.run();
         setTimeout(() => {
             LOG(this.label, this.name, '1 SECOND IDLE BEFORE UPDATE PLAYLIST');
-            this.updatePlaylist();
+            this.initPlaylist();
         }, 1000);
     }
 
