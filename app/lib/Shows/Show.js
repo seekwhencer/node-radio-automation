@@ -72,5 +72,10 @@ module.exports = class Show extends Module {
         this.mergeOptions();
     }
 
+    delete() {
+        fs.removeSync(this.options.conf_file);
+        this.shows.delete(this.id);
+    }
+
 
 };
