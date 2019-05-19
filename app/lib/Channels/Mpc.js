@@ -107,12 +107,13 @@ module.exports = class Mpc extends Module {
         this.loadPlaylist(playlist);
         this.setCrossfade(8);
         this.repeat();
-        this.play(1);
+        this.play(2);
     };
 
     initPlaylist() {
         LOG(this.label, this.name, 'UPDATE PLAYLIST FIRST TIME');
         this.playlist = this.channel.show.id;
+
         this.loadPlaylist(this.playlist);
         this.setCrossfade(8);
         this.repeat();
