@@ -75,7 +75,7 @@ module.exports = class Channels extends Module {
         }
         if (typeof field === 'string') {
             return this.items.filter(show => {
-                if (show[field] === match) {
+                if (show[field].toLowerCase() === match.toLowerCase()) {
                     return show;
                 }
             })[0];
@@ -108,7 +108,10 @@ module.exports = class Channels extends Module {
     }
 
     mountExists(mount) {
-        return this.items.map(i => i.mpd.options.config.audio_output.mount).filter(i => mount ? i : false).includes(mount);
+        return this.items
+            .map(i => i.mpd.options.config.audio_output.mount.toLowerCase())
+            .filter(i => mount.toLowerCase() ? i.toLowerCase() : false)
+            .includes(mount.toLowerCase());
     }
 
     delete(id) {
