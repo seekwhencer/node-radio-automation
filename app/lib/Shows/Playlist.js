@@ -69,6 +69,9 @@ module.exports = class Playlist extends Module {
 
     save() {
         LOG(this.label, 'SAVING', this.options.playlist_path);
+        if(!fs.existsSync(this.channel.mpd.options.config.playlist_directory))
+            fs.mkdirSync(this.channel.mpd.options.config.playlist_directory);
+
         fs.writeFileSync(this.options.playlist_path, this.playlist);
         this.emit('saved-playlist', this.playlist);
     };

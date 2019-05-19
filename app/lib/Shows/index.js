@@ -29,6 +29,7 @@ module.exports = class Shows extends Module {
             }
             LOG(this.label, '>>> READY');
             LOG('');
+
             resolve(this);
         });
     }
@@ -58,6 +59,17 @@ module.exports = class Shows extends Module {
         });
     }
 
+    create(args) {
+        return new Promise((resolve, reject) => {
+            const show = new Show({
+                path: this.path,
+                options: args
+            });
+            this.items.push(show);
+            resolve(show);
+        });
+    }
+
     /**
      *
      * @param value
@@ -66,12 +78,12 @@ module.exports = class Shows extends Module {
      * possible fields: id, slug, name
      */
     get(match, field) {
-        if(!field){
+        if (!field) {
             field = 'slug';
         }
         if (typeof field === 'string') {
             return this.items.filter(show => {
-                 if (show[field] === match) {
+                if (show[field] === match) {
                     return show;
                 }
             })[0];
