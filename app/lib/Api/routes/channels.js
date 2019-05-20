@@ -4,7 +4,6 @@ const
 
 module.exports = class extends RouteSet {
     constructor() {
-
         super();
 
         // get the channel listing
@@ -20,7 +19,16 @@ module.exports = class extends RouteSet {
                     id: channel.id,
                     name: channel.name,
                     mount: channel.mpd.options.config.audio_output.mount,
-                    show: channel.show.name
+                    show: {
+                        id: channel.show.id,
+                        name: channel.show.name
+                    },
+                    shows: channel.shows.items.map(i => {
+                        return {
+                            id : i.id,
+                            name: i.name
+                        };
+                    })
                 };
             });
             res.json(channels);
@@ -93,6 +101,9 @@ module.exports = class extends RouteSet {
                 });
         });
 
+        /**
+         *  delete channel
+         */
         this.router.post('/delete', (req, res) => {
             const id = req.fields.id;
             if (!id)
