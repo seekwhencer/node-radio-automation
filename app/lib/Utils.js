@@ -71,6 +71,13 @@ global.RDIRSYNC = function (folder, recursive, includes, excludes) {
     return data;
 };
 
+global.FOLDERSYNC = function (folder) {
+    if (fs.existsSync(folder)) {
+        const dir = fs.readdirSync(folder);
+        return dir;
+    }
+};
+
 global.SHUFFLE = function (a) {
     for (let i = a.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));

@@ -1,9 +1,13 @@
 const
-    RouteSet = require('../RouteSet.js');
+    RouteSet = require('../RouteSet.js'),
+    Form = require('../lib/show/form.js');
+
 
 module.exports = class extends RouteSet {
     constructor() {
         super();
+
+        this.form = new Form();
 
         // get the show listing
         this.router.get('/', (req, res) => {
@@ -24,12 +28,6 @@ module.exports = class extends RouteSet {
 
         /**
          * Create a new Show
-         *
-         * possible multipart fields could be:
-         *
-         *   name                   // must be free. no channel with this name can be exists
-
-         *
          */
         this.router.post('/create', (req, res) => {
             const name = req.fields.name;
@@ -40,29 +38,9 @@ module.exports = class extends RouteSet {
             if (existingShow)
                 return this.error(`Show with name: ${name} exists. No show created`, res);
 
-            let newShow = {
-                name: name,
-                description: req.fields.description,
-                stream_meta: req.fields.stream_meta,
-                color: req.fields.color,
-
-                path: {
-                    music: req.fields.path_music,
-                    intro: req.fields.path_intro,
-                    spot: req.fields.path_spot,
-                    podcast: req.fields.path_podcast,
-                },
-
-                music: {
-                    enable: req.fields.music_enable,
-                }
-
-                //music: req.fields.music,
-                //hot_rotation: req.fields.hot_rotation,
-            };
-
+            const options = this.form.parse(req.fields);
             SHOWS
-                .create(newShow)
+                .create(options)
                 .then(show => {
                     this.success(req, res, 'New Show created', show.options);
                 });
