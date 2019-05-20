@@ -24,8 +24,12 @@ module.exports = class Show extends Module {
         this.save();
     }
 
-    mergeOptions() {
-        this.options = R.mergeDeepLeft(this.args.options, CONFIG.show.defaults);
+    mergeOptions(args) {
+        if (!args) {
+            this.options = R.mergeDeepLeft(this.args.options, CONFIG.show.defaults);
+        } else {
+            this.options = R.mergeDeepLeft(args, this.options);
+        }
 
         if (!this.options.slug)
             this.options.slug = slugify(this.options.name, {replacement: '_', lower: true});
@@ -34,9 +38,9 @@ module.exports = class Show extends Module {
             this.options.id = crypto.createHash('md5').update(`${Date.now()}`).digest("hex");
 
         Object.keys(this.options.path).forEach((p) => {
-            if (!this.options[p].path) {
-                this.options[p].path = P(`${APP_DIR}/${CONFIG.station.path.audio}/${this.options.path[p]}/${this.options[p].folder}`);
-            }
+            //if (!this.options[p].path) {
+            this.options[p].path = P(`${APP_DIR}/${CONFIG.station.path.audio}/${this.options.path[p]}/${this.options[p].folder}`);
+            //}
         });
 
         this.id = this.options.id;
@@ -64,17 +68,24 @@ module.exports = class Show extends Module {
 
     setOptionsFromStorage() {
         LOG(this.label, 'BUILD FROM STORAGE');
-        const options = STORAGE.fetch.one(this.options.conf_file);
-        if (!options) {
+        const storedOptions = STORAGE.fetch.one(this.options.conf_file);
+        if (!storedOptions) {
             return false;
         }
-        this.args = options; // override the existing options
-        this.mergeOptions();
+        this.mergeOptions(storedOptions);
     }
 
     delete() {
         fs.removeSync(this.options.conf_file);
         this.shows.delete(this.id);
+    }
+
+    update(updateOptions) {
+        return new Promise((resolve, reject) => {
+            this.mergeOptions(updateOptions);
+            this.save();
+            resolve(this);
+        });
     }
 
 
