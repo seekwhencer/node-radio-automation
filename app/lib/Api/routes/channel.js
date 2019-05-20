@@ -186,21 +186,17 @@ module.exports = class extends RouteSet {
             if (existingShowName)
                 return this.error(`Show with name ${name} exists `, res);
 
-            channel.shows
-                .create({
-                    ...sourceShow.options,
-                    name: name,
-                    id: false,
-                    slug: false
-                })
-                .then(show => {
-                    this.success(req, res, 'New Show created from global', {
-                        id: show.id,
-                        name: show.name,
-                        slug: show.slug,
+            const newShow = {
+                ...sourceShow.options,
+                name: name,
+                id: false,
+                slug: false
+            };
 
-                        ...{options: show.options}
-                    });
+            channel.shows
+                .create(newShow)
+                .then(show => {
+                    this.success(req, res, 'New Show created from global', show.options);
                 });
         });
 
@@ -235,13 +231,7 @@ module.exports = class extends RouteSet {
                     slug: false
                 })
                 .then(show => {
-                    this.success(req, res, 'New Show created from global', {
-                        id: show.id,
-                        name: show.name,
-                        slug: show.slug,
-
-                        ...{options: show.options}
-                    });
+                    this.success(req, res, 'New Show created from global', show.options);
                 });
         });
 
