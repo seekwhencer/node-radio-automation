@@ -27,7 +27,7 @@ On an error, the response looks like:
 }
 ```
  
-Vice versa.
+Vice versa. 
  
 On a simple GET to get some data,
 the success response contains **no** `message` field.
@@ -188,12 +188,44 @@ Returns all Shows of a Channel
 ```
 
 #### `channel/CHANNEL-ID/show`
-Assign a playing Show - a global OR a channel show to a channel. POST mutltipart parameters are:
+Get the running show of a channel.
 ```
 id
 ```
+
 #### `channel/CHANNEL-ID/show`
-Get the running show of a channel.
+Set a show from `channel.shows` as `channel.show`. This is **important to know**: if a channel show is set, instantly
+a playlist will be generated and the channel starts the new show.
+ 
+POST mutltipart parameters are:
+```
+id
+```
+
+#### `channel/CHANNEL-ID/show/duplicate`
+Duplicate a show from `channel.shows`. But: nothings happens after that. Call a "Set Show" to play it.
+  
+POST mutltipart parameters are:
+```
+id
+name
+```
+
+#### `channel/CHANNEL-ID/show/global`
+Duplicate a show from global `SHOWS` to `channel.shows`.  But: nothings happens after that. Call a "Set Show to Channel" to play it.
+  
+POST mutltipart parameters are:
+```
+id
+name
+```
+
+#### `channel/CHANNEL-ID/show/delete`
+Delete a show from global `channel.shows`. But: nothings happens after that. What happens if the show is playing at the moment?
+What if the dropped show is the `channel.show`? Nothing. This entry lives forever.
+After a "Set Show to Channel", the droppped channel show dies and is overridden.
+ 
+POST mutltipart parameters are:
 ```
 id
 ```
@@ -287,6 +319,13 @@ intro_order_by               // shuffle, name, time
 intro_order_direction        // asc or desc
 
 ```
+
+### `/shows/delete`
+Delete a global show. POST mutltipart parameters are:
+```
+id
+```
+
 
 ## Show (global)
 

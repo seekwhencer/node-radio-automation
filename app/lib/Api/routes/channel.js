@@ -298,8 +298,6 @@ module.exports = class extends RouteSet {
                 id: show.id,
                 name: show.name
             });
-
-
         });
 
         return this.router;
