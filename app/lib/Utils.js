@@ -19,11 +19,10 @@ global.P = function (dir) {
  * @param folder
  * @param recursive
  * @param includes
- * @param excludes
  * @returns {Array}
  * @constructor
  */
-global.RDIRSYNC = function (folder, recursive, includes, excludes) {
+global.RDIRSYNC = function (folder, recursive, includes, withDirs) {
     let data = [];
     const walk = function (folder, recursive) {
         if (fs.existsSync(folder)) {
@@ -50,6 +49,17 @@ global.RDIRSYNC = function (folder, recursive, includes, excludes) {
                                 });
                             }
                         } else {
+                            if (withDirs) {
+                                let foldername = path.basename(insert);
+                                data.push({
+                                    id: foldername,
+                                    path: insert,
+                                    foldername: foldername,
+                                    atime: 'at' + xstat.atime.getTime(),
+                                    mtime: 'mt' + xstat.mtime.getTime(),
+                                    ctime: 'ct' + xstat.ctime.getTime()
+                                });
+                            }
                             if (recursive === true) {
                                 walk(folder + '/' + i, recursive);
                             }

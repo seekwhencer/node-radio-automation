@@ -44,14 +44,10 @@ This app is a multichannel playlist audio streaming automation.
 At the moment, the app is usable how it is described in the docs - or
 better - what is possible with the Insomnia export.
  
-- API Features: create, update channel shows
-- API Features: duplicate Channel, Shows
-- Scheduling: let a show on channel begin by a week scheme with week day, hour and minute.
-- API Features: scheduling
-- Backup the complete storage folder
-- Podcast downloader
-- API Feature: Podcasts
+- Backup mechanism for the complete storage folder
+- Scheduling: let a show from a channel begin by a week scheme with week day, hour and minute.
+- Podcast with downloader
 - Frontend App with Vue
 - Docker (Compose) Setup
-- Much more ...
+- Ideas?
  

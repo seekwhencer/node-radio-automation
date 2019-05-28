@@ -1,5 +1,7 @@
 const
     http = require('http'),
+    fs = require('fs-extra'),
+    path = require('path'),
     bodyParser = require('body-parser'),
     formidable = require('express-formidable'),
     Module = require('../Module.js'),
@@ -62,14 +64,20 @@ module.exports = class Api extends Module {
         });
     };
 
+    /**
+     * this loads the files in lib/Api/routes
+     * any filename without extension equals a top level url endpoint
+     * any file should or must have a folder on the same level, containing the single actions
+     */
     addRoutes() {
         const routeFolder = `${APP_DIR}/lib/Api/routes`;
         const routeFiles = RDIRSYNC(routeFolder, false, ['js']);
         routeFiles.forEach(route => {
             const LoadedRoute = require(route.file_path);
+            LOG(this.label, 'ADDING ROUTE', `/${route.filename}`);
             APIAPP.use(`/${route.filename}`, new LoadedRoute());
-            LOG(this.label, 'ROUTE ADDED', `/${route.filename}`);
         });
         LOG(this.label, routeFiles.length, 'ROUTE FILES ADDED');
     }
+
 };
