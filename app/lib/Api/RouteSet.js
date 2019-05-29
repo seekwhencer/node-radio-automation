@@ -50,7 +50,7 @@ module.exports = class RouteSet {
             LOG(this.label, 'ROUTE ADDED', route.file_path);
         });
 
-        // 2nd level
+        // 2nd level only
         const routeFolders = RDIRSYNC(routePath, false, ['js'], true).filter(i => i.foldername);
 
         if (routeFolders.length === 0)
