@@ -133,8 +133,8 @@ Upate a channel. POST mutltipart parameters are:
  bitrate                // bitrate of the stream: 128, 256 ...
  format                 // 44100:16:2 = hz : bit : stereo or mono
  encoding               // mp3 at the moment
- buffer_before_play     // how much ust be buffered
- audio_before_play      // in percent, with percent sign, without space betwen them
+ buffer_before_play     // 80% - in percent, with percent sign, without space betwen them
+ audio_before_play      // 102400 in Kilobytes = 100MB
 
 ```
 - If no show is given, it uses the show defined in `app/config/ENV/channel.js`.
@@ -327,7 +327,7 @@ STATION.config.path.audio   / path_podcast    / podcast_folder
 POST multipart
 ```
 name                        // string
-enable                      // 1 or 0
+enable                      // yes or no
 description                 // text
 stream_description          // text
 color                       // string
@@ -340,45 +340,45 @@ path_podcast                // string
  
 // music
 music_folder                // string
-music_enable                // 1 or 0
+music_enable                // yes or no
 music_order_by              // shuffle, name, time
 music_order_direction       // asc or desc
  
 // hot rotation
-hot_rotation_enable         // 1 or 0
-hot_rotation_only           // 1 or 0
+hot_rotation_enable         // yes or no
+hot_rotation_only           // yes or no
 hot_rotation_age_days       // int
 hot_rotation_latest_tracks  // int
-hot_rotation_at_beginning   // 1 or 0
+hot_rotation_at_beginning   // yes or no
 hot_rotation_multiplier     // int
  
 // podcast
-podcast_enable              // 1 or 0
+podcast_enable              // yes or no
 podcast_folder              // string
-podcast_recursive           // 1 or 0
+podcast_recursive           // yes or no
 podcast_nth                 // int
 podcast_offset              // int
 podcast_age_days            // int
 podcast_latest_tracks       // int
-podcast_random_first        // 1 or 0
+podcast_random_first        // yes or no
 podcast_order_by            // shuffle, name, time
 podcast_order_direction     // asc or desc
  
 // spots
-spot_enable                 // 1 or 0
+spot_enable                 // yes or no
 spot_folder                 // string
-spot_recursive              // 1 or 0
+spot_recursive              // yes or no
 spot_nth                    // int
 spot_offset                 // int
 spot_latest_tracks          
-spot_random_first           // 1 or 0
+spot_random_first           // yes or no
 spot_order_by               // shuffle, name, time
 spot_order_direction        // asc or desc
  
 // intro
-intro_enable                 // 1 or 0
+intro_enable                 // yes or no
 intro_folder                 // string
-intro_recursive              // 1 or 0
+intro_recursive              // yes or no
 intro_order_by               // shuffle, name, time
 intro_order_direction        // asc or desc
 
@@ -401,6 +401,10 @@ Returns one show object
     "name": "One"
 }
 ```
+
+### `/show/SHOW-ID/update`
+Updating a global show by using all fields from `/shows/create`
+
 
 ## Insomnia
 
