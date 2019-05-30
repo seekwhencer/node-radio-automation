@@ -292,6 +292,7 @@ module.exports = class Channel extends Module {
         setTimeout(() => {
             this.initMPD();
             this.initMPC();
+            this.setShow(this.options.show[Object.keys(this.options.show)[0]], Object.keys(this.options.show)[0]); // sorry @TODO
             setTimeout(() => {
                 this.spawn();
             }, 2000);

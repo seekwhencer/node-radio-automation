@@ -108,6 +108,7 @@ Detele a Channel with **ALL** stored data. POST multipart
 id
 ```
 
+
 ## Channel
 #### `/channel/CHANNEL-ID`
 Returns one channel object
@@ -119,6 +120,28 @@ Returns one channel object
     "show": "Breaks"
 }
 ```
+
+#### `/channel/CHANNEL-ID/update`
+Upate a channel. POST mutltipart parameters are:
+```
+ name                   // must be available
+ mount                  // must be available
+ show                   // the default show. if no match field is set, is means the 'id
+ show_match_field       // possible matchig fields are: 'id','name','slug
+ autostart              // yes or no
+ checkup_delay          // milliseconds check loop time
+ bitrate                // bitrate of the stream: 128, 256 ...
+ format                 // 44100:16:2 = hz : bit : stereo or mono
+ encoding               // mp3 at the moment
+ buffer_before_play     // how much ust be buffered
+ audio_before_play      // in percent, with percent sign, without space betwen them
+
+```
+- If no show is given, it uses the show defined in `app/config/ENV/channel.js`.
+- If no `show_match_field` is given, the default is `id`.
+- Is a show given, but not found, no channel will be modified.
+- If a mount is given, nothing happens
+- The channel reloads and restarts after the update
 
 ### Channel Playback
 
@@ -188,7 +211,7 @@ Returns all Shows of a Channel
 ```
 
 #### `channel/CHANNEL-ID/show`
-Get the running show of a channel.
+Get the running / playing show of a channel.
 ```
 id
 ```
@@ -201,6 +224,29 @@ POST mutltipart parameters are:
 ```
 id
 ```
+
+#### `channel/CHANNEL-ID/show/SHOW-ID`
+Get one show of a channel.
+```
+id
+```
+ 
+#### `channel/CHANNEL-ID/show/create`
+Create a new show for a channel.
+```
+id
+```
+with the same from: `/shows/create`
+ 
+ 
+#### `channel/CHANNEL-ID/show/update`
+Update a show from a channel.
+```
+id
+```
+with the same from: `/shows/create` 
+
+
 
 #### `channel/CHANNEL-ID/show/duplicate`
 Duplicate a show from `channel.shows`. But: nothings happens after that. Call a "Set Show" to play it.
@@ -229,6 +275,24 @@ POST mutltipart parameters are:
 ```
 id
 ```
+  
+#### `channel/CHANNEL-ID/show/SHOW-ID/folder`
+Get the subfolder from the audio folder.
+
+#### `channel/CHANNEL-ID/show/SHOW-ID/folder/music`
+Get the music subfolder.
+
+#### `channel/CHANNEL-ID/show/SHOW-ID/folder/intro`
+Get the intro subfolder.
+
+#### `channel/CHANNEL-ID/show/SHOW-ID/folder/spot`
+Get the spot subfolder.
+
+#### `channel/CHANNEL-ID/show/SHOW-ID/folder/podcast`
+Get the pocast subfolder.
+
+
+
 
 
 ## Shows (global)

@@ -19,21 +19,16 @@ module.exports = class extends RouteSet {
                 return this.error('Channel not found', res);
 
             const name = req.fields.name;
-            if (!name)
-                return this.error(`No name given`, res);
-
-            const existingChannel = CHANNELS.get(name, 'name', channel.id);
-            if (existingChannel)
-                return this.error(`Channel with name: ${name} exists.`, res);
-
-            let mount = req.fields.mount;
-            let existingMount = false;
-            if (mount) {
-                existingMount = CHANNELS.mountExists(mount, channel.id);
+            if (name) {
+                const existingChannel = CHANNELS.get(channel.id, 'id', channel.id);
+                if (existingChannel)
+                    return this.error(`Channel with name: ${name} exists.`, res);
             }
-
-            if (existingMount)
-                return this.error(`Channel with mount point: ${mount.toLowerCase()} exists. No channel updated`, res);
+            let mount = req.fields.mount;
+            if (mount) {
+                if (CHANNELS.mountExists(mount, channel.id))
+                    return this.error(`Channel with mount point: ${mount.toLowerCase()} exists. No channel updated`, res);
+            }
 
             let updateChannel = this.form.parse(req.fields);
 
