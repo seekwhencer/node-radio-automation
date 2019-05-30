@@ -34,17 +34,11 @@ module.exports = class Channel extends Module {
             });
 
             // Music Player Daemon
-            this.mpd = new Mpd({
-                channel: this,
-                options: this.options.mpd
-            });
+            this.initMPD();
             this.mpd.run();
 
             // Music Player Client
-            this.mpc = new Mpc({
-                channel: this,
-                options: this.options.mpc
-            });
+            this.initMPC();
             this.mpc.run();
 
             // save the channel as json
@@ -59,9 +53,12 @@ module.exports = class Channel extends Module {
         });
     }
 
-    mergeOptions(ignoreMerge) {
-        if (!ignoreMerge)
+    mergeOptions(args) {
+        if (!args) {
             this.options = R.mergeDeepLeft(this.args.options, CONFIG.channel);
+        } else {
+            this.options = R.mergeDeepLeft(args, this.options);
+        }
 
         if (!this.options.slug)
             this.options.slug = slugify(this.options.name, {replacement: '_', lower: true});
@@ -102,10 +99,9 @@ module.exports = class Channel extends Module {
 
     save() {
         let save = this.options;
-        save.mpd = R.merge(save.mpd, this.mpd.options);
+        save.mpd = R.mergeDeepLeft(save.mpd, this.mpd.options);
         fs.writeJsonSync(this.options.conf_file, save);
     }
-
 
     delete() {
         this.shutdown();
@@ -137,11 +133,11 @@ module.exports = class Channel extends Module {
         let update = {
             id: this.show.id
         };
-        this.update('show', update);
+        this.updateField('show', update);
     }
 
 
-    update(field, update) {
+    updateField(field, update) {
         const includes = ['id', 'name', 'slug', 'show', 'options'];
         if (!includes.includes(field))
             return false;
@@ -155,6 +151,15 @@ module.exports = class Channel extends Module {
         }
 
         this.save();
+    }
+
+    update(updateOptions) {
+        return new Promise((resolve, reject) => {
+            this.mergeOptions(updateOptions);
+            this.save();
+
+            resolve(this);
+        });
     }
 
     setDefaultShow() {
@@ -191,6 +196,22 @@ module.exports = class Channel extends Module {
                 this.checkReady();
             }, this.options.checkup_delay);
         }
+    }
+
+    initMPD() {
+        // Music Player Daemon
+        this.mpd = new Mpd({
+            channel: this,
+            options: this.options.mpd
+        });
+    }
+
+    initMPC() {
+        // Music Player Client
+        this.mpc = new Mpc({
+            channel: this,
+            options: this.options.mpc
+        });
     }
 
     initPlaylist() {
@@ -264,6 +285,17 @@ module.exports = class Channel extends Module {
 
     shutdown() {
         this.mpd.shutdown();
+    }
+
+    reload() {
+        this.shutdown();
+        setTimeout(() => {
+            this.initMPD();
+            this.initMPC();
+            setTimeout(() => {
+                this.spawn();
+            }, 2000);
+        }, 2000);
     }
 
 

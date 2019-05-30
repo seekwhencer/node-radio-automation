@@ -48,14 +48,15 @@ module.exports = class Station extends Module {
                 LOG('', 'Icecast on Port:', `${ICECAST.options.config["listen-socket"].port}`);
                 LOG('', 'Api on Port:    ', `${API.options.port}`);
                 LOG('');
-                LOG('', 'Shows:');
+                LOG('', 'Global Shows:');
                 SHOWS.items.forEach((show) => {
-                    LOG(' ', '>', show.name, '<', '| Tracks:', '>', show.playlist.items.length, '<');
+                    LOG(' ', show.name.padEnd(30), '| Tracks:', show.playlist.items.length);
                 });
                 LOG('');
                 LOG('', 'Channels:');
                 CHANNELS.items.forEach((channel) => {
-                    LOG(' ', '>', channel.name, '<', '| Mount:', `:${ICECAST.options.config["listen-socket"].port}${channel.mpd.options.config.audio_output.mount}`, '| Show:', '>', channel.show.name, '<', '| Tracks:', '>', channel.show.playlist.items.length, '<');
+                    const mount = (`${ICECAST.options.config["listen-socket"].port}${channel.mpd.options.config.audio_output.mount}`).padEnd(20);
+                    LOG(' ', channel.name.padEnd(30), '| Mount:', `:${mount}`, '| Show:', channel.show.name.padEnd(30),  '| Tracks:',channel.show.playlist.items.length);
                 });
                 LOG('');
                 LOG('//////////////////');

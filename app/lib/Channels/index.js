@@ -69,14 +69,17 @@ module.exports = class Channels extends Module {
         });
     }
 
-    get(match, field) {
+    get(match, field, not) {
         if (!field) {
             field = 'slug';
         }
         if (typeof field === 'string') {
-            return this.items.filter(show => {
-                if (show[field].toLowerCase() === match.toLowerCase()) {
-                    return show;
+            return this.items.filter(chanel => {
+                if (chanel[field].toLowerCase() === match.toLowerCase()) {
+                    if (not === chanel.id) {
+                        return false;
+                    }
+                    return true;
                 }
             })[0];
         }
@@ -107,8 +110,9 @@ module.exports = class Channels extends Module {
         return port;
     }
 
-    mountExists(mount) {
+    mountExists(mount, not) {
         return this.items
+            .filter(i => i.id !== not)
             .map(i => i.mpd.options.config.audio_output.mount.toLowerCase())
             .filter(i => mount.toLowerCase() ? i.toLowerCase() : false)
             .includes(mount.toLowerCase());
