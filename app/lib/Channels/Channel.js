@@ -45,10 +45,12 @@ module.exports = class Channel extends Module {
             this.save();
 
             // set default show by config file
-            this.setShowsFromStorage().then(() => {
-                this.setDefaultShow();
-                this.checkReady();
-            });
+            this
+                .setShowsFromStorage()
+                .then(() => {
+                    this.setDefaultShow();
+                    this.checkReady();
+                });
 
         });
     }
