@@ -49,7 +49,7 @@ module.exports = class extends RouteSet {
                     }
                 }
             };
-
+/*
             const showMatch = req.fields.show;
             if (showMatch) {
                 const showField = req.fields.show_match_field || 'id';
@@ -60,7 +60,7 @@ module.exports = class extends RouteSet {
                 newChannel.show = {};
                 newChannel.show[showField] = showMatch;
             }
-
+*/
             CHANNELS
                 .create(newChannel)
                 .then(channel => {

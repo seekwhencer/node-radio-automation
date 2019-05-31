@@ -32,6 +32,21 @@ module.exports = class StorageFetch extends Module {
         return data;
     };
 
+    podcasts(folder) {
+        const files = RDIRSYNC(folder, false, ['json']);
+        LOG(this.label, 'GOT', files.length, 'PODCASTS');
+        let data = [];
+        files.forEach(function (i) {
+            const podcast_data = fs.readJsonSync(i.file_path);
+            data.push(podcast_data);
+        });
+
+        if (data.length > 0) {
+            return data;
+        }
+        return data;
+    };
+
     /**
      *
      * @param folder
