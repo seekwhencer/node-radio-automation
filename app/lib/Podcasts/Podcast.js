@@ -41,7 +41,7 @@ module.exports = class Podcast extends Module {
                 }
             });
 
-            // save the channel as json
+            // save the podcast as json
             this.save();
 
         });
@@ -68,11 +68,14 @@ module.exports = class Podcast extends Module {
         this.options.conf_file = P(`${this.options.conf_path}/${this.id}.json`);
 
         this.path = P(`${APP_DIR}/${CONFIG.station.path.audio}/podcast/${this.id}`);
+        this.options.path = this.path;
+
     }
 
-    save() {
+    save(silent) {
         fs.writeJsonSync(this.options.conf_file, this.options);
-        this.emit('ready');
+        if (!silent)
+            this.emit('ready');
     }
 
     delete() {
@@ -84,8 +87,18 @@ module.exports = class Podcast extends Module {
     update(updateOptions) {
         return new Promise((resolve, reject) => {
             this.mergeOptions(updateOptions);
-            this.save();
-            resolve(this);
+            this.save(true);
+
+            ['name', 'description', 'url', 'path', 'limit'].forEach(i => {
+                this.downloader.options[i] = this.options[i];
+            });
+
+            this.downloader
+                .fetch()
+                .then(items => {
+                    LOG(this.label, 'EPISODES:', items.length);
+                    resolve(this);
+                });
         });
     }
 };

@@ -16,10 +16,6 @@ module.exports = class extends RouteSet {
             if (!podcast)
                 return this.error(`Podcast not found`, res);
 
-            const name = req.fields.name;
-            if (!name)
-                return this.error(`No name given`, res);
-
             const updateOptions = this.form.parse(req.fields);
 
             podcast
