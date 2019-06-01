@@ -22,7 +22,6 @@ module.exports = class Podcasts extends Module {
             STORAGE.createFolder(this.path);
 
             this.on('ready', () => {
-                //LOG('>>>>>>', this.items);
                 LOG(this.label, '>>> READY');
                 LOG('');
                 resolve(this);
@@ -70,7 +69,7 @@ module.exports = class Podcasts extends Module {
 
     get(match, field, not) {
         if (!field) {
-            field = 'slug';
+            field = 'id';
         }
         if (typeof field === 'string') {
             return this.items.filter(podcast => {

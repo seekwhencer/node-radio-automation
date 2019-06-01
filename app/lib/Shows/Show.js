@@ -35,7 +35,7 @@ module.exports = class Show extends Module {
             this.options.slug = slugify(this.options.name, {replacement: '_', lower: true});
 
         if (!this.options.id)
-            this.options.id = crypto.createHash('md5').update(`${Date.now()}`).digest("hex");
+            this.options.id = `id${crypto.createHash('md5').update(`${Date.now()}`).digest("hex")}`;
 
         Object.keys(this.options.path).forEach((p) => {
             //if (!this.options[p].path) {

@@ -58,7 +58,7 @@ module.exports = class Podcast extends Module {
             this.options.slug = slugify(this.options.name, {replacement: '_', lower: true});
 
         if (!this.options.id)
-            this.options.id = crypto.createHash('md5').update(`${Date.now()}`).digest("hex");
+            this.options.id = `id${crypto.createHash('md5').update(`${Date.now()}`).digest("hex")}`;
 
         this.id = this.options.id;
         this.name = this.options.name;
