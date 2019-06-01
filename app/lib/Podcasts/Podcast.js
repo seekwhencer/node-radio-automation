@@ -2,13 +2,14 @@ const
     fs = require('fs-extra'),
     slugify = require('slugify'),
     crypto = require('crypto'),
-    Module = require('../Module');
+    Module = require('../Module'),
+    Downloader = require('./Downloader.js');
 
 module.exports = class Podcast extends Module {
 
     constructor(args) {
+        super(args);
         return new Promise((resolve, reject) => {
-            super(args);
             this.name = 'podcast';
             this.label = 'PODCAST';
             this.mergeOptions();
@@ -18,12 +19,26 @@ module.exports = class Podcast extends Module {
 
             STORAGE.createFolder(this.path);
 
+            this.downloader = new Downloader({
+                path: this.path,
+                url: this.options.url,
+                limit: this.options.limit
+            });
+
+
             this.on('ready', () => {
-                LOG(this.label, '>>> READY');
+                LOG(this.label, '>>> READY', this.name);
                 this.ready = true;
                 if (this.options.autostart === true) {
+                    this.downloader
+                        .fetch()
+                        .then(items => {
+                            LOG(this.label, 'EPISODES:', items.length);
+                            resolve(this);
+                        });
+                } else {
+                    resolve(this);
                 }
-                resolve(this);
             });
 
             // save the channel as json
@@ -52,8 +67,7 @@ module.exports = class Podcast extends Module {
         this.options.conf_path = this.args.path;
         this.options.conf_file = P(`${this.options.conf_path}/${this.id}.json`);
 
-        //this.path = `${this.options.conf_path}/${this.id}`;
-        this.path =  P(`${APP_DIR}/${CONFIG.station.path.audio}/podcast/${this.id}`);
+        this.path = P(`${APP_DIR}/${CONFIG.station.path.audio}/podcast/${this.id}`);
     }
 
     save() {

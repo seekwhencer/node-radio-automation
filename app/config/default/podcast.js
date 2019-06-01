@@ -1,3 +1,6 @@
 module.exports = {
-    url: 'http://xyz.com'
+    autostart: true,
+    limit: 10,
+    name: 'Default Podcast',
+    slug: false
 };

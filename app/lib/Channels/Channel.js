@@ -167,7 +167,8 @@ module.exports = class Channel extends Module {
     setDefaultShow() {
         if (this.options.show) {
             const field = Object.keys(this.options.show)[0];
-            this.setShow(this.options.show[field], field);
+            if (field)
+                this.setShow(this.options.show[field], field);
         }
     }
 
