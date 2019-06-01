@@ -139,6 +139,8 @@ module.exports = class Playlist extends Module {
         let opts = this.show.options.podcast;
         if (opts.enable !== true)
             return;
+
+        this.insertNth(this.podcast, opts.nth, opts.offset);
     };
 
     addSpot() {

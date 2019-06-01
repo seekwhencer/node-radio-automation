@@ -22,7 +22,6 @@ module.exports = class Podcasts extends Module {
             STORAGE.createFolder(this.path);
 
             this.on('ready', () => {
-                //LOG('>>>>>>', this.items);
                 LOG(this.label, '>>> READY');
                 LOG('');
                 resolve(this);
@@ -63,6 +62,7 @@ module.exports = class Podcasts extends Module {
             path: this.path,
             options: podcasts[index]
         }).then(podcast => {
+            podcast.podcasts = this;
             this.items.push(podcast);
             return this.build(index + 1, podcasts);
         });
@@ -70,7 +70,7 @@ module.exports = class Podcasts extends Module {
 
     get(match, field, not) {
         if (!field) {
-            field = 'slug';
+            field = 'id';
         }
         if (typeof field === 'string') {
             return this.items.filter(podcast => {
@@ -89,6 +89,7 @@ module.exports = class Podcasts extends Module {
             path: this.path,
             options: args
         }).then(podcast => {
+            podcast.podcasts = this;
             this.items.push(podcast);
             return Promise.resolve(podcast);
         });
@@ -96,6 +97,9 @@ module.exports = class Podcasts extends Module {
 
     delete(id) {
         const name = this.get(id, 'id').name;
+        if (!name)
+            return false;
+
         this.items = this.items.filter(i => {
             return i.id !== id;
         });

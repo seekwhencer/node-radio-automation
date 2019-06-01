@@ -58,7 +58,7 @@ module.exports = class Podcast extends Module {
             this.options.slug = slugify(this.options.name, {replacement: '_', lower: true});
 
         if (!this.options.id)
-            this.options.id = crypto.createHash('md5').update(`${Date.now()}`).digest("hex");
+            this.options.id = `id${crypto.createHash('md5').update(`${Date.now()}`).digest("hex")}`;
 
         this.id = this.options.id;
         this.name = this.options.name;
@@ -73,5 +73,19 @@ module.exports = class Podcast extends Module {
     save() {
         fs.writeJsonSync(this.options.conf_file, this.options);
         this.emit('ready');
+    }
+
+    delete() {
+        fs.removeSync(this.options.conf_file);
+        fs.removeSync(this.path);
+        this.podcasts.delete(this.id);
+    }
+
+    update(updateOptions) {
+        return new Promise((resolve, reject) => {
+            this.mergeOptions(updateOptions);
+            this.save();
+            resolve(this);
+        });
     }
 };

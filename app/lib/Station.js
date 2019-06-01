@@ -61,7 +61,7 @@ module.exports = class Station extends Module {
                 LOG('', 'Channels:');
                 CHANNELS.items.forEach((channel) => {
                     const mount = (`${ICECAST.options.config["listen-socket"].port}${channel.mpd.options.config.audio_output.mount}`).padEnd(20);
-                    LOG(' ', channel.name.padEnd(30), '| Mount:', `:${mount}`, '| Show:', channel.show.name.padEnd(30), '| Tracks:', channel.show.playlist.items.length);
+                    LOG(' ', channel.name.padEnd(30), '| Mount:', `:${mount}`, '| Show:', channel.show.name.padEnd(30), '| Playlist Rows:', channel.show.playlist.items.length);
                 });
                 LOG('');
                 LOG('//////////////////');
