@@ -1,10 +1,13 @@
 const
     slugify = require('slugify'),
+    Form = require('../../lib/channel/form.js'),
     RouteSet = require('../../RouteSet.js');
 
 module.exports = class extends RouteSet {
     constructor() {
         super();
+
+        this.form = new Form();
 
         /**
          * Create a new Channel
@@ -38,17 +41,12 @@ module.exports = class extends RouteSet {
             if (existingMount)
                 return this.error(`Channel with mount point: ${mount.toLowerCase()} exists. No channel created`, res);
 
-            let newChannel = {
-                name: name,
-                mpd: {
-                    config: {
-                        port: CHANNELS.getFreeMpdPort(),
-                        audio_output: {
-                            mount: mount.toLowerCase()
-                        }
-                    }
-                }
-            };
+            let newChannel = this.form.parse(req.fields);
+            newChannel.mpd.config.port =  CHANNELS.getFreeMpdPort();
+            newChannel.mpd.config.audio_output.mount = mount.toLowerCase();
+
+
+
 /*
             const showMatch = req.fields.show;
             if (showMatch) {

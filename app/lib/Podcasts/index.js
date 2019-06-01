@@ -7,9 +7,8 @@ const
 module.exports = class Podcasts extends Module {
 
     constructor(args) {
+        super(args);
         return new Promise((resolve, reject) => {
-
-            super(args);
             this.name = 'podcasts';
             this.label = 'PODCASTS';
             LOG(this.label, 'INIT');
@@ -23,6 +22,7 @@ module.exports = class Podcasts extends Module {
             STORAGE.createFolder(this.path);
 
             this.on('ready', () => {
+                //LOG('>>>>>>', this.items);
                 LOG(this.label, '>>> READY');
                 LOG('');
                 resolve(this);

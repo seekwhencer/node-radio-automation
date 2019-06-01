@@ -18,10 +18,19 @@ sudo chown USER:GROUP /data
 ```
 Replace `USER` and `GROUP` with your own.
 
-- Get the Repo and install it
+## Backend
+- Get the Repo and install the backend app
 ```
 cd /data
 git clone https://...
 cd node-radio-automation/app
+npm install
+```
+
+## Frontend
+```
+cd /data
+git clone https://...
+cd node-radio-automation/frontend
 npm install
 ```
