@@ -74,4 +74,18 @@ module.exports = class Podcast extends Module {
         fs.writeJsonSync(this.options.conf_file, this.options);
         this.emit('ready');
     }
+
+    delete() {
+        fs.removeSync(this.options.conf_file);
+        fs.removeSync(this.path);
+        this.podcasts.delete(this.id);
+    }
+
+    update(updateOptions) {
+        return new Promise((resolve, reject) => {
+            this.mergeOptions(updateOptions);
+            this.save();
+            resolve(this);
+        });
+    }
 };

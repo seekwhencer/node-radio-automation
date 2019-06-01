@@ -62,6 +62,7 @@ module.exports = class Podcasts extends Module {
             path: this.path,
             options: podcasts[index]
         }).then(podcast => {
+            podcast.podcasts = this;
             this.items.push(podcast);
             return this.build(index + 1, podcasts);
         });
@@ -88,6 +89,7 @@ module.exports = class Podcasts extends Module {
             path: this.path,
             options: args
         }).then(podcast => {
+            podcast.podcasts = this;
             this.items.push(podcast);
             return Promise.resolve(podcast);
         });
@@ -95,6 +97,9 @@ module.exports = class Podcasts extends Module {
 
     delete(id) {
         const name = this.get(id, 'id').name;
+        if (!name)
+            return false;
+
         this.items = this.items.filter(i => {
             return i.id !== id;
         });
