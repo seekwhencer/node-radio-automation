@@ -5,6 +5,23 @@ The Api runs on the given port in **`app/config/ENV/api.js`**
 port: 8200
 ```
 
+## Insomnia
+
+You can use the `Insomnia.json` file to load it into - [Insomnia](...)
+Edit the environment in Insomnia:
+
+```
+{
+  "base_url": "{{ protocol }}://{{host}}",
+  "host": "",
+  "protocol": "http",
+  "token": ""
+}
+```
+ 
+Fill it with life and change the `host`. After a login you can put the token in the environment.
+This token will be use as header parameter `access-token`.
+
 ## Response Scheme
 
 If something will be modified with a POST, the success response equals:
@@ -405,22 +422,46 @@ Returns one show object
 ### `/show/SHOW-ID/update`
 Updating a global show by using all fields from `/shows/create`
 
+## Podcasts
 
-## Insomnia
+### `/podcasts`
+Gets all Podcasts
 
-You can use the `Insomnia.json` file to load it into - [Insomnia](...)
-Manage the environments and edit the environment of the running dev version:
+### `/podcast/PODCAST-ID`
+Get one Podcast
 
+### `/podcasts/create`
+Create a new Podcast
+
+POST multipart
 ```
-{
-  "base_url": "{{ protocol }}://{{host}}",
-  "host": "",
-  "protocol": "http",
-  "token": ""
-}
+name                        // string
+description                 // text
+url                         // string, the feed url
+limit                       // int, the latest
+autostart                   // yes or no
 ```
+
+If autostart is yes, the downloader starts downloading after creation.
+And the downloader is searching for new episodes on app start.
+
+### `/podcasts/duplicate`
+Copy a Podcast
+
+### `/podcasts/delete`
+Drop a Podcast
+
+### `/podcast/PODCAST-ID/update`
+Update a Podcast
  
-Fill it with life and change the `host`. After a login you can put the token in the environment.
-This token will be use as header parameter `access-token`.
+Post multipart
+```
+name                        // string
+description                 // text
+url                         // string, the feed url
+limit                       // int, the latest
+autostart                   // yes or no
+```
 
+If autostart is yes, the downloader starts downloading after update.
 

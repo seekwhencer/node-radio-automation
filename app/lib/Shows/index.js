@@ -7,8 +7,8 @@ const
 module.exports = class Shows extends Module {
 
     constructor(args) {
+        super(args);
         return new Promise((resolve, reject) => {
-            super(args);
             this.name = 'shows';
             this.label = 'SHOWS';
             LOG(this.label, 'INIT');
