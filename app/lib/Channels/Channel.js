@@ -30,6 +30,7 @@ module.exports = class Channel extends Module {
                         this.initPlaylist();
                     }, 5000);
                 }
+                this.setStatus();
                 resolve(this);
             });
 
@@ -302,6 +303,12 @@ module.exports = class Channel extends Module {
         }, 2000);
     }
 
+    setStatus() {
+        this.status = ICECAST.getStatusByChannel(this.name);
+        setTimeout(() => {
+            this.setStatus();
+        }, 500);
+    }
 
     get path() {
         return this._path;
