@@ -1,10 +1,11 @@
 # Module Tree
 
-All "Modules" are globally available.
+All "Modules" are available globally:
 
 ```
 STATION
 STORAGE
+PODCASTS
 MPDCACHE
 ICECAST
 SHOWS
@@ -39,9 +40,12 @@ Icecast will be started with the app start.
 ## `SHOWS`
 ```
 SHOWS.items
+ 
 SHOWS.buildFromOptions()
 SHOWS.buildFromStorage()
 SHOWS.get(match, field)
+SHOWS.create(options)
+SHOWS.delete(id)
 ```
 
 Is a collection of *Playlist Setups*. It exists a pool of global shows
@@ -58,7 +62,7 @@ this sets `channel.show.channel` circular.
  
 If a show is set to a channel, the playlist will be generated instantly. 
 
-## `SHOW`
+## `Show`
 A show can get: `SHOWS.get(match,field)`. That returns an element of `SHOWS.items`.
 
 ```
@@ -68,11 +72,14 @@ show.slug
 show.options
 show.playlist
 show.channel
+ 
 show.save()
 show.setOptionsFromStorage()
+show.delete()
+show.update()
 ```
 
-## `PLAYLIST`
+## `Playlist`
  
 The playlist is a child of a show. Every show owns a playlist as `show.playlist`.
 After `channel.setShow()` or `channel.setDefaultShow()` can you reach the playlist of a channel like: `channel.show.playlist`;
@@ -86,6 +93,7 @@ playlist.music
 playlist.podcast
 playlist.intro
 playlist.spot
+ 
 playlist.getFiles()
 playlist.build()
 playlist.buildM3U()
@@ -130,16 +138,19 @@ build and store
 ## `CHANNELS`
 ```
 CHANNELS.items
+ 
 CHANNELS.buildFromOptions()
 CHANNELS.buildFromStorage()
 CHANNELS.build()
 CHANNELS.get(match, field)
+CHANNELS.create(options)
+CHANNELS.delete(id)
+CHANNELS.getFreeMpdPort()
+CHANNELS.mountExists(mount, not) // not is the actual id
 ```
- 
 These are the ... channels. stored in `CHANNELS.items`
 
-
-## `CHANNELS`
+## `Channel`
 
 A channel can get: `CHANNELS.get(match,field)`. That returns an element of `CHANNELS.items`.
 
@@ -151,8 +162,16 @@ channel.options
 channel.mpd
 channel.mpc
 channel.show
+channel.path
+ 
 channel.mergeOptions()
+channel.initMPD()
+channel.initMPC()
 channel.save()
+channel.delete()
+channel.updateField()
+channel.update(options)
+channel.setShowsFromStorage()
 channel.setShow(match,field)
 channel.setDefaultShow()
 channel.initPlaylist()
@@ -168,6 +187,11 @@ channel.status()
 channel.crop()
 channel.shuffle()
 channel.skip()
+channel.checkReady()
+channel.spawn()
+channel.respawn()
+channel.shutdown()
+channel.reload()
 ```
 
 ### `channel.mpd`
@@ -175,4 +199,37 @@ channel.skip()
 ### `channel.show`
 ### `channel.show.playlist`
 
+# `PODCASTS`
 
+A podcast can get: `PODCASTS.get(match,field)`. That returns an element of `PODCASTS.items`.
+
+```
+PODCASTS.items
+ 
+PODCASTS.buildFromOptions()
+PODCASTS.buildFromStorage()
+PODCASTS.build()
+PODCASTS.get(match, field, not)
+PODCASTS.create(options)
+PODCASTS.delete(id)
+```
+
+# `Podcast`
+```
+podcast.id
+podcast.name
+ 
+podcast.downloader
+podcast.downloader.options
+podcast.downloader.fetch()
+podcast.downloader.getFeed()
+podcast.downloader.download()
+ 
+podcast.id
+podcast.name
+podcast.slug
+ 
+podcast.mergeOptions()
+podcast.save(silent)
+podcast.delete(id)
+podcast.update(options)
