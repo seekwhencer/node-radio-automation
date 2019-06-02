@@ -8,11 +8,11 @@ const
 module.exports = class Iceccast extends Module {
 
     constructor(args) {
+        super(args);
         return new Promise((resolve, reject) => {
-            super(args);
             this.name = 'icecast';
             this.label = 'ICECAST';
-
+            this.status = false;
             this.mergeOptions();
             LOG(this.label, 'INIT');
 
@@ -32,6 +32,8 @@ module.exports = class Iceccast extends Module {
             this.run();
 
             this.on('ready', () => {
+                LOG(this.label, '>>> READY');
+                LOG('');
                 resolve(this);
             });
         });
@@ -116,6 +118,8 @@ module.exports = class Iceccast extends Module {
         this.process.stderr.on('end', () => {
             LOG(this.label, 'EXITED');
         });
+
+        this.checkStatus();
         setTimeout(() => {
                 this.checkProcess()
             }, this.options.checkup_delay
@@ -131,7 +135,19 @@ module.exports = class Iceccast extends Module {
     }
 
     checkProcess() {
-        LOG(this.label, 'CHECK IF IT IS RUNNING ...');
+        LOG(this.label, 'CHECK IF IS RUNNING ...');
+        if (!this.status) {
+            LOG(this.label, 'IS NOT RUNNING');
+            setTimeout(() => {
+                    this.checkProcess()
+                }, this.options.checkup_delay
+            );
+        } else {
+            this.emit('ready');
+        }
+    };
+
+    checkStatus() {
         http.get({
             hostname: this.options.config.hostname,
             port: this.options.config["listen-socket"].port,
@@ -142,18 +158,21 @@ module.exports = class Iceccast extends Module {
                 json += data;
             });
             res.on('end', () => {
-                this.emit('ready', json);
-                LOG(this.label, '>>> READY');
-                LOG('');
+                json = json.replace(/"title": -/gi, '"title": "-"');
+                this.status = JSON.parse(json).icestats;
+                setTimeout(() => {
+                        this.checkStatus();
+                    }, this.options.status_delay
+                );
             });
         }).on('error', err => {
-            LOG(this.label, 'IS NOT RUNNING', JSON.stringify(err));
+            this.status = false;
             setTimeout(() => {
-                    this.checkProcess()
-                }, this.options.checkup_delay
+                    this.checkStatus();
+                }, this.options.status_delay
             );
         });
-    };
+    }
 
     save() {
         let save = this.options;
@@ -171,4 +190,14 @@ module.exports = class Iceccast extends Module {
         this.mergeOptions();
     }
 
+    getStatusByChannel(name) {
+        let source = this.status.source;
+        if (!source)
+            return false;
+
+        if (!source.filter)
+            source = [this.status.source];
+
+        return source.filter(i => i.server_name === name)[0];
+    }
 };
