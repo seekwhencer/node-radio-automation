@@ -11,8 +11,8 @@ const
 module.exports = class Api extends Module {
 
     constructor(args) {
+        super(args);
         return new Promise((resolve, reject) => {
-                super(args);
                 this.name = 'api';
                 this.label = 'API';
 

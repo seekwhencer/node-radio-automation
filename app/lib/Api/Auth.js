@@ -7,8 +7,8 @@ const
 module.exports = class Auth extends Module {
 
     constructor(args) {
+        super(args);
         return new Promise((resolve, reject) => {
-            super(args);
             this.name = 'auth';
             this.label = 'AUTH';
 
@@ -24,8 +24,11 @@ module.exports = class Auth extends Module {
                 }
 
                 // token check
-                const token = req.headers['access-token'];
+                let token = req.headers['access-token'] || req.headers['x-access-token'] || req.headers['authorization'];
                 if (token) {
+                    if (token.startsWith('Bearer ')) {
+                        token = token.slice(7, token.length);
+                    }
                     jwt.verify(token, this.options.secret, (err, decoded) => {
                         if (err) {
                             return this.sendError('token invalid', res);
