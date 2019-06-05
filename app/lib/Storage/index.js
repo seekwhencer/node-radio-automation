@@ -6,8 +6,9 @@ const
 module.exports = class Storage extends Module {
 
     constructor(args) {
+        super(args);
+
         return new Promise((resolve, reject) => {
-            super(args);
             this.name = 'storage';
             this.label = 'STORAGE';
             LOG(this.label, 'INIT');
@@ -30,7 +31,6 @@ module.exports = class Storage extends Module {
 
             resolve(this);
         });
-
     }
 
     mergeOptions() {

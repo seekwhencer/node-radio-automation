@@ -8,6 +8,7 @@ module.exports = class Channels extends Module {
 
     constructor(args) {
         super(args);
+
         return new Promise((resolve, reject) => {
             this.name = 'channels';
             this.label = 'CHANNELS';

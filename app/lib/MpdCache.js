@@ -12,16 +12,17 @@ const
 module.exports = class MpdCache extends Mpd {
 
     constructor() {
+
+        const args = {
+            options: CONFIG.mpdcache,
+            channel: {
+                path: STORAGE.path
+            }
+        };
+        super(args);
+
         return new Promise((resolve, reject) => {
 
-            const args = {
-                options: CONFIG.mpdcache,
-                channel: {
-                    path: STORAGE.path
-                }
-            };
-
-            super(args);
             this.name = 'mpdcache';
             this.label = 'MPDCACHE';
             this.defaults = {};

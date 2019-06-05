@@ -8,7 +8,6 @@ const
     Channels = require('./Channels'),
     Api = require('./Api');
 
-
 module.exports = class Station extends Module {
 
     constructor(args) {

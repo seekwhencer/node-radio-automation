@@ -6,6 +6,7 @@ const
 module.exports = class Mpc extends Module {
     constructor(args) {
         super(args);
+
         this.name = 'mpc';
         this.label = 'MPC';
         this.mergeOptions();
