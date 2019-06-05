@@ -17,6 +17,7 @@
     "dateformat": "^3.0.3",
     "express": "^4.16.4",
     "express-formidable": "^1.2.0",
+    "express-ws": "^4.0.0",
     "fs-extra": "^7.0.1",
     "jsonwebtoken": "^8.5.1",
     "node-podcast-parser": "^2.3.0",

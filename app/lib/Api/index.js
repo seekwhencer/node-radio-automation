@@ -1,17 +1,15 @@
 const
     http = require('http'),
-    fs = require('fs-extra'),
-    path = require('path'),
     bodyParser = require('body-parser'),
     formidable = require('express-formidable'),
     Module = require('../Module.js'),
     Auth = require('./Auth.js');
 
-
 module.exports = class Api extends Module {
 
     constructor(args) {
         super(args);
+
         return new Promise((resolve, reject) => {
                 this.name = 'api';
                 this.label = 'API';

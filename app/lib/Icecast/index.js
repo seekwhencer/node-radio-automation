@@ -9,6 +9,7 @@ module.exports = class Iceccast extends Module {
 
     constructor(args) {
         super(args);
+
         return new Promise((resolve, reject) => {
             this.name = 'icecast';
             this.label = 'ICECAST';

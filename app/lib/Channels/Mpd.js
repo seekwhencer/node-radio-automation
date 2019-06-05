@@ -8,6 +8,7 @@ module.exports = class Mpd extends Module {
 
     constructor(args) {
         super(args);
+
         this.name = 'mpd';
         this.label = 'MPD';
         this.mergeOptions();
@@ -29,6 +30,7 @@ module.exports = class Mpd extends Module {
             }
         });
 
+        //@TODO - drop it
         this.on('queued', (chunk) => {
             let source = chunk.trim().split('\n')[0].replace(/playlist: queue song /, '');
             let number = parseInt(source.split(':')[0].replace(/"/g, ''));
