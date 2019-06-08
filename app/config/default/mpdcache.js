@@ -1,5 +1,6 @@
 module.exports = {
-    shutdown_time: 30, // false (endless running) or seconds<
+    shutdown_time: false, // false (endless running) or seconds<
+    start_parameter: [ '--no-daemon', '--verbose', '--stderr'],
     name: 'mpdcache',
     load_on_startup: true,
     log_tty: true,
