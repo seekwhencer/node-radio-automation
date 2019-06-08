@@ -41,9 +41,10 @@ module.exports = class ScheduleJob {
              *
              * set the given show for the channel and play it
              */
-            if (this.schedule.options.show_id)
+            if (this.schedule.options.show_id) {
                 this.channel.setShow(this.schedule.options.show_id, 'id');
                 this.channel.updatePlaylist();
+            }
         });
     }
 };
