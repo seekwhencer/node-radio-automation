@@ -17,6 +17,16 @@ module.exports = class Form {
                 fieldData[i] = true;
 
         });
+
+        if (!fieldData.cron)
+            fieldData.cron = {};
+
+        for (let i = 1; i < 6; i++) {
+            if (fieldData[`cron_${i}`]) {
+                fieldData.cron[`${i}`] = fieldData[`cron_${i}`];
+            }
+            delete(fieldData[`cron_${i}`]);
+        }
         return fieldData;
     }
 };

@@ -100,11 +100,11 @@ module.exports = class Schedules extends Module {
         }
         filtered = filtered.filter(i => {
             return i.options.show_id === options.show_id &&
-                i.options.cron_1 === options.cron_1 &&
-                i.options.cron_2 === options.cron_2 &&
-                i.options.cron_3 === options.cron_3 &&
-                i.options.cron_4 === options.cron_4 &&
-                i.options.cron_5 === options.cron_5;
+                i.options.cron['1'] === options.cron['1'] &&
+                i.options.cron['2'] === options.cron['2'] &&
+                i.options.cron['3'] === options.cron['3'] &&
+                i.options.cron['4'] === options.cron['4'] &&
+                i.options.cron['5'] === options.cron['5'];
 
         });
         return filtered.length !== 0;

@@ -1,7 +1,7 @@
 const
     fs = require('fs-extra'),
-    slugify = require('slugify'),
     crypto = require('crypto'),
+    Job = require('./Job'),
     Module = require('../Module');
 
 module.exports = class Schedule extends Module {
@@ -14,6 +14,10 @@ module.exports = class Schedule extends Module {
         LOG(this.label, 'INIT', this.name);
         this.setOptionsFromStorage();
         this.save();
+
+        this.job = new Job({
+            schedule : this
+        });
     }
 
     mergeOptions(args) {
@@ -27,7 +31,6 @@ module.exports = class Schedule extends Module {
             this.options.id = `id${crypto.createHash('md5').update(`${Date.now()}`).digest("hex")}`;
 
         this.id = this.options.id;
-
         this.options.conf_path = this.args.path;
         this.options.conf_file = P(`${this.options.conf_path}/${this.id}.json`);
     }
@@ -68,4 +71,5 @@ module.exports = class Schedule extends Module {
             resolve(this);
         });
     }
+
 };
