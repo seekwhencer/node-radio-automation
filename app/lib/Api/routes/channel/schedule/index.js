@@ -22,7 +22,16 @@ module.exports = class extends RouteSet {
             if (!channelSchedule)
                 return this.error('Schedule not found', res);
 
-            res.json(channelSchedule.options);
+            const data = {
+                id: channelSchedule.options.id,
+                show_id: channelSchedule.options.show_id,
+                cron_1: channelSchedule.options.cron_1,
+                cron_2: channelSchedule.options.cron_2,
+                cron_3: channelSchedule.options.cron_3,
+                cron_4: channelSchedule.options.cron_4,
+                cron_5: channelSchedule.options.cron_5,
+            };
+            res.json(data);
         });
 
         return this.router;

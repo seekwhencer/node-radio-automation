@@ -19,7 +19,15 @@ module.exports = class extends RouteSet {
                     return this.error('Channel has no schedules', res);
             }
             const schedules = channel.schedules.items.map((schedule) => {
-                return schedule.options;
+                return {
+                    id: schedule.options.id,
+                    show_id: schedule.options.show_id,
+                    cron_1: schedule.options.cron_1,
+                    cron_2: schedule.options.cron_2,
+                    cron_3: schedule.options.cron_3,
+                    cron_4: schedule.options.cron_4,
+                    cron_5: schedule.options.cron_5,
+                };
             });
             res.json(schedules);
         });
