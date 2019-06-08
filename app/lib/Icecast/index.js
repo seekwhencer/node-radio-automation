@@ -160,7 +160,9 @@ module.exports = class Iceccast extends Module {
             });
             res.on('end', () => {
                 json = json.replace(/"title": -/gi, '"title": "-"');
-                this.status = JSON.parse(json).icestats;
+                try {
+                    this.status = JSON.parse(json).icestats;
+                } catch (err) {}
                 setTimeout(() => {
                         this.checkStatus();
                     }, this.options.status_delay
