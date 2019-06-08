@@ -4,6 +4,7 @@ const
     crypto = require('crypto'),
     Module = require('../Module'),
     Shows = require('../Shows'),
+    Schedules = require('../Schedules'),
     Show = require('../Shows//Show'),
     Mpd = require('./Mpd'),
     Mpc = require('./Mpc');
@@ -49,6 +50,9 @@ module.exports = class Channel extends Module {
             // set default show by config file
             this
                 .setShowsFromStorage()
+                .then(() => {
+                    return this.setSchedulesFromStorage();
+                })
                 .then(() => {
                     this.setDefaultShow();
                     this.checkReady();
@@ -185,6 +189,23 @@ module.exports = class Channel extends Module {
             .then((shows) => {
                 this.shows = shows;
                 this.shows.items.forEach(i => {
+                    i.channel = this;
+                });
+                return Promise.resolve(this);
+            });
+    }
+
+    setSchedulesFromStorage() {
+        const options = {
+            id: false, // create a new one
+            load_on_startup: true,
+            flush_on_startup: false,
+            path: `channels/${this.id}/schedules`
+        };
+        return new Schedules(options)
+            .then((schedules) => {
+                this.schedules = schedules;
+                this.schedules.items.forEach(i => {
                     i.channel = this;
                 });
                 return Promise.resolve(this);
