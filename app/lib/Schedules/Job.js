@@ -42,10 +42,27 @@ module.exports = class ScheduleJob {
              *
              * set the given show for the channel and play it
              */
-            if (this.schedule.options.show_id) {
-                this.channel.setShow(this.schedule.options.show_id, 'id');
-                this.channel.updatePlaylist();
+            if (this.schedule.options.action === 'play') {
+                if (this.schedule.options.show_id) {
+                    this.channel.setShow(this.schedule.options.show_id, 'id');
+                    this.channel.updatePlaylist();
+                }
             }
+
+            if (this.schedule.options.action === 'pause') {
+                this.channel.pause();
+            }
+
+            if (this.schedule.options.action === 'stop') {
+                this.channel.stop();
+            }
+
+            // be careful
+            if (this.schedule.options.action === 'respawn') {
+                this.channel.respawn();
+            }
+
+
         });
     }
 };

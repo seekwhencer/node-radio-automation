@@ -4,7 +4,7 @@ module.exports = class Form {
     }
 
     parse(reqFields) {
-        const singleFields = ['name', 'description', 'show_id', 'cron_1', 'cron_2', 'cron_3', 'cron_4', 'cron_5'];
+        const singleFields = ['name', 'description', 'show_id', 'cron_1', 'cron_2', 'cron_3', 'cron_4', 'cron_5', 'action'];
         let fieldData = {};
         singleFields.forEach(i => {
             if (reqFields[i])
@@ -27,6 +27,13 @@ module.exports = class Form {
             }
             delete(fieldData[`cron_${i}`]);
         }
+
+        if (!fieldData.action)
+            fieldData.action = 'play';
+
+        if (!['play', 'pause', 'stop', 'respawn'].includes(fieldData.action))
+            delete(fieldData.action);
+
         return fieldData;
     }
 };
