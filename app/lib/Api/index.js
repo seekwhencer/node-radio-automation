@@ -3,7 +3,8 @@ const
     bodyParser = require('body-parser'),
     formidable = require('express-formidable'),
     Module = require('../Module.js'),
-    Auth = require('./Auth.js');
+    Auth = require('./Auth.js'),
+    Websocket = require('./Websocket');
 
 module.exports = class Api extends Module {
 
@@ -31,6 +32,7 @@ module.exports = class Api extends Module {
 
                 // json web token auth
                 this.auth = new Auth(this.options.auth);
+                this.websocket = new Websocket(this.options.websocket);
 
                 // autoloads the routes.
                 // the filename without extension equals a top level route

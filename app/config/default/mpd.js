@@ -1,5 +1,6 @@
 module.exports = {
     bin: "/usr/bin/mpd",
+    start_parameter: [ '--no-daemon', '--verbose', /* '--stdout',*/ '--stderr'],
     log_tty: false,
     ready_delay: 200,
     skip_timeout: 10000,
@@ -25,6 +26,7 @@ module.exports = {
         bind_to_address: "0.0.0.0",
         zeroconf_enabled: "yes",
         zeroconf_name: "",
+        auto_update: "yes",
         audio_output: {
             type: "shout",
             encoding: "mp3",

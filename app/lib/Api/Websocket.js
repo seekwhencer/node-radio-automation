@@ -1,22 +1,43 @@
 const
-    expressWs = require('express-ws');
-    Module = require('../Module.js'),
+    expressWs = require('express-ws'),
+    jwt = require('jsonwebtoken'),
+    Module = require('../Module.js');
 
 module.exports = class Websocket extends Module {
 
     constructor(args) {
         super(args);
         this.router = EXPRESS.Router();
-        this.epressWs = expressWs(APIAPP);
+        this.epressWs = expressWs(APIAPP, null, {
+            wsOptions: {
+                verifyClient: (info, cb) => {
+                    let token = info.req.headers.authorization;
+                    if (!token) {
+                        cb(false, 401, 'Unauthorized');
+                    } else {
+                        if (token.startsWith('Bearer ')) {
+                            token = token.slice(7, token.length);
+                        }
+                        jwt.verify(token, this.options.secret, (err, decoded) => {
+                            if (err) {
+                                cb(false, 401, 'Unauthorized');
+                            } else {
+                                info.req.user = decoded;
+                                cb(true)
+                            }
+                        });
+                    }
+                }
+            }
+        });
 
-        this.router.ws('/echo', (ws, req) => {
+        this.router.ws('/', (ws, req) => {
             ws.on('message', msg => {
                 ws.send(msg);
             });
         });
 
-        APIAPP.use("/com", this.router);
-
+        APIAPP.use("/holodeck", this.router);
 
 
     }

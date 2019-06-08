@@ -40,7 +40,7 @@ module.exports = class Mpd extends Module {
         });
 
         this.on('exited', () => {
-            LOG(this.label,this.name, 'EXITED');
+            LOG(this.label, this.name, 'EXITED');
         });
     }
 
@@ -102,7 +102,7 @@ module.exports = class Mpd extends Module {
     };
 
     run() {
-        const options = [this.options.conf_file, '--no-daemon', '--verbose', /* '--stdout',*/ '--stderr'];
+        const options = [this.options.conf_file].concat(this.options.start_parameter);
         LOG(this.label, this.name, 'STARTING WITH OPTIONS', JSON.stringify(options));
 
         const match = {
