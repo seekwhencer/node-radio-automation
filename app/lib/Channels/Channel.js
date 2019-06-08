@@ -205,6 +205,7 @@ module.exports = class Channel extends Module {
         return new Schedules(options)
             .then((schedules) => {
                 this.schedules = schedules;
+                this.schedules.channel = this;
                 this.schedules.items.forEach(i => {
                     i.channel = this;
                 });

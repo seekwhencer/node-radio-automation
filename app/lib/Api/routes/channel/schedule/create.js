@@ -28,7 +28,7 @@ module.exports = class extends RouteSet {
 
             const options = this.scheduleForm.parse(req.fields);
             for (let i = 1; i < 6; i++)
-                options.cron[`${i}`] =  options.cron[`${i}`] || '0';
+                options.cron[`${i}`] =  options.cron[`${i}`] || '*';
 
             const existsSchedule = channel.schedules.exists(options);
             if (existsSchedule)

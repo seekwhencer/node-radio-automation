@@ -14,10 +14,6 @@ module.exports = class Schedule extends Module {
         LOG(this.label, 'INIT', this.name);
         this.setOptionsFromStorage();
         this.save();
-
-        this.job = new Job({
-            schedule : this
-        });
     }
 
     mergeOptions(args) {
@@ -27,7 +23,7 @@ module.exports = class Schedule extends Module {
             this.options = R.mergeDeepLeft(args, this.options);
         }
 
-         if (!this.options.id)
+        if (!this.options.id)
             this.options.id = `id${crypto.createHash('md5').update(`${Date.now()}`).digest("hex")}`;
 
         this.id = this.options.id;
@@ -46,7 +42,7 @@ module.exports = class Schedule extends Module {
     set channel(channel) {
         this._channel = channel;
         if (this.channel) {
-
+            this.initJob();
         }
     }
 
@@ -68,7 +64,14 @@ module.exports = class Schedule extends Module {
         return new Promise((resolve, reject) => {
             this.mergeOptions(updateOptions);
             this.save();
+            this.initJob();
             resolve(this);
+        });
+    }
+
+    initJob() {
+        this.job = new Job({
+            schedule: this
         });
     }
 
