@@ -43,7 +43,7 @@ module.exports = class Schedule extends Module {
     set channel(channel) {
         this._channel = channel;
         if (this.channel) {
-            this.initJob();
+            this.initJob(); // <-- !!
         }
     }
 
@@ -57,6 +57,7 @@ module.exports = class Schedule extends Module {
     }
 
     delete() {
+        this.job.cancel();
         fs.removeSync(this.options.conf_file);
         this.schedules.delete(this.id);
     }

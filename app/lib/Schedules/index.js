@@ -54,17 +54,18 @@ module.exports = class Schedules extends Module {
                 options: args
             });
             newSchedule.schedules = this; // cycling parent
+            newSchedule.channel = this.channel;
             this.items.push(newSchedule);
             resolve(newSchedule);
         });
     }
 
     delete(id) {
-        const name = this.get(id, 'id').name;
+        const cron = this.get(id, 'id').cronString;
         this.items = this.items.filter(i => {
             return i.id !== id;
         });
-        LOG(this.label, 'DELETED SCHEDULE', name, this.items.length);
+        LOG(this.label, 'DELETED SCHEDULE:', cron, 'ITEMS LEFT:', this.items.length);
     }
 
     /**

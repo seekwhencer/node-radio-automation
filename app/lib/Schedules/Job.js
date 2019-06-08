@@ -13,7 +13,8 @@ module.exports = class ScheduleJob {
         for (let i = 1; i < 6; i++) {
             cronArray.push(`${this.schedule.options.cron[`${i}`]}`);
         }
-        const cronString = cronArray.join(' ');
+        this.cronString = cronArray.join(' ');
+        this.schedule.cronString = this.cronString;
         const channelName = this.channel.options.name;
 
         if (!this.schedule.options.show_id) {
@@ -28,12 +29,12 @@ module.exports = class ScheduleJob {
         }
 
         const showName = show.name;
-        LOG(this.label, 'INIT', cronString, 'CHANNEL:', channelName, 'SHOW:', showName);
+        LOG(this.label, 'INIT', this.cronString, 'CHANNEL:', channelName, 'SHOW:', showName);
 
-        return clock.scheduleJob(cronString, () => {
+        return clock.scheduleJob(this.cronString, () => {
             LOG('');
             LOG('/////////');
-            LOG(this.label, 'TRIGGERING:', cronString, 'CHANNEL:', channelName, 'SHOW:', showName);
+            LOG(this.label, 'TRIGGERING:', this.cronString, 'CHANNEL:', channelName, 'SHOW:', showName);
             LOG('/////////');
             LOG('');
             /**
