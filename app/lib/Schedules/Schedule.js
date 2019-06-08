@@ -32,6 +32,7 @@ module.exports = class Schedule extends Module {
     }
 
     save() {
+        LOG(this.label, 'SAVING OPTIONS');
         fs.writeJsonSync(this.options.conf_file, this.options);
     }
 
@@ -70,6 +71,9 @@ module.exports = class Schedule extends Module {
     }
 
     initJob() {
+        if (this.job)
+            this.job.cancel();
+
         this.job = new Job({
             schedule: this
         });
