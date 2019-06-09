@@ -1,38 +1,35 @@
 <template>
-  <v-app>
-    <v-toolbar app>
-      <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn
-        flat
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-      >
-        <span class="mr-2">Latest Release</span>
-      </v-btn>
-    </v-toolbar>
-
-    <v-content>
-      <HelloWorld/>
-    </v-content>
-  </v-app>
+    <div id="app" v-if="this.$store.state.ready === true">
+        <page-header/>
+        <page-navigation/>
+        <div class="page-content">
+            <router-view/>
+        </div>
+    </div>
 </template>
-
 <script>
-import HelloWorld from './components/HelloWorld'
+    // @ is an alias to /src
+    import PageHeader from "@/components/common/PageHeader.vue";
+    import Navigation from "@/components/common/Navigation.vue";
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  },
-  data () {
-    return {
-      //
-    }
-  }
-}
+    export default {
+        name: "App",
+        components: {
+            'page-header': PageHeader,
+            'page-navigation': Navigation,
+        },
+        created: function () {
+            this.$store.state.ready = true;
+            console.log('>>>> CREATED');
+        }
+    };
 </script>
+
+<style lang="scss">
+    .page-content {
+        padding: 30px;
+    }
+
+    #app {
+    }
+</style>
