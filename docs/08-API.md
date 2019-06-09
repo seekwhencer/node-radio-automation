@@ -317,6 +317,13 @@ Get the pocast subfolder.
 ## Channel Scheduling
 ### `channel/CHANNEL-ID/schedules`
 Get all Jobs of this channel
+ 
+### `channel/CHANNEL-ID/schedule/SCHEDULE-ID`
+Get one Job of this channel
+ 
+### `channel/CHANNEL-ID/schedule/create`
+Create a new Job
+
 ```
 show_id
 cron_1
@@ -326,12 +333,6 @@ cron_4
 cron_5
 action
 ```
- 
-### `channel/CHANNEL-ID/schedule/SCHEDULE-ID`
-Get one Job of this channel
- 
-### `channel/CHANNEL-ID/schedule/create`
-Create a new Job
  
 ### `channel/CHANNEL-ID/schedule/delete`
 Delete a Job
