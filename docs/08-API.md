@@ -314,8 +314,30 @@ Get the spot subfolder.
 #### `channel/CHANNEL-ID/show/SHOW-ID/folder/podcast`
 Get the pocast subfolder.
 
-
-
+## Channel Scheduling
+### `channel/CHANNEL-ID/schedules`
+Get all Jobs of this channel
+```
+show_id
+cron_1
+cron_2
+cron_3
+cron_4
+cron_5
+action
+```
+ 
+### `channel/CHANNEL-ID/schedule/SCHEDULE-ID`
+Get one Job of this channel
+ 
+### `channel/CHANNEL-ID/schedule/create`
+Create a new Job
+ 
+### `channel/CHANNEL-ID/schedule/delete`
+Delete a Job
+ 
+### `channel/CHANNEL-ID/schedule/update`
+Update a Job
 
 
 ## Shows (global)
@@ -446,6 +468,11 @@ description                 // text
 url                         // string, the feed url
 limit                       // int, the latest
 autostart                   // yes or no
+cron_1
+cron_2
+cron_3
+cron_4
+cron_5
 ```
 
 If autostart is yes, the downloader starts downloading after creation.
