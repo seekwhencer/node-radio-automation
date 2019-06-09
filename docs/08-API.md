@@ -69,7 +69,12 @@ Response:
 }
 ```
  
-Store this token in your API-Client (Frontend App or Insomnia) and use it as Header Paramer:
+Store this token in your API-Client (Frontend App or Insomnia) and use it as
+ - Header Paramer `access-token` or as
+ - Authentication Bearer Header
+  
+![JWT Token](images/jwtbearertoken.jpg?raw=true "JWT Bearer Token")
+![Insomnia Environment Token](images/insomnia_manage_environment.jpg?raw=true "Insomnia Environment Token")
 ```json
 {
     "access-token": "TOKEN"
@@ -309,8 +314,31 @@ Get the spot subfolder.
 #### `channel/CHANNEL-ID/show/SHOW-ID/folder/podcast`
 Get the pocast subfolder.
 
+## Channel Scheduling
+### `channel/CHANNEL-ID/schedules`
+Get all Jobs of this channel
+ 
+### `channel/CHANNEL-ID/schedule/SCHEDULE-ID`
+Get one Job of this channel
+ 
+### `channel/CHANNEL-ID/schedule/create`
+Create a new Job
 
-
+```
+show_id
+cron_1
+cron_2
+cron_3
+cron_4
+cron_5
+action
+```
+ 
+### `channel/CHANNEL-ID/schedule/delete`
+Delete a Job
+ 
+### `channel/CHANNEL-ID/schedule/update`
+Update a Job
 
 
 ## Shows (global)
@@ -441,6 +469,11 @@ description                 // text
 url                         // string, the feed url
 limit                       // int, the latest
 autostart                   // yes or no
+cron_1
+cron_2
+cron_3
+cron_4
+cron_5
 ```
 
 If autostart is yes, the downloader starts downloading after creation.
