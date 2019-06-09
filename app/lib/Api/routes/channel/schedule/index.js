@@ -25,11 +25,9 @@ module.exports = class extends RouteSet {
             const data = {
                 id: channelSchedule.options.id,
                 show_id: channelSchedule.options.show_id,
-                cron_1: channelSchedule.options.cron_1,
-                cron_2: channelSchedule.options.cron_2,
-                cron_3: channelSchedule.options.cron_3,
-                cron_4: channelSchedule.options.cron_4,
-                cron_5: channelSchedule.options.cron_5,
+                cron: channelSchedule.options.cron,
+                next: channelSchedule.nextTime(),
+                timestamp: channelSchedule.nextTimestamp()
             };
             res.json(data);
         });

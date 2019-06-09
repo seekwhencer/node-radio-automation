@@ -2,8 +2,10 @@ const
     fs = require('fs-extra'),
     slugify = require('slugify'),
     crypto = require('crypto'),
+    cronParser = require('cron-parser'),
     Module = require('../Module'),
-    Downloader = require('./Downloader.js');
+    Downloader = require('./Downloader.js'),
+    Job = require('./Job.js');
 
 module.exports = class Podcast extends Module {
 
@@ -25,6 +27,7 @@ module.exports = class Podcast extends Module {
                 limit: this.options.limit
             });
 
+            this.initJob();
 
             this.on('ready', () => {
                 LOG(this.label, '>>> READY', this.name);
@@ -81,6 +84,8 @@ module.exports = class Podcast extends Module {
     delete() {
         fs.removeSync(this.options.conf_file);
         fs.removeSync(this.path);
+        if (this.job)
+            this.job.cancel();
         this.podcasts.delete(this.id);
     }
 
@@ -88,6 +93,7 @@ module.exports = class Podcast extends Module {
         return new Promise((resolve, reject) => {
             this.mergeOptions(updateOptions);
             this.save(true);
+            this.initJob();
 
             ['name', 'description', 'url', 'path', 'limit'].forEach(i => {
                 this.downloader.options[i] = this.options[i];
@@ -100,5 +106,30 @@ module.exports = class Podcast extends Module {
                     resolve(this);
                 });
         });
+    }
+
+    initJob() {
+        if (this.job)
+            this.job.cancel();
+
+        this.job = new Job({
+            podcast: this
+        });
+    }
+
+    nextTime() {
+        const sched = cronParser.parseExpression(this.cronString, {
+            tz: 'Europe/Berlin'
+        });
+        const next = sched.next();
+        return next.toString();
+    }
+
+    nextTimestamp() {
+        const sched = cronParser.parseExpression(this.cronString, {
+            tz: 'Europe/Berlin'
+        });
+        const next = sched.next();
+        return next.getTime() / 1000;
     }
 };

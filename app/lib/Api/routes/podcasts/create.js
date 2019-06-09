@@ -21,6 +21,10 @@ module.exports = class extends RouteSet {
                 return this.error(`Podcast with name: ${name} exists. No podcast created`, res);
 
             const options = this.form.parse(req.fields);
+
+            if (!this.form.checkCron(options.cron))
+                return this.error(`ERROR CRON JOB FORMAT.`, res);
+
             PODCASTS
                 .create(options)
                 .then(podcast => {

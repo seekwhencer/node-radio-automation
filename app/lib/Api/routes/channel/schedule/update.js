@@ -1,4 +1,5 @@
 const
+    cronParser = require('cron-parser'),
     RouteSet = require('../../../RouteSet.js'),
     ScheduleForm = require('../../../lib/schedule/form.js');
 
@@ -34,16 +35,28 @@ module.exports = class extends RouteSet {
                 return this.error(`Schedule with id ${schedule_id} not exists.`, res);
 
             const updateOptions = this.scheduleForm.parse(req.fields);
-            const optionsCheck = { ...schedule.options, ...updateOptions};
+            const optionsCheck = {...schedule.options, ...updateOptions};
             const existsSchedule = channel.schedules.exists(optionsCheck, schedule.id);
 
             if (existsSchedule)
                 return this.error(`Schedule exists.`, res);
 
+            if (!this.scheduleForm.checkCron(updateOptions.cron))
+                return this.error(`ERROR CRON JOB FORMAT.`, res);
+
             schedule
                 .update(updateOptions)
                 .then(schedule => {
-                    this.success(req, res, 'Schedule updated', schedule.options);
+                    const data = {
+                        id: schedule.options.id,
+                        show_id: schedule.options.show_id,
+                        action: schedule.options.action,
+                        cron: schedule.options.cron,
+                        cronString: schedule.cronString,
+                        next: schedule.nextTime(),
+                        timestamp: schedule.nextTimestamp()
+                    };
+                    this.success(req, res, 'Schedule updated', data);
                 });
 
         });

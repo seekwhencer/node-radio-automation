@@ -1,4 +1,5 @@
 const
+    cronParser = require('cron-parser'),
     RouteSet = require('../../RouteSet.js');
 
 module.exports = class extends RouteSet {
@@ -22,7 +23,10 @@ module.exports = class extends RouteSet {
                 return {
                     id: schedule.options.id,
                     show_id: schedule.options.show_id,
-                    cron: schedule.options.cron
+                    cron: schedule.options.cron,
+                    cronString: schedule.cronString,
+                    next: schedule.nextTime(),
+                    timestamp: schedule.nextTimestamp()
                 };
             });
             res.json(schedules);

@@ -14,7 +14,20 @@ module.exports = class extends RouteSet {
             if (!podcast)
                 return;
 
-            res.json(podcast.options);
+            const data = {
+                id: podcast.options.id,
+                name: podcast.options.name,
+                slug: podcast.options.slug,
+                url: podcast.options.url,
+                autostart: podcast.options.autostart,
+                limit: podcast.options.limit,
+                cron: podcast.options.cron,
+                cronString: podcast.cronString,
+                next: podcast.nextTime(),
+                timestamp: podcast.nextTimestamp()
+            };
+
+            res.json(data);
         });
 
 

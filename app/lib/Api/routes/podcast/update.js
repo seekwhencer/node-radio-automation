@@ -18,10 +18,26 @@ module.exports = class extends RouteSet {
 
             const updateOptions = this.form.parse(req.fields);
 
+            if (!this.form.checkCron(updateOptions.cron))
+                return this.error(`ERROR CRON JOB FORMAT.`, res);
+
             podcast
                 .update(updateOptions)
                 .then(podcast => {
-                    this.success(req, res, 'Podcast updated', podcast.options);
+                    const data = {
+                        id: podcast.options.id,
+                        name: podcast.options.name,
+                        slug: podcast.options.slug,
+                        url: podcast.options.url,
+                        autostart: podcast.options.autostart,
+                        limit: podcast.options.limit,
+                        cron: podcast.options.cron,
+                        cronString: podcast.cronString,
+                        next: podcast.nextTime(),
+                        timestamp: podcast.nextTimestamp()
+                    };
+
+                    this.success(req, res, 'Podcast updated', data);
                 });
         });
 

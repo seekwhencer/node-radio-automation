@@ -1,6 +1,7 @@
 const
     fs = require('fs-extra'),
     crypto = require('crypto'),
+    cronParser = require('cron-parser'),
     Job = require('./Job'),
     Module = require('../Module');
 
@@ -78,6 +79,22 @@ module.exports = class Schedule extends Module {
         this.job = new Job({
             schedule: this
         });
+    }
+
+    nextTime() {
+        const sched = cronParser.parseExpression(this.cronString, {
+            tz: 'Europe/Berlin'
+        });
+        const next = sched.next();
+        return next.toString();
+    }
+
+    nextTimestamp() {
+        const sched = cronParser.parseExpression(this.cronString, {
+            tz: 'Europe/Berlin'
+        });
+        const next = sched.next();
+        return next.getTime() / 1000;
     }
 
 };
