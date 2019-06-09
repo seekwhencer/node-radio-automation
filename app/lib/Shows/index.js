@@ -49,7 +49,7 @@ module.exports = class Shows extends Module {
     buildFromStorage() {
         LOG(this.label, 'BUILD FROM STORAGE');
         const shows = STORAGE.fetch.shows(this.path);
-        if (shows.length === 0) {
+        if (!shows) {
             this.buildFromOptions();
             return false;
         }
