@@ -52,6 +52,7 @@ Only the pure requested data get back.
 
 ## Login
 ### `/login`
+![JWT Token Login](images/createtoken.jpg?raw=true "JWT Token Login")
 wants a posted multipart form data or json body:
 ```json
 {

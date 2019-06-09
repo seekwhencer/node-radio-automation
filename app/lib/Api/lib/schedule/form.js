@@ -1,3 +1,6 @@
+const
+    cronParser = require('cron-parser');
+
 module.exports = class Form {
     constructor() {
 
@@ -35,5 +38,22 @@ module.exports = class Form {
             delete(fieldData.action);
 
         return fieldData;
-    }
+    };
+
+    checkCron(crons) {
+        let cronArray = [];
+        for (let i = 1; i < 6; i++) {
+            cronArray.push(`${crons[`${i}`]}`);
+        }
+        const cronString = cronArray.join(' ');
+        try {
+            const sched = cronParser.parseExpression(cronString, {
+                tz: 'Europe/Berlin'
+            });
+            sched.next();
+            return true;
+        } catch (err) {
+            return false;
+        }
+    };
 };

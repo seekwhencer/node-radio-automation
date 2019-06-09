@@ -28,11 +28,14 @@ module.exports = class extends RouteSet {
 
             const options = this.scheduleForm.parse(req.fields);
             for (let i = 1; i < 6; i++)
-                options.cron[`${i}`] =  options.cron[`${i}`] || '*';
+                options.cron[`${i}`] = options.cron[`${i}`] || '*';
 
             const existsSchedule = channel.schedules.exists(options);
             if (existsSchedule)
                 return this.error(`Schedule exists.`, res);
+
+            if (!this.scheduleForm.checkCron(options.cron))
+                return this.error(`ERROR CRON JOB FORMAT.`, res);
 
             channel.schedules
                 .create(options)
