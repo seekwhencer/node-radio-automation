@@ -69,7 +69,10 @@ Response:
 }
 ```
  
-Store this token in your API-Client (Frontend App or Insomnia) and use it as Header Paramer:
+Store this token in your API-Client (Frontend App or Insomnia) and use it as
+ - Header Paramer `access-token` or as
+ - Authentication Bearer Header
+![JWT Token](images/jwtbearertoken.jpg?raw=true "JWT Bearer Token")
 ```json
 {
     "access-token": "TOKEN"
