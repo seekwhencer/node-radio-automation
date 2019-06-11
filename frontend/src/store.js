@@ -3,6 +3,24 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 
+
+const getStorageJson = (field) => {
+    if (localStorage[field]) {
+        try {
+            return JSON.parse(localStorage[field]);
+        } catch (e) {
+        }
+        return [];
+    }
+};
+
+const setStorageJson = (field, data) => {
+    try {
+        localStorage[field] = JSON.stringify(data);
+    } catch(e){}
+};
+
+
 export default new Vuex.Store({
     state: {
         ready: false,
@@ -11,11 +29,10 @@ export default new Vuex.Store({
             de: 'de_DE',
             en: 'en_EN',
         },
-        slugs: {
-            de: [],
-            en: []
+        user: {
+            token: localStorage.token
         },
-        translation: {},
+        channels: getStorageJson('channels'),
         pages: [
             {
                 slug: '',
@@ -28,7 +45,7 @@ export default new Vuex.Store({
                     {
                         slug: 'new',
                         label: 'New'
-                    },{
+                    }, {
                         slug: 'statistics',
                         label: 'Statistics'
                     }
@@ -57,12 +74,20 @@ export default new Vuex.Store({
         }
     },
     mutations: {
-        setPages: (state, pages) => {
-            state.pages = pages;
+        setToken: (state, data) => {
+            state.user.token = data;
+            localStorage.token = data;
         },
-        setTranslation: (state, translation) => {
-            state.translation = translation;
+        setChannels: (state, data) => {
+            state.channels = data;
+            setStorageJson('channels', data);
         },
+        selectChannel: (state, data) => {
+            state.channel = data;
+            setStorageJson('channel', data);
+        },
+
+
         setLocale: (state, locale) => {
             state.locale = locale;
         },

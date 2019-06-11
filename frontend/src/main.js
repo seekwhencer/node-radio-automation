@@ -4,8 +4,18 @@ import router from "./router";
 import store from "./store";
 import VueResource from "vue-resource";
 
-Vue.prototype.$store = store; // oh wonder
+Vue.prototype.$store = store;
+
+// @TODO - place it in (a) file(s)
+Vue.prototype.$config = {
+    api: {
+        url: 'http://devradio:8200'
+    }
+};
+
 Vue.config.productionTip = false;
+
+
 Vue.use(VueResource);
 
 new Vue({

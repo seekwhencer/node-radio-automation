@@ -1,3 +1,4 @@
+const os = require('os');
 module.exports = {
     css: {
         loaderOptions: {
@@ -13,6 +14,9 @@ module.exports = {
             poll: 1000,
             aggregateTimeout: 600,
             ignored: [/node_modules/, /public/]
-        }
+        },
+        allowedHosts: [
+            os.hostname()
+        ]
     }
 };
