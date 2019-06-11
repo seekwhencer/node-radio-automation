@@ -19,7 +19,7 @@ module.exports = class Auth extends Module {
             APIAPP.use((req, res, next) => {
 
                 // public routes without token check
-                if (['login', 'internal', 'js', 'css', 'images'].includes(req.originalUrl.split('/')[1])) {
+                if (['', 'login', 'internal', 'js', 'css', 'images'].includes(req.originalUrl.split('/')[1])) {
                     return next();
                 }
 
@@ -45,8 +45,8 @@ module.exports = class Auth extends Module {
 
             // the login page
             APIAPP.post('/login', (req, res) => {
-                const username = `${req.fields.username || req.body.username}`;
-                const password = `${req.fields.password || req.body.password}`;
+                const username = `${req.fields.username}`;
+                const password = `${req.fields.password}`;
 
                 if (username === this.options.username) {
                     if (password === this.options.password) {
@@ -67,6 +67,13 @@ module.exports = class Auth extends Module {
                 } else {
                     return this.sendError('wrong username', res);
                 }
+            });
+
+            // the logout page
+            APIAPP.post('/logout', (req, res) => {
+                res.json({
+                    message: 'logged out'
+                });
             });
 
             resolve(this);

@@ -26,17 +26,31 @@ module.exports = class Api extends Module {
                     resolve(this);
                 });
 
-                APIAPP.use(bodyParser.json());
+                //APIAPP.use(bodyParser.json());
                 APIAPP.use(bodyParser.urlencoded({extended: true}));
                 APIAPP.use(formidable());
+
+                // @TODO - this is for development.
+                APIAPP.use((req, res, next) => {
+                    res.header("Access-Control-Allow-Origin", "*");
+                    res.header("Access-Control-Allow-Credentials", "true");
+                    res.header("Access-Control-Allow-Methods", "GET,POST");
+                    res.header("Access-Control-Allow-Headers",  "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+                    next();
+                });
 
                 // json web token auth
                 this.auth = new Auth(this.options.auth);
                 this.websocket = new Websocket(this.options.websocket);
 
+                // fontend
+                APIAPP.use('/', EXPRESS.static(`${APP_DIR}/../frontend/dist`));
+
                 // autoloads the routes.
                 // the filename without extension equals a top level route
                 this.addRoutes();
+
+
 
                 APIAPP.use((req, res, next) => {
                     const err = new Error('Not Found');

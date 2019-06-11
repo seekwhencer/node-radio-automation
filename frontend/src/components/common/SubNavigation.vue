@@ -1,10 +1,11 @@
 <template>
     <div class="subnavigation">
         <ul>
-            <li v-for="page in active_page.childs" v-bind:class="{'active': (`${page.slug.toLowerCase()}` === sub)}">
+            <li  v-bind:key="page.slug" v-for="page in active_page.childs" v-bind:class="{'active': (`${page.slug.toLowerCase()}` === sub)}">
                 <router-link :to="`/${active_page.slug}/${page.slug}`">{{ page.label }}</router-link>
             </li>
         </ul>
+
     </div>
 </template>
 
@@ -34,36 +35,47 @@
 
 <style scoped lang="scss">
     .subnavigation {
-        padding: 0px;
-        top: 0px;
+        position: absolute;
+        padding: 0;
+        margin: 0;
+        bottom: -50px;
+        left: 0;
         z-index: 1;
+        width: 100%;
 
         ul {
             list-style-type: none;
-            padding: 0;
+            padding: 10px;
+            margin: 0px;
+            display: block;
+            text-align: center;
 
             li {
-                display: block;
+                display: inline-block;
                 transition: all ease-in-out 0.2s;
-                opacity: 0.9;
+                opacity: 0.6;
+                margin: 0 20px 10px 0;
+
+                &:last-child {
+                    margin: 0;
+                }
 
                 a {
                     font-size: 1em;
 
                     &:before {
-                        width: 0px;
+                        width: 0;
                         position: absolute;
                         content: '';
                         height: 2px;
                         background-color: #ffffff;
-                        bottom: 0px;
+                        bottom: 0;
                     }
 
                 }
 
                 &.active {
                     opacity: 1;
-                    margin: 20px 0px 20px 0px;
                     transition: all 0.2s 0.3s;
 
                     a {
