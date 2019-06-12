@@ -35,7 +35,7 @@ module.exports = class Api extends Module {
                     res.header("Access-Control-Allow-Origin", "*");
                     res.header("Access-Control-Allow-Credentials", "true");
                     res.header("Access-Control-Allow-Methods", "GET,POST");
-                    res.header("Access-Control-Allow-Headers",  "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+                    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
                     next();
                 });
 
@@ -49,8 +49,6 @@ module.exports = class Api extends Module {
                 // autoloads the routes.
                 // the filename without extension equals a top level route
                 this.addRoutes();
-
-
 
                 APIAPP.use((req, res, next) => {
                     const err = new Error('Not Found');
@@ -89,7 +87,11 @@ module.exports = class Api extends Module {
         routeFiles.forEach(route => {
             const LoadedRoute = require(route.file_path);
             LOG(this.label, 'ADDING ROUTE', `/${route.filename}`);
-            APIAPP.use(`/${route.filename}`, new LoadedRoute());
+            let url = `/${route.filename}`;
+            if (this.options.root_endpoint) {
+                url = `/${this.options.root_endpoint}/${route.filename}`;
+            }
+            APIAPP.use(url, new LoadedRoute());
         });
         LOG(this.label, routeFiles.length, 'ROUTE FILES ADDED');
     }

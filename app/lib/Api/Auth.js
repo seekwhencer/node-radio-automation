@@ -16,10 +16,18 @@ module.exports = class Auth extends Module {
             this.mergeOptions();
             LOG(this.label, 'INIT');
 
+            let rootEndpoint = '';
+            if (this.options.root_endpoint) {
+                rootEndpoint = `/${this.options.root_endpoint}`;
+            }
+
             APIAPP.use((req, res, next) => {
 
                 // public routes without token check
-                if (['', 'login', 'internal', 'js', 'css', 'images'].includes(req.originalUrl.split('/')[1])) {
+                if (['', 'js', 'css', 'images'].includes(req.originalUrl.split('/')[1])) {
+                    return next();
+                }
+                if (['login', 'internal'].includes(req.originalUrl.split('/')[2])) {
                     return next();
                 }
 
@@ -44,7 +52,7 @@ module.exports = class Auth extends Module {
             });
 
             // the login page
-            APIAPP.post('/login', (req, res) => {
+            APIAPP.post(`${rootEndpoint}/login`, (req, res) => {
                 const username = `${req.fields.username}`;
                 const password = `${req.fields.password}`;
 
@@ -70,7 +78,7 @@ module.exports = class Auth extends Module {
             });
 
             // the logout page
-            APIAPP.post('/logout', (req, res) => {
+            APIAPP.post(`${rootEndpoint}/logout`, (req, res) => {
                 res.json({
                     message: 'logged out'
                 });
@@ -82,7 +90,7 @@ module.exports = class Auth extends Module {
     }
 
     sendError(message, res, data) {
-        if(!data)
+        if (!data)
             data = {};
 
         res.json({
