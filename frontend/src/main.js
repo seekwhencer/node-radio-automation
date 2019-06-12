@@ -9,7 +9,7 @@ Vue.prototype.$store = store;
 // @TODO - place it in (a) file(s)
 Vue.prototype.$config = {
     api: {
-        url: 'http://devradio:8200'
+        url: 'http://devradio:8200/v1'
     }
 };
 

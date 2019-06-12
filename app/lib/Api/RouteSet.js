@@ -38,7 +38,6 @@ module.exports = class RouteSet {
         this.baseFolder = `${APP_DIR}/lib/Api/routes/${this.endpoint}`;
     };
 
-
     addRoutes(routePath) {
         if (!routePath)
             routePath = this.baseFolder;
@@ -46,7 +45,13 @@ module.exports = class RouteSet {
         const routeFiles = RDIRSYNC(routePath, false, ['js']);
         routeFiles.forEach(route => {
             const LoadedRoute = require(route.file_path);
-            APIAPP.use(`/${this.endpoint}`, new LoadedRoute());
+
+            let url =`/${this.endpoint}`;
+            if (CONFIG.api.root_endpoint) {
+                url = `/${CONFIG.api.root_endpoint}/${this.endpoint}`;
+            }
+
+            APIAPP.use(url, new LoadedRoute());
             LOG(this.label, 'ROUTE ADDED', route.file_path);
         });
 
