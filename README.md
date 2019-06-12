@@ -38,16 +38,26 @@ This app is a multichannel playlist audio streaming automation.
 - who wants to play handpicked tracks
 
 ## See the [Documentation](docs/README.md)
+ 
+
+## At the moment
+
+- complete channel creation works well via api
+- scheduling for channels works: you can start, stop, pause a show from a channel with cron scheme and multiple jobs
+- scheduling for podcasts works well: with cron scheme and one job. looks for new episodes and download these
+- API-Authentication with JWT (json web token)
+
+Now (June 2019) - i begin with the Frontend App, a Vue-App. This is the first Vue project for me,
+what i'm starting from zero. I need this project to educate myself.
+
 
 ## Future Things
 
 At the moment, the app is usable how it is described in the docs - or
 better - what is possible with the Insomnia export.
  
-- Backup mechanism for the complete storage folder
-- Scheduling: let a show from a channel begin by a week scheme with week day, hour and minute.
-- Podcast with downloader
 - Frontend App with Vue
+- Backup mechanism for the complete storage folder
 - Docker (Compose) Setup
 - Ideas?
  
