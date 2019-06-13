@@ -46,7 +46,6 @@
             list-style-type: none;
             padding: 0;
             margin: 0;
-            text-align: center;
 
             li {
                 display: inline-block;
@@ -85,7 +84,7 @@
         }
 
         a {
-            font-size: 2em;
+            font-size: $fs-xl;
             font-weight: bold;
             color: #ffffff;
             text-decoration: none;

@@ -45,10 +45,9 @@
 
         ul {
             list-style-type: none;
-            padding: 10px;
-            margin: 0px;
+            padding: 20px;
+            margin: 0;
             display: block;
-            text-align: center;
 
             li {
                 display: inline-block;

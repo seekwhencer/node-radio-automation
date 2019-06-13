@@ -38,7 +38,9 @@
 
 <style lang="scss">
     .page-content {
-        padding: 30px;
+        overflow: hidden;
+        display: block;
+        margin-top: 50px;
     }
 
     #app {

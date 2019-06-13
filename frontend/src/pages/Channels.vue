@@ -1,27 +1,25 @@
 <template>
     <div class="channels">
-        <channel-listing  v-if="channels.length > 0"/>
-        <channel-item/>
+        <channel-listing v-if="channels.length > 0"/>
+
     </div>
 </template>
 
 <script>
     import Listing from "@/pages/channels/Listing.vue";
-    import Item from "@/pages/channels/Item.vue";
 
     export default {
         name: "channels",
         components: {
-            'channel-listing': Listing,
-            'channel-item': Item
+            'channel-listing': Listing
         },
 
-        async created(){
+        async created() {
             return this.getChannels();
         },
 
-        computed:{
-            channels(){
+        computed: {
+            channels() {
                 return this.$store.state.channels;
             }
         },
@@ -58,5 +56,7 @@
 </script>
 
 <style>
-
+    .channels {
+        overflow: hidden;
+    }
 </style>
