@@ -2,24 +2,33 @@
     <div>
         <div class="listing">
             <ul>
-                <li v-bind:key="channel.id" v-for="channel in channels">
-                    <button v-on:click="select(channel.id, $event)">{{channel.name}}</button>
+                <li v-bind:key="channel.id" v-for="channel in channels"
+                    v-bind:class="{'active': (channel.id === channel_id)}">
+                    <a v-on:click="select(channel.id, $event)">{{channel.name}}</a>
+                </li>
+                <li class="action" v-bind:class="{'active': (new_id)}">
+                    <a v-on:click="createNew()">New</a>
                 </li>
             </ul>
         </div>
+        <channel-item v-bind:channel_id="channel_id"/>
     </div>
 </template>
 
 <script>
+    import Item from "@/pages/channels/Item.vue";
+
     export default {
         name: "channel-listing",
-        mounted() {
-            //if (!this.$store.state.channels)
-
+        components: {
+            'channel-item': Item
         },
+
+
         data() {
             return {
-                selected: false
+                channel_id: false,
+                new_id: false
             }
         },
 
@@ -30,34 +39,6 @@
         },
         methods: {
             /**
-             *
-             * @returns {Promise<Response>}
-             */
-            getChannels() {
-                const requestOptions = {
-                    method: 'GET',
-                    headers: new Headers({
-                        'Authorization': 'Bearer ' + this.$store.state.user.token
-                    })
-                };
-
-                return fetch(`${this.$config.api.url}/channels`, requestOptions)
-                    .then(response => {
-                        if (!response.ok)
-                            return Promise.reject(response.statusText);
-
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (data) {
-                            this.$store.commit('setChannels', data);
-                        }
-                        return Promise.resolve(data);
-                    });
-            },
-
-            /**
-             *
              * @param id
              * @param event
              */
@@ -65,29 +46,14 @@
                 if (event)
                     event.preventDefault();
 
-                this.selected = id;
+                this.new_id = false;
+                this.channel_id = id;
+            },
 
-                const requestOptions = {
-                    method: 'GET',
-                    headers: new Headers({
-                        'Authorization': 'Bearer ' + this.$store.state.user.token
-                    })
-                };
-
-                return fetch(`${this.$config.api.url}/channel/${id}`, requestOptions)
-                    .then(response => {
-                        if (!response.ok)
-                            return Promise.reject(response.statusText);
-
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (data) {
-                            this.$store.commit('selectChannel', data);
-                        }
-                        return data;
-                    });
-
+            createNew() {
+                this.channel_id = false;
+                this.channel = false;
+                this.new_id = true;
             }
         }
     };
@@ -95,21 +61,57 @@
 
 <style lang="scss">
     .listing {
-        width: 30%;
-        float: left;
+        width: 100%;
+        overflow: hidden;
+        padding-left: 10px;
+
         ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+
             li {
-                width: 100%;
-                margin-bottom: 1px;
-                background-color: $color-bg-mid;
+                display: inline-block;
+                transition: all ease-in-out .3s;
+                opacity: 0.5;
+                padding: 10px;
+                margin: 0;
+
                 a {
-                    text-decoration: none;
-                    display: block;
-                    font-weight: bold;
-                    color: $color-bg-primary;
-                    padding: 20px;
-                    font-size: $fs-mid;
+                    font-size: $fs-xl;
+                    &:before {
+                        width: 0;
+                        position: absolute;
+                        content: '';
+                        height: 2px;
+                        background-color: #ffffff;
+                        bottom: 0px;
+                        overflow: hidden;
+                    }
+
+                    &:hover {
+                        cursor: pointer;
+                    }
+
                 }
+
+                &.active {
+                    opacity: 1;
+                    transition: all 0.2s 0.3s;
+
+                    a {
+                        position: relative;
+
+                        &:before {
+                            transition: width ease-out 0.4s;
+                            width: 100%;
+                        }
+                    }
+                }
+            }
+
+            .action {
+                font-weight: bold;
             }
         }
     }
