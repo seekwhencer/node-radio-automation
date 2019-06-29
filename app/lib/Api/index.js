@@ -43,18 +43,20 @@ module.exports = class Api extends Module {
                 this.auth = new Auth(this.options.auth);
                 this.websocket = new Websocket(this.options.websocket);
 
-                // fontend
-                APIAPP.use('/', EXPRESS.static(`${APP_DIR}/../frontend/dist`));
+
 
                 // autoloads the routes.
                 // the filename without extension equals a top level route
                 this.addRoutes();
 
-                APIAPP.use((req, res, next) => {
+                /*APIAPP.use((req, res, next) => {
                     const err = new Error('Not Found');
                     err.status = 404;
                     res.json(err);
-                });
+                });*/
+
+                // fontend
+                APIAPP.use('/', EXPRESS.static(`${APP_DIR}/../frontend/dist`));
 
                 this.http = http.createServer(APIAPP);
                 this.http.listen(this.port, () => {

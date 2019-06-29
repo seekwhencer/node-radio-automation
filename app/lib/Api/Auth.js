@@ -21,14 +21,20 @@ module.exports = class Auth extends Module {
                 rootEndpoint = `/${this.options.root_endpoint}`;
             }
 
-            APIAPP.use((req, res, next) => {
-
-                // public routes without token check
-                if (['', 'js', 'css', 'images'].includes(req.originalUrl.split('/')[1])) {
-                    return next();
-                }
-                if (['login', 'internal'].includes(req.originalUrl.split('/')[2])) {
-                    return next();
+            APIAPP.use(new RegExp(`${rootEndpoint}`), (req, res, next) => {
+                // skip all non api urls
+                if (this.options.root_endpoint) {
+                    if (this.options.root_endpoint !== req.originalUrl.split('/')[1]) {
+                        return next();
+                    }
+                    if (['login', 'internal'].includes(req.originalUrl.split('/')[2])) {
+                        return next();
+                    }
+                } else {
+                    // public routes without token check
+                    if (['', 'login', 'internal', 'js', 'css', 'images'].includes(req.originalUrl.split('/')[1])) {
+                        return next();
+                    }
                 }
 
                 // token check
