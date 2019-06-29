@@ -1,6 +1,10 @@
 # node-radio-automation
 
 This app is a multichannel playlist audio streaming automation. 
+ 
+**At the moment you can use the api to control the app behavior.  
+The Stream controls are full working.  
+The Frontend App (Web Interface) is in progress.**
 
 ## Features
 
@@ -39,25 +43,74 @@ This app is a multichannel playlist audio streaming automation.
 
 ## See the [Documentation](docs/README.md)
  
-
-## At the moment
+### At the moment this works well:
 
 - complete channel creation works well via api
 - scheduling for channels works: you can start, stop, pause a show from a channel with cron scheme and multiple jobs
 - scheduling for podcasts works well: with cron scheme and one job. looks for new episodes and download these
 - API-Authentication with JWT (json web token)
 
-Now (June 2019) - i begin with the Frontend App, a Vue-App. This is the first Vue project for me,
-what i'm starting from zero. I need this project to educate myself.
+### Channel
 
+ - get all
+ - create one
+ - get by id
+ - delete by id
+ - update by id
+ - update database (MPD cache)
+ - load playlist
+ - update playlist
+ - play
+ - pause
+ - stop
+ - skip track
+ - set crossfade
+ - spawn
+ - respawn
+ - shutdown
 
+### Shows of a Channel
+
+ - get all
+ - create one
+ - get one
+ - get playing show
+ - delete
+ - update
+ - duplicate 
+ - set playing show
+ - copy from global show
+ - get show folder
+ - set show folder
+ - get music folder
+ - get intro folder
+ - get spot folder
+ - get podcast folder
+ 
+ ### Global Shows
+ 
+ - get all
+ - create one
+ - duplicate
+ - get one
+ - delete
+ - update 
+ 
+ ### Podcasts
+ 
+ - get all
+ - create one
+ - duplicate
+ - get one
+ - delete
+ - update
+ 
 ## Future Things
 
-At the moment, the app is usable how it is described in the docs - or
-better - what is possible with the Insomnia export.
- 
-- Frontend App with Vue
+- Frontend App with Vue **(in progress)**
+- Podcast Downloader Sheduler invoke a queue
 - Backup mechanism for the complete storage folder
 - Docker (Compose) Setup
+- Some downloadable example assets
 - Ideas?
  
