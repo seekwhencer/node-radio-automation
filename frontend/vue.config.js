@@ -4,7 +4,9 @@ module.exports = {
         loaderOptions: {
             sass: {
                 data: `
-                      @import "@/scss/index.scss"; 
+                      @import "@/scss/themes/default-dark.scss";
+                      @import "@/scss/index.scss";
+                      
                 `
             }
         }

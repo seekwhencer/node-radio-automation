@@ -28,6 +28,9 @@
              * @param id
              */
             select(id) {
+                if (id === false)
+                    return false;
+
                 const requestOptions = {
                     method: 'GET',
                     headers: new Headers({

@@ -1,24 +1,25 @@
 <template>
-    <div class="navigation">
-        <ul>
-            <li v-bind:key="page.slug" v-for="page in pages"
+    <div class="navigation md-app">
+        <ul class="md-layout md-gutter">
+            <li class="md-layout-item" v-bind:key="page.slug" v-for="page in pages"
                 v-bind:class="{'active': (page.slug.toLowerCase() === path)}">
                 <router-link :to="`/${page.slug}`">{{ page.label }}</router-link>
-                <SubNavigation v-if="path === page.slug.toLowerCase()" v-bind:active_page="page"/>
+
             </li>
         </ul>
     </div>
 </template>
 
 <script>
+    // <SubNavigation v-if="path === page.slug.toLowerCase()" v-bind:active_page="page"/>
     import {mapState} from 'vuex';
     import SubNavigation from "@/components/common/SubNavigation.vue";
 
     export default {
         name: "Navigation",
-        components: {
+        /*components: {
             SubNavigation
-        },
+        },*/
         computed: {
             ...mapState([
                 'pages'
@@ -38,6 +39,8 @@
 </script>
 
 <style scoped lang="scss">
+    @import "~vue-material/src/theme/engine";
+
     .navigation {
         line-height: 1em;
         position: relative;

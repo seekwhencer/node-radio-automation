@@ -19,7 +19,7 @@ import ChannelItem from "./pages/channels/Item.vue";
 Vue.use(Router);
 
 export default new Router({
-    mode: "history",
+    //mode: "history",
     routes: [
         {
             path: "/",
@@ -37,7 +37,7 @@ export default new Router({
             path: "/channels",
             name: "channels",
             component: ChannelsPage,
-            children: [
+            /*children: [
                 {
                     path: 'new',
                     name: "channels_new",
@@ -47,7 +47,7 @@ export default new Router({
                     name: "channels_statistics",
                     component: ChannelsStatisticsPage
                 }
-            ]
+            ]*/
         }, {
             path: "/shows",
             name: "shows",
