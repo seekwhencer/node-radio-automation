@@ -40,7 +40,7 @@
     .page-content {
         overflow: hidden;
         display: block;
-        margin-top: 50px;
+        margin-top:0;
     }
 
     #app {

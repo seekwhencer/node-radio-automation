@@ -41,7 +41,7 @@ export default new Vuex.Store({
             {
                 slug: 'channels',
                 label: 'Channels',
-                childs: [
+               /* childs: [
                     {
                         slug: 'new',
                         label: 'New'
@@ -49,7 +49,7 @@ export default new Vuex.Store({
                         slug: 'statistics',
                         label: 'Statistics'
                     }
-                ]
+                ]*/
             },
             {
                 slug: 'shows',
