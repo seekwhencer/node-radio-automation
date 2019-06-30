@@ -47,6 +47,11 @@ module.exports = class Storage extends Module {
             fs.mkdirSync(folder);
             LOG(this.label, 'FOLDER CREATED:', folder);
         }
+        const audioFolder = P(`${APP_DIR}/${CONFIG.station.path.audio}`);
+           if (!fs.existsSync(audioFolder)) {
+            fs.mkdirSync(audioFolder);
+            LOG(this.label, 'AUDIO FOLDER CREATED:', folder);
+        }
     }
 
     flushAll() {
