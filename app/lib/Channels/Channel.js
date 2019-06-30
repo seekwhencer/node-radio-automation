@@ -214,7 +214,7 @@ module.exports = class Channel extends Module {
     }
 
     checkReady() {
-        LOG(this.label, this.name, 'CHECK IF MPD AND MPC IS READY...', this.mpd.ready, this.mpc.ready);
+        LOG(this.label, this.name, 'CHECK IF MPD AND MPC IS READY... ', 'MPD:', this.mpd.ready, 'MPC:', this.mpc.ready);
         if (this.mpd.ready && this.mpc.ready) {
             this.emit('ready');
             return;

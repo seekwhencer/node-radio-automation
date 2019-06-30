@@ -48,9 +48,15 @@ module.exports = class MpdCache extends Mpd {
             });
 
             if (fs.existsSync(this.options.config.db_file)) {
-                this.on('connecting', () => {
-                    this.emit('ready');
-                });
+                if (ENV !== 'rpi') {
+                    this.on('connecting', () => {
+                        this.emit('ready');
+                    });
+                } else {
+                    this.on('established', () => {
+                        this.emit('ready');
+                    });
+                }
             } else {
                 this.on('updated', () => {
                     LOG(this.label, 'UPDATED');
