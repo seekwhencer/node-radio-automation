@@ -19,6 +19,7 @@ module.exports = class Podcast extends Module {
             LOG('');
             LOG(this.label, 'INIT', this.name);
 
+            STORAGE.createFolder(this.options.audio_root);
             STORAGE.createFolder(this.path);
 
             this.downloader = new Downloader({
@@ -70,9 +71,9 @@ module.exports = class Podcast extends Module {
         this.options.conf_path = this.args.path;
         this.options.conf_file = P(`${this.options.conf_path}/${this.id}.json`);
 
-        this.path = P(`${APP_DIR}/${CONFIG.station.path.audio}/podcast/${this.id}`);
+        this.options.audio_root = P(`${APP_DIR}/${CONFIG.station.path.audio}/podcast`);
+        this.path = `${this.options.audio_root}/${this.id}`;
         this.options.path = this.path;
-
     }
 
     save(silent) {
