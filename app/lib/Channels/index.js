@@ -49,7 +49,8 @@ module.exports = class Channels extends Module {
     buildFromStorage() {
         LOG(this.label, 'BUILD FROM STORAGE');
         const channels = STORAGE.fetch.channels(this.path);
-        if (channels.length === 0) {
+
+        if (channels.length === 0 || !channels) {
             return this.buildFromOptions();
         }
         return this.build(0, channels);

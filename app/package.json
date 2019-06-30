@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "export NODE_ENV=default && node index.js",
+    "rpi": "export NODE_ENV=rpi && node index.js",
     "prod": "export NODE_DEBUG=true && NODE_ENV=production && node index.js",
     "custom": "export NODE_DEBUG=true && NODE_ENV=custom && node index.js"
   },

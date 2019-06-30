@@ -20,9 +20,15 @@ module.exports = class Mpd extends Module {
             LOG(this.label, 'READY >>>', this.ready);
         });
 
-        this.on('connecting', () => {
-            this.emit('ready');
-        });
+        if (ENV !== 'rpi') {
+            this.on('connecting', () => {
+                this.emit('ready');
+            });
+        } else {
+            this.on('established', () => {
+                this.emit('ready');
+            });
+        }
 
         this.on('data', (chunk) => {
             if (this.options.log_tty) {
@@ -114,7 +120,7 @@ module.exports = class Mpd extends Module {
             "no-soundcard": new RegExp(/cannot find card/),
 
             added: new RegExp(/update: added /),
-            established: new RegExp(/successfully established/),
+            established: new RegExp(/successfully\sestablished/),
             connecting: new RegExp(/Client\sis\sCONNECTING/),
 
             queued: new RegExp(/playlist:\squeue\ssong\s/),
