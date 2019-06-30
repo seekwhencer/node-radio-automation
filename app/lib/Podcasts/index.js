@@ -48,7 +48,7 @@ module.exports = class Podcasts extends Module {
     buildFromStorage() {
         LOG(this.label, 'BUILD FROM STORAGE');
         const podcasts = STORAGE.fetch.podcasts(this.path);
-        if (podcasts.length === 0) {
+        if (podcasts.length === 0 || !podcasts) {
             return this.buildFromOptions();
         }
         return this.build(0, podcasts);
