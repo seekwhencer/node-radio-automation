@@ -3,4 +3,10 @@ node_js:
   - "10"
 install:
   - cd app && npm install
-  
+
+before_script:
+  - mkdir /snapshot && chown $USER:$USER /snapshot
+
+script:
+  - cd app && npm run build
+
