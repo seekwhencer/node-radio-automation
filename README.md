@@ -1,4 +1,4 @@
-# node-radio-automation
+# node-radio-automation [![Build Status](https://travis-ci.org/seekwhencer/node-radio-automation.svg?branch=master)](https://travis-ci.org/seekwhencer/node-radio-automation)
 
 This app is a multichannel playlist audio streaming automation. 
  
