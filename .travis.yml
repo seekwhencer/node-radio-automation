@@ -1,9 +1,15 @@
 language: node_js
 node_js:
   - "10"
+
+
 install:
   - cd app && npm install
+  - npm run build
+  - cd ../frontend && npm install
+  - npm run build
 
-script:
-  - cd app && npm run build
+after_script:
+  - ls -l
+  - cd ../app && ls -l
 
