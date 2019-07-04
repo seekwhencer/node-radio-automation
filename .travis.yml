@@ -4,9 +4,6 @@ node_js:
 install:
   - cd app && npm install
 
-before_script:
-  - sudo mkdir /snapshot
-
 script:
   - cd app && npm run build
 
