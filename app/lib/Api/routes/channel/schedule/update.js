@@ -1,9 +1,7 @@
-const
-    cronParser = require('cron-parser'),
-    RouteSet = require('../../../RouteSet.js'),
-    ScheduleForm = require('../../../lib/schedule/form.js');
+import RouteSet from '../../../RouteSet.js';
+import ScheduleForm from '../../../lib/schedule/form.js';
 
-module.exports = class extends RouteSet {
+export default class extends RouteSet {
     constructor() {
         super();
 

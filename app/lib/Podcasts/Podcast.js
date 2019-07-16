@@ -1,13 +1,12 @@
-const
-    fs = require('fs-extra'),
-    slugify = require('slugify'),
-    crypto = require('crypto'),
-    cronParser = require('cron-parser'),
-    Module = require('../Module'),
-    Downloader = require('./Downloader.js'),
-    Job = require('./Job.js');
+import fs from 'fs-extra';
+import slugify from 'slugify';
+import crypto from 'crypto';
+import cronParser from 'cron-parser';
+import Module from '../Module.js';
+import Downloader from './Downloader.js';
+import Job from './Job.js';
 
-module.exports = class Podcast extends Module {
+export default class Podcast extends Module {
 
     constructor(args) {
         super(args);

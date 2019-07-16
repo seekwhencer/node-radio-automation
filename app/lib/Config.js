@@ -1,11 +1,6 @@
-const
-    fs = require("fs-extra");
+import * as ConfigDefault from '../config/default/index.js';
 
-/**
- * autoloads config files from the config folder by the given environment NODE_ENV
- */
-
-module.exports = class AppConfig {
+export default class AppConfig {
 
     constructor(args){
         this.name = 'appconfig';
@@ -14,27 +9,7 @@ module.exports = class AppConfig {
         this.keys = [];
 
         LOG(this.label, 'INIT');
-
-        this.config_dir = `${APP_DIR}/config/${ENV}`;
-        this.load();
-        LOG(this.label, '>>> READY');
-        LOG('');
-        return this.data;
-    }
-
-    load() {
-        fs.readdirSync(this.config_dir).forEach(function (file) {
-            LOG(this.label, 'READING FILE:', file);
-            let key = file.replace(/\.js/, '').toLowerCase();
-            let req = require(`${this.config_dir}/${file}`);
-            this.set(key, req);
-        }.bind(this));
-
-        if (this.keys.length === 0) {
-            LOG(this.label, 'NO FILE FOUND');
-        } else {
-            LOG(this.label, this.keys.length, 'FILES LOADED');
-        }
+        return ConfigDefault;
     }
 
     set(key, value) {

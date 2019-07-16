@@ -1,15 +1,14 @@
-const
-    fs = require('fs-extra'),
-    slugify = require('slugify'),
-    crypto = require('crypto'),
-    Module = require('../Module'),
-    Shows = require('../Shows'),
-    Schedules = require('../Schedules'),
-    Show = require('../Shows//Show'),
-    Mpd = require('./Mpd'),
-    Mpc = require('./Mpc');
+import fs from 'fs-extra';
+import slugify from 'slugify';
+import crypto from 'crypto';
+import Module from '../Module.js';
+import Shows from '../Shows/index.js';
+import Schedules from '../Schedules/index.js';
+import Show from '../Shows/Show.js'; /// not used?!?!?
+import Mpd from './Mpd.js';
+import Mpc from './Mpc.js';
 
-module.exports = class Channel extends Module {
+export default class Channel extends Module {
 
     constructor(args) {
         super(args);

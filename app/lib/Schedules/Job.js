@@ -1,8 +1,6 @@
-const
-    Module = require('../Module'),
-    clock = require('node-schedule');
+import clock from 'node-schedule';
 
-module.exports = class ScheduleJob {
+export default class ScheduleJob {
     constructor(args) {
         this.name = 'schedulejob';
         this.label = 'SCHEDULE JOB';

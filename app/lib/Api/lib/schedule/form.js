@@ -1,9 +1,7 @@
-const
-    cronParser = require('cron-parser');
+import cronParser from 'cron-parser';
 
-module.exports = class Form {
+export default class Form {
     constructor() {
-
     }
 
     parse(reqFields) {
@@ -28,14 +26,14 @@ module.exports = class Form {
             if (fieldData[`cron_${i}`]) {
                 fieldData.cron[`${i}`] = fieldData[`cron_${i}`];
             }
-            delete(fieldData[`cron_${i}`]);
+            delete (fieldData[`cron_${i}`]);
         }
 
         if (!fieldData.action)
             fieldData.action = 'play';
 
         if (!['play', 'pause', 'stop', 'respawn'].includes(fieldData.action))
-            delete(fieldData.action);
+            delete (fieldData.action);
 
         return fieldData;
     };

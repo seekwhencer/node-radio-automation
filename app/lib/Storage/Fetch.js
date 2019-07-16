@@ -1,10 +1,7 @@
-const
-    fs = require('fs-extra'),
-    Module = require('../Module.js');
+import fs from 'fs-extra';
+import Module from '../Module.js';
 
 /**
- *
- *
  * @param file_path
  * @param files
  * @returns {Array}
@@ -24,7 +21,7 @@ const readFilesData = (files) => {
 };
 
 
-module.exports = class StorageFetch extends Module {
+export default class StorageFetch extends Module {
 
     constructor(args) {
         super(args);

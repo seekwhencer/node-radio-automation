@@ -1,9 +1,9 @@
-module.exports = class RouteSet {
-    constructor() {
+export default class RouteSet {
+    constructor(parent) {
+        this.parent = parent || false;
         this.router = EXPRESS.Router();
-
-        this.endpoint = 'index';
-        this.baseFolder = `${APP_DIR}/lib/Api/routes/${this.endpoint}`;
+        this.endpoint = '';
+        this.url = '';
     }
 
     one(req, res) {
@@ -35,38 +35,32 @@ module.exports = class RouteSet {
 
     set endpoint(value) {
         this._endpoint = value;
-        this.baseFolder = `${APP_DIR}/lib/Api/routes/${this.endpoint}`;
     };
 
-    addRoutes(routePath) {
-        if (!routePath)
-            routePath = this.baseFolder;
+    addRoutes(Routes) {
+        LOG('>>>>> ROUTES FOR:', this.endpoint, Object.keys(Routes).length, typeof this.parent);
 
-        const routeFiles = RDIRSYNC(routePath, false, ['js']);
-        routeFiles.forEach(route => {
-            const LoadedRoute = require(route.file_path);
-
-            let url =`/${this.endpoint}`;
+        if (!this.parent) {
             if (CONFIG.api.root_endpoint) {
-                url = `/${CONFIG.api.root_endpoint}/${this.endpoint}`;
+                this.url = `/${CONFIG.api.root_endpoint}`;
             }
+            LOG('>>> WITHOUT PARENT:', this.url);
+        } else {
+            this.url = `${this.parent.url}`;
+            if (this.endpoint) {
+                this.url += `/${this.endpoint}`;
+            }
+            LOG('>>> WITH PARENT:', this.parent.endpoint, this.url);
+        }
 
-            APIAPP.use(url, new LoadedRoute());
-            LOG(this.label, 'ROUTE ADDED', route.file_path);
+        Object.keys(Routes).forEach(r => {
+            const router = new Routes[r](this);
+            const rx = router.stack
+                .filter(r => r.route)
+                .map(r => `${this.url}${r.route.path}`);
+
+            APIAPP.endpoints = APIAPP.endpoints.concat(rx);
+            APIAPP.use(this.url, router);
         });
-
-        // 2nd level only
-        const routeFolders = RDIRSYNC(routePath, false, ['js'], true).filter(i => i.foldername);
-
-        if (routeFolders.length === 0)
-            return;
-
-        routeFolders.forEach(folder => {
-            LOG(this.label, 'ADDING SUB ROUTES IN:', folder.path);
-            this.addRoutes(folder.path);
-        });
-        LOG(this.label, routeFiles.length, 'ADDED ROUTE FILES');
-    }
-
-
+    };
 };

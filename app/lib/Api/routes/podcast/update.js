@@ -1,8 +1,7 @@
-const
-    Form = require('../../lib/podcast/form.js'),
-    RouteSet = require('../../RouteSet.js');
+import RouteSet from '../../RouteSet.js';
+import Form from '../../lib/podcast/form.js';
 
-module.exports = class extends RouteSet {
+export default class extends RouteSet {
     constructor() {
         super();
 

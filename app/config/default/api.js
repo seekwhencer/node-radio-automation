@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     host: 'localhost',
     port: 8200,
     root_endpoint: 'v1',

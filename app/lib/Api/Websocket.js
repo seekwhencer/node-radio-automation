@@ -1,9 +1,8 @@
-const
-    expressWs = require('express-ws'),
-    jwt = require('jsonwebtoken'),
-    Module = require('../Module.js');
+import expressWs from 'express-ws';
+import jwt from 'jsonwebtoken';
+import Module from '../Module.js';
 
-module.exports = class Websocket extends Module {
+export default class Websocket extends Module {
 
     constructor(args) {
         super(args);

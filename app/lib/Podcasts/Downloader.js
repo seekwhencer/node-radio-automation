@@ -1,11 +1,10 @@
-const
-    fs = require("fs-extra"),
-    request = require('request'),
-    parsePodcast = require('node-podcast-parser'),
-    slugify = require('slugify'),
-    Module = require('../Module');
+import fs from 'fs-extra';
+import request from 'request';
+import parsePodcast from 'node-podcast-parser';
+import slugify from 'slugify';
+import Module from '../Module.js';
 
-module.exports = class PodcastDownloader extends Module {
+export default class PodcastDownloader extends Module {
     constructor(args) {
         super(args);
         this.label = 'PODCAST DOWNLOADER';

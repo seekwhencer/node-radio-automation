@@ -4,12 +4,10 @@
  *
  *
  */
+import fs from 'fs-extra';
+import Mpd from './Channels/Mpd.js';
 
-const
-    fs = require('fs-extra'),
-    Mpd = require('./Channels/Mpd');
-
-module.exports = class MpdCache extends Mpd {
+export default class MpdCache extends Mpd {
 
     constructor() {
 

@@ -1,5 +1,6 @@
-const ScheduleForm = require('../schedule/form.js');
-module.exports = class Form {
+import ScheduleForm from '../schedule/form.js';
+
+export default class Form {
     constructor() {
         this.scheduleForm = new ScheduleForm();
     }

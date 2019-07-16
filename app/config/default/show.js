@@ -1,5 +1,4 @@
-module.exports = {
-
+export default {
 
     defaults: {
         id: "",

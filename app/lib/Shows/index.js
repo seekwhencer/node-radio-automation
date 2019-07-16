@@ -1,10 +1,7 @@
-const
-    fs = require('fs-extra'),
-    Module = require('../Module'),
-    Show = require('./Show');
+import Module from '../Module.js';
+import Show from './Show.js';
 
-
-module.exports = class Shows extends Module {
+export default class Shows extends Module {
 
     constructor(args) {
         super(args);

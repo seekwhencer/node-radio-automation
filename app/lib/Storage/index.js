@@ -1,9 +1,8 @@
-const
-    fs = require('fs-extra'),
-    Module = require('../Module.js'),
-    Fetch = require('./Fetch');
+import fs from 'fs-extra';
+import Module from '../Module.js';
+import Fetch from './Fetch.js';
 
-module.exports = class Storage extends Module {
+export default class Storage extends Module {
 
     constructor(args) {
         super(args);

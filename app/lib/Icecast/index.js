@@ -1,11 +1,9 @@
-const
-    fs = require('fs-extra'),
-    spawn = require('child_process').spawn,
-    http = require('http'),
-    Module = require('../Module.js');
+import fs from 'fs-extra';
+import {spawn} from 'child_process';
+import http from 'http';
+import Module from '../Module.js';
 
-
-module.exports = class Iceccast extends Module {
+export default class Iceccast extends Module {
 
     constructor(args) {
         super(args);

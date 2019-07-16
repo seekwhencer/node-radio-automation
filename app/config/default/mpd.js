@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     bin: "/usr/bin/mpd",
     start_parameter: [ '--no-daemon', '--verbose', /* '--stdout',*/ '--stderr'],
     log_tty: false,

@@ -1,8 +1,7 @@
-const
-    RouteSet = require('../../../RouteSet.js'),
-    ShowForm = require('../../../lib/show/form.js');
+import RouteSet from '../../../RouteSet.js';
+import ShowForm from '../../../lib/show/form.js';
 
-module.exports = class extends RouteSet {
+export default class extends RouteSet {
     constructor() {
         super();
 

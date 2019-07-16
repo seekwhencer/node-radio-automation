@@ -1,10 +1,7 @@
-const
-    Module = require('../Module.js'),
-    bodyParser = require('body-parser'),
-    jwt = require('jsonwebtoken'),
-    formidable = require('express-formidable');
+import Module from '../Module.js';
+import jwt from 'jsonwebtoken';
 
-module.exports = class Auth extends Module {
+export default class Auth extends Module {
 
     constructor(args) {
         super(args);

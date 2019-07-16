@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     autostart: true,
     limit: 10,
     name: 'Default Podcast',
