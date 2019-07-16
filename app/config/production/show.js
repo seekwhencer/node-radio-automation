@@ -1,6 +1,5 @@
 export default {
 
-
     defaults: {
         id: "",
         name: "Default Show",

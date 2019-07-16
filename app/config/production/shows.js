@@ -24,6 +24,25 @@ export default {
                 folder: "station",
                 order_by: "shuffle"
             }
+        },
+
+        {
+            name: "Lounge",
+            music: {
+                folder: "lounge",
+                recursive: true
+            },
+            hot_rotation: {
+                enabled: true,
+                latest_tracks: 100
+            },
+            spot: {
+                nth: 1
+            },
+            intro: {
+                folder: "station",
+                order_by: "shuffle"
+            }
         }
 
     ]

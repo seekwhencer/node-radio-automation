@@ -3,7 +3,7 @@ export default {
     start_parameter: [ '--no-daemon', '--verbose', '--stderr'],
     name: 'mpdcache',
     load_on_startup: true,
-    log_tty: false,
+    log_tty: true,
     config: { // override the mpd config
         port: 5500
     }

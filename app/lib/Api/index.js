@@ -47,11 +47,19 @@ export default class Api extends Module {
                 this.websocket = new Websocket(this.options.websocket);
 
                 // add the api routes
-                APIAPP.endpoints = [];
+                APIAPP.endpoints = {};
                 this.routes = new RouteSet();
                 this.routes.addRoutes(Routes);
 
-                LOG('>>> ROUTES', APIAPP.endpoints);
+                LOG(this.label, 'ROUTES ADDED:');
+                Object.keys(APIAPP.endpoints).forEach(method => {
+                    LOG('');
+                    LOG(this.label, '> METHOD:', method);
+                    APIAPP.endpoints[method].forEach(r => {
+                        LOG(this.label, 'ROUTE:', r);
+                    });
+                });
+                LOG('');
 
                 /*APIAPP.use((req, res, next) => {
                     const err = new Error('Not Found');

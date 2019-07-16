@@ -1,4 +1,7 @@
 import * as ConfigDefault from '../config/default/index.js';
+import * as ConfigProduction from '../config/production/index.js';
+import * as ConfigRaspberryPi from '../config/rpi/index.js';
+import * as ConfigCustom from '../config/custom/index.js';
 
 export default class AppConfig {
 
@@ -9,7 +12,15 @@ export default class AppConfig {
         this.keys = [];
 
         LOG(this.label, 'INIT');
-        return ConfigDefault;
+
+        this.configs = {
+            default: ConfigDefault,
+            prod: ConfigProduction,
+            rpi: ConfigRaspberryPi,
+            custom: ConfigCustom
+        };
+
+        return this.configs[ENV];
     }
 
     set(key, value) {

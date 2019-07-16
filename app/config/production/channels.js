@@ -21,6 +21,23 @@ export default {
                     }
                 }
             }
-        }
+        },
+
+        {
+            name: "Lounge",
+            autostart: true,
+            show: {
+                slug: 'lounge'
+            },
+            mpd: {
+                config: {
+                    port: 6110,
+                    audio_output: {
+                        mount: "/lounge",
+                        port: 8100
+                    }
+                }
+            }
+        },
     ]
 };

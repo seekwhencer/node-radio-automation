@@ -38,28 +38,35 @@ export default class RouteSet {
     };
 
     addRoutes(Routes) {
-        LOG('>>>>> ROUTES FOR:', this.endpoint, Object.keys(Routes).length, typeof this.parent);
-
-        if (!this.parent) {
+        if (!this.parent) { // ony the first (root) route set has no parent
             if (CONFIG.api.root_endpoint) {
                 this.url = `/${CONFIG.api.root_endpoint}`;
             }
-            LOG('>>> WITHOUT PARENT:', this.url);
         } else {
             this.url = `${this.parent.url}`;
-            if (this.endpoint) {
+            if (this.endpoint) { // if false, the parent's one will be used
                 this.url += `/${this.endpoint}`;
             }
-            LOG('>>> WITH PARENT:', this.parent.endpoint, this.url);
         }
 
         Object.keys(Routes).forEach(r => {
             const router = new Routes[r](this);
-            const rx = router.stack
-                .filter(r => r.route)
-                .map(r => `${this.url}${r.route.path}`);
 
-            APIAPP.endpoints = APIAPP.endpoints.concat(rx);
+            router.stack
+                .filter(r => r.route)
+                .map(r => {
+                    let row = {};
+                    Object.keys(r.route.methods).forEach(method => {
+                        if (!APIAPP.endpoints[method])
+                            APIAPP.endpoints[method] = [];
+
+                        row[method] = `${this.url}${r.route.path}`;
+                        APIAPP.endpoints[method].push(row[method]); // that is not fine!
+                    });
+                    return row; // not used
+                });
+
+            // here the final url will be mapped to the created router elements
             APIAPP.use(this.url, router);
         });
     };

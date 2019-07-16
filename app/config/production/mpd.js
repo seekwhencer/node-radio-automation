@@ -13,7 +13,7 @@ export default {
     db_filename: 'shared',
 
     config: {
-        user: "pi",
+        user: "mk",
         playlist_directory: "",
         music_directory: "",
         db_file: "",
