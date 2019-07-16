@@ -1,7 +1,6 @@
-const
-    Event = require('events');
+import {EventEmitter} from 'events';
 
-module.exports = class Module {
+export default class Module {
 
     constructor(args) {
         this.name = 'module';
@@ -9,7 +8,7 @@ module.exports = class Module {
         this.ready = false;
         this.args = args;
         this.options = {};
-        this.event = new Event();
+        this.event = new EventEmitter();
 
         this.on('ready', () => {
             this.ready = true;
@@ -83,7 +82,6 @@ module.exports = class Module {
     set defaults(param) {
         this._defaults = param;
     }
-
 
 
 };

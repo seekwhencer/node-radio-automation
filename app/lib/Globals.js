@@ -1,12 +1,10 @@
-require('./Utils');
-
-const path = require('path'),
-    Config = require('./Config'),
-    R = require('ramda'),
-    Express = require('express'),
-    Log = require('./Log');
-
-
+import Utils from './Utils.js';
+import path from 'path';
+import R from 'ramda';
+import Express from 'express';
+import Log from './Log.js';
+import Config from './Config.js';
+import Package from '../package.json';
 
 /**
  * Defining some global things here:
@@ -40,7 +38,7 @@ global.APP_DIR = path.resolve(process.env.PWD);
 process.env.NODE_CONFIG_ENV = process.env.NODE_ENV;
 process.env.SUPPRESS_NO_CONFIG_WARNING = true;
 
-global.PACKAGE = require(`${APP_DIR}/package.json`);
+global.PACKAGE = Package;
 global.ENV = process.env.NODE_ENV || 'default';
 
 LOG('//////////////////');
@@ -54,3 +52,17 @@ global.CONFIG = new Config();
 global.R = R;
 global.EXPRESS = Express;
 global.APIAPP = EXPRESS();
+
+export default class {
+    constructor(){
+        this.ENV = ENV;
+        this.APP_DIR = APP_DIR;
+        this.PACKAGE = PACKAGE;
+        this.CONFIG = CONFIG;
+        this.LOG = LOG;
+        this.DEBUG = DEBUG;
+        this.R = R;
+        this.EXPRESS = EXPRESS;
+        this.APIAPP = APIAPP;
+    }
+}

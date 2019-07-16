@@ -1,14 +1,13 @@
-const
-    RouteSet = require('../RouteSet.js');
+import RouteSet from '../RouteSet.js';
+import * as Routes from './channel/index.js';
 
-
-module.exports = class extends RouteSet {
-    constructor() {
-        super();
+export default class extends RouteSet {
+    constructor(args) {
+        super(args);
 
         this.label = 'API ROUTE PATH FOR ONE CHANNEL';
         this.endpoint = 'channel';
-        this.addRoutes();
+        this.addRoutes(Routes);
 
         return this.router;
     }

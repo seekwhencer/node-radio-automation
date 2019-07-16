@@ -1,4 +1,4 @@
-module.exports = class Form {
+export default class Form {
     constructor() {
 
     }

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     bin: "/usr/bin/mpc",
     status_repeat_time: 2,
     config: {

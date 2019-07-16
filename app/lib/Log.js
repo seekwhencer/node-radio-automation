@@ -1,9 +1,7 @@
-const
-    Module = require('./Module'),
-    dateFormat = require('dateformat');
+import dateFormat from 'dateformat';
+import Module from './Module.js';
 
-
-module.exports = class Log extends Module {
+export default class Log extends Module {
 
     constructor(args) {
         super(args);

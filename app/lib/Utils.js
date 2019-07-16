@@ -1,6 +1,5 @@
-const
-    path = require('path'),
-    fs = require('fs-extra');
+import fs from 'fs-extra';
+import path from 'path';
 
 global.P = function (dir) {
     if (dir.substring(0, 1) === '/') {
@@ -101,4 +100,14 @@ global.RANDOM = function (max, min) {
         min = 0;
 
     return Math.floor((Math.random() * max) + min);
+};
+
+export default class {
+    constructor() {
+        this.P = global.P;
+        this.RDIRSYNC = RDIRSYNC;
+        this.FOLDERSYNC = FOLDERSYNC;
+        this.SHUFFLE = SHUFFLE;
+        this.RANDOM = RANDOM;
+    }
 };

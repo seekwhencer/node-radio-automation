@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     name: "radio",
     bin: "/usr/bin/icecast2",
 

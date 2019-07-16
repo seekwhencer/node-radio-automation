@@ -1,8 +1,7 @@
-const
-    fs = require('fs-extra'),
-    Module = require('../Module');
+import fs from 'fs-extra';
+import Module from '../Module.js';
 
-module.exports = class Playlist extends Module {
+export default class Playlist extends Module {
 
     constructor(args) {
         super(args);

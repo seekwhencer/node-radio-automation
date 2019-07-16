@@ -1,10 +1,8 @@
-const
-    fs = require('fs-extra'),
-    spawn = require('child_process').spawn,
-    Module = require('../Module');
+import fs from 'fs-extra';
+import {spawn} from 'child_process';
+import Module from '../Module.js';
 
-
-module.exports = class Mpd extends Module {
+export default class Mpd extends Module {
 
     constructor(args) {
         super(args);

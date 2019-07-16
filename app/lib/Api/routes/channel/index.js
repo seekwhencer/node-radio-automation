@@ -1,28 +1,14 @@
-const
-    RouteSet = require('../../RouteSet.js');
+import Home from './home.js';
+import LoadPlaylist from './load-playlist.js';
+import Playback from './playback.js';
+import Process from './process.js';
+import Schedules from './schedules.js';
+import Show from './show.js';
+import Shows from './shows.js';
+import Update from './update.js';
+import UpdateDatabase from './update-database.js';
+import UpdatePlaylist from './update-playlist.js';
 
-module.exports = class extends RouteSet {
-    constructor() {
-        super();
-
-        /**
-         * get one channel
-         */
-        this.router.get('/:channel', (req, res) => {
-            const id = req.params.channel;
-            const channel = CHANNELS.get(id, 'id');
-            if (!channel)
-                return this.error('Channel not found', res);
-
-            let message = {
-                id: channel.id,
-                name: channel.name,
-                mount: channel.mpd.options.config.audio_output.mount,
-                ...{options: channel.options}
-            };
-            res.json(message);
-        });
-
-        return this.router;
-    }
+export {
+    Home, LoadPlaylist, Playback, Process, Schedules, Show, Shows, Update, UpdateDatabase, UpdatePlaylist
 };

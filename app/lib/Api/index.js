@@ -1,12 +1,15 @@
-const
-    http = require('http'),
-    bodyParser = require('body-parser'),
-    formidable = require('express-formidable'),
-    Module = require('../Module.js'),
-    Auth = require('./Auth.js'),
-    Websocket = require('./Websocket');
+import http from 'http';
+import bodyParser from 'body-parser';
+import formidable from 'express-formidable';
 
-module.exports = class Api extends Module {
+import Module from '../Module.js';
+import Auth from './Auth.js';
+import Websocket from './Websocket.js';
+
+import * as Routes from './routes/index.js';
+import RouteSet from './RouteSet.js';
+
+export default class Api extends Module {
 
     constructor(args) {
         super(args);
@@ -43,11 +46,12 @@ module.exports = class Api extends Module {
                 this.auth = new Auth(this.options.auth);
                 this.websocket = new Websocket(this.options.websocket);
 
+                // add the api routes
+                APIAPP.endpoints = [];
+                this.routes = new RouteSet();
+                this.routes.addRoutes(Routes);
 
-
-                // autoloads the routes.
-                // the filename without extension equals a top level route
-                this.addRoutes();
+                LOG('>>> ROUTES', APIAPP.endpoints);
 
                 /*APIAPP.use((req, res, next) => {
                     const err = new Error('Not Found');
@@ -70,32 +74,12 @@ module.exports = class Api extends Module {
         super.mergeOptions();
         this.host = this.options.host;
         this.port = this.options.port;
-    }
+    };
 
     shutdown() {
         this.http.close(() => {
             LOG(this.label, 'CLOSED');
         });
     };
-
-    /**
-     * this loads the files in lib/Api/routes
-     * any filename without extension equals a top level url endpoint
-     * any file should or must have a folder on the same level, containing the single actions
-     */
-    addRoutes() {
-        const routeFolder = `${APP_DIR}/lib/Api/routes`;
-        const routeFiles = RDIRSYNC(routeFolder, false, ['js']);
-        routeFiles.forEach(route => {
-            const LoadedRoute = require(route.file_path);
-            LOG(this.label, 'ADDING ROUTE', `/${route.filename}`);
-            let url = `/${route.filename}`;
-            if (this.options.root_endpoint) {
-                url = `/${this.options.root_endpoint}/${route.filename}`;
-            }
-            APIAPP.use(url, new LoadedRoute());
-        });
-        LOG(this.label, routeFiles.length, 'ROUTE FILES ADDED');
-    }
 
 };

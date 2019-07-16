@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     checkup_delay : 1000,
     name: "Default",
     autostart: true,

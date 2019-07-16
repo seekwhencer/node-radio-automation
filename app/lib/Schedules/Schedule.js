@@ -1,11 +1,10 @@
-const
-    fs = require('fs-extra'),
-    crypto = require('crypto'),
-    cronParser = require('cron-parser'),
-    Job = require('./Job'),
-    Module = require('../Module');
+import fs from 'fs-extra';
+import crypto from 'crypto';
+import cronParser from 'cron-parser';
+import Module from '../Module.js';
+import Job from './Job.js';
 
-module.exports = class Schedule extends Module {
+export default class Schedule extends Module {
 
     constructor(args) {
         super(args);

@@ -1,23 +1,5 @@
-const
-    RouteSet = require('../../RouteSet.js');
+import Home from './home.js';
+import Folder from './folder.js';
+import Update from './update.js';
 
-module.exports = class extends RouteSet {
-    constructor() {
-        super();
-
-        /**
-         *  get one show
-         */
-        this.router.get('/:show', (req, res) => {
-            const show_id = req.params.show;
-            const show = SHOWS.get(show_id, 'id');
-            if (!show)
-                return;
-
-            res.json(show.options);
-        });
-
-
-        return this.router;
-    }
-};
+export { Home, Folder, Update };

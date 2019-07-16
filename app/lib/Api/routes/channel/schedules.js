@@ -1,8 +1,6 @@
-const
-    cronParser = require('cron-parser'),
-    RouteSet = require('../../RouteSet.js');
+import RouteSet from '../../RouteSet.js'
 
-module.exports = class extends RouteSet {
+export default class extends RouteSet {
     constructor() {
         super();
 

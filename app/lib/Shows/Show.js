@@ -1,11 +1,10 @@
-const
-    fs = require('fs-extra'),
-    slugify = require('slugify'),
-    crypto = require('crypto'),
-    Module = require('../Module'),
-    Playlist = require('./Playlist');
+import fs from 'fs-extra';
+import slugify from 'slugify';
+import crypto from 'crypto';
+import Module from '../Module.js';
+import Playlist from './Playlist.js';
 
-module.exports = class Show extends Module {
+export default class Show extends Module {
 
     constructor(args) {
 

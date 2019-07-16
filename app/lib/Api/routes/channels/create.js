@@ -1,9 +1,7 @@
-const
-    slugify = require('slugify'),
-    Form = require('../../lib/channel/form.js'),
-    RouteSet = require('../../RouteSet.js');
+import Form from '../../lib/channel/form.js';
+import RouteSet from '../../RouteSet.js'
 
-module.exports = class extends RouteSet {
+export default class extends RouteSet {
     constructor() {
         super();
 

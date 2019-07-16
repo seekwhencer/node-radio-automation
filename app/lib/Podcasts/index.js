@@ -1,10 +1,7 @@
-const
-    fs = require('fs-extra'),
-    Module = require('../Module'),
-    Podcast = require('./Podcast');
+import Module from '../Module.js';
+import Podcast from './Podcast.js';
 
-
-module.exports = class Podcasts extends Module {
+export default class Podcasts extends Module {
 
     constructor(args) {
         super(args);

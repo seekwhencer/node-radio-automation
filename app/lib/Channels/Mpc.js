@@ -1,9 +1,8 @@
-const
-    spawn = require('child_process').spawn,
-    Module = require('../Module');
+import {spawn} from 'child_process';
+import Module from '../Module.js';
 
 
-module.exports = class Mpc extends Module {
+export default class Mpc extends Module {
     constructor(args) {
         super(args);
 

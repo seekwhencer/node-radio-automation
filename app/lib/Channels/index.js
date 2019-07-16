@@ -1,10 +1,7 @@
-const
-    fs = require('fs-extra'),
-    Module = require('../Module'),
-    Channel = require('./Channel');
+import Module from '../Module.js';
+import Channel from './Channel.js';
 
-
-module.exports = class Channels extends Module {
+export default class Channels extends Module {
 
     constructor(args) {
         super(args);

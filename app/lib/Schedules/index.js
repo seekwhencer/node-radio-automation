@@ -1,8 +1,7 @@
-const
-    Module = require('../Module'),
-    Schedule = require('./Schedule');
+import Module from '../Module.js';
+import Schedule from './Schedule.js';
 
-module.exports = class Schedules extends Module {
+export default class Schedules extends Module {
 
     constructor(args) {
         super(args);

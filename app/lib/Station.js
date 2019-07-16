@@ -1,14 +1,13 @@
-const
-    Module = require('./Module'),
-    Storage = require('./Storage'),
-    Podcasts = require('./Podcasts'),
-    MpdCache = require('./MpdCache'),
-    Icecast = require('./Icecast'),
-    Shows = require('./Shows'),
-    Channels = require('./Channels'),
-    Api = require('./Api');
+import Module from './Module.js';
+import Storage from './Storage/index.js';
+import Podcasts from './Podcasts/index.js';
+import MpdCache from './MpdCache.js';
+import Icecast from './Icecast/index.js';
+import Shows from './Shows/index.js';
+import Channels from './Channels/index.js';
+import Api from './Api/index.js';
 
-module.exports = class Station extends Module {
+export default class extends Module {
 
     constructor(args) {
         super(args);
