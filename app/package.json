@@ -9,7 +9,7 @@
     "dev": "export NODE_ENV=default && node --experimental-modules index.js  ",
     "prod": "export NODE_DEBUG=true && NODE_ENV=production && node --experimental-modules  index.js",
     "custom": "export NODE_DEBUG=true && NODE_ENV=custom && node --experimental-modules index.js",
-    "build": "node node_modules/pkg/lib-es5/bin.js index.js --output station --targets node10-linux-x64",
+    "build": "node node_modules/pkg/lib-es5/bin.js index.js  --experimental-modules  --output station --targets node10-linux-x64",
     "test":  ""
   },
   "author": "Matthias Kallenbach",
