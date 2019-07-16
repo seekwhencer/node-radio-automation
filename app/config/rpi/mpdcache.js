@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     shutdown_time: false, // false (endless running) or seconds<
     start_parameter: [ '--no-daemon', '--verbose', '--stderr'],
     name: 'mpdcache',

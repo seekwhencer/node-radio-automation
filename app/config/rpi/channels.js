@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     path: 'channels',
     flush_on_startup: false,
     load_on_startup: true,
