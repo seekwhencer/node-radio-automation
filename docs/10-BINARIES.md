@@ -34,3 +34,25 @@ npm run build:linux
 npm run build:win
 npm run build:darwin
 ```
+
+## Bundling, babeling and packaging
+To do it all together, enter:
+
+```
+npm run dist
+```
+
+The output is a folder with the bundled app file:
+```
+app/dist/app.js
+```
+And the binaries in:
+```
+app/station-linux64
+app/station-windows64.exe
+app/station-darwin64
+```
+
+Beware: some things, important things a are **relative** to the app path. if you copy the binary to any other place,
+copy the upper audio folder too. A weired result can be, that the downloaded podcasts will be stored - one folder up from
+the app folder... ;) ... (with the actual configuration)
