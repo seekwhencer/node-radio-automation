@@ -5,6 +5,8 @@ node_js:
 install:
   - cd app && npm install
   - npm run dist
+
+after_install:
   - ls -l
   - cd ..
 
