@@ -1,7 +1,8 @@
 import Utils from './Utils.js';
 import path from 'path';
-import R from 'ramda';
-import Express from 'express';
+import * as R from './Ramda.js';
+
+import * as Express from 'express';
 import Log from './Log.js';
 import Config from './Config.js';
 import Package from '../package.json';
@@ -10,8 +11,8 @@ import Package from '../package.json';
  * Defining some global things here:
  */
 global.DEBUG = process.env.NODE_DEBUG || true;
-if(DEBUG === 'true') global.DEBUG = true;
-if(DEBUG === 'false') global.DEBUG = false;
+if (DEBUG === 'true') global.DEBUG = true;
+if (DEBUG === 'false') global.DEBUG = false;
 
 global.LOG = new Log().log;
 
@@ -23,7 +24,7 @@ process.on('uncaughtException', (error) => {
 });
 process.on('SIGINT', function () {
 
-   // some graceful exit code
+    // some graceful exit code
 
     setTimeout(function () {
         process.exit(0);
@@ -50,11 +51,11 @@ LOG('');
 
 global.CONFIG = new Config();
 global.R = R;
-global.EXPRESS = Express;
+global.EXPRESS = Express.default;
 global.APIAPP = EXPRESS();
 
 export default class {
-    constructor(){
+    constructor() {
         this.ENV = ENV;
         this.APP_DIR = APP_DIR;
         this.PACKAGE = PACKAGE;

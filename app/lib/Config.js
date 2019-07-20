@@ -15,11 +15,10 @@ export default class AppConfig {
 
         this.configs = {
             default: ConfigDefault,
-            prod: ConfigProduction,
+            production: ConfigProduction,
             rpi: ConfigRaspberryPi,
             custom: ConfigCustom
         };
-
         return this.configs[ENV];
     }
 

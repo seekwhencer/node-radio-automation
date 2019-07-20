@@ -50,7 +50,7 @@ export default class RouteSet {
         }
 
         Object.keys(Routes).forEach(r => {
-            const router = new Routes[r](this);
+            const router = new Routes[r](this); // more than one can be feeded from here
 
             router.stack
                 .filter(r => r.route)
