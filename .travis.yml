@@ -13,3 +13,11 @@ after_script:
   - ls -l
   - cd ../app && ls -l
 
+deploy:
+  provider: releases
+  api_key: "e80d0462cc9331129976538ad2ba3f7bab307155"
+  file: "app/station"
+  skip_cleanup: true
+  on:
+    tags: true
+
