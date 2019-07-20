@@ -2,7 +2,6 @@ language: node_js
 node_js:
   - "12"
 
-
 install:
   - cd app && npm install
   - npm run dist
@@ -16,7 +15,7 @@ after_script:
 deploy:
   provider: releases
   api_key: "32b359488a69b4299da8e892f216dc3448d90d06"
-  file: "app/station"
+  file: "../app/station"
   skip_cleanup: true
   on:
     tags: true
