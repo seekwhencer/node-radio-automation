@@ -10,3 +10,5 @@
 07. [Development](07-DEVELOPMENT.md)
 08. [API](08-API.md)
 09. [Docker](09-DOCKER.md)
+10. [Frontend](10-FRONTEND.md)
+11. [Binaries](10-BINARIES.md)

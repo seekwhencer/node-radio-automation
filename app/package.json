@@ -10,7 +10,11 @@
     "prod": "export NODE_DEBUG=true && NODE_ENV=production && node --experimental-modules  index.js",
     "custom": "export NODE_DEBUG=true && NODE_ENV=custom && node --experimental-modules index.js",
     "bundle": "node_modules/.bin/webpack --config config/webpack-app-pkg.config.js",
-    "build": "node node_modules/pkg/lib-es5/bin.js dist/app.js --output station --targets node10-linux-x64",
+    "build": "npm run build:linux && npm run build:win && npm run build:darwin && npm run build:armv7",
+    "build:linux": "node node_modules/pkg/lib-es5/bin.js dist/app.js --output station-linux64 --targets node10-linux-x64",
+    "build:win": "node node_modules/pkg/lib-es5/bin.js dist/app.js --output station-win64 --targets node10-win-x64",
+    "build:darwin": "node node_modules/pkg/lib-es5/bin.js dist/app.js --output station-darwin64 --targets node10-macos-x64",
+    "build:armv7": "node node_modules/pkg/lib-es5/bin.js dist/app.js --output station-armv7 --targets node10-linux-armv7",
     "dist": "npm run bundle && npm run build",
     "test": ""
   },
