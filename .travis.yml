@@ -12,7 +12,7 @@ after_install:
 
 deploy:
   provider: releases
-  api_key: "135d9cc11a440382672780351915c4930aa055c7"
+  api_key: "0d4617d5f83823e1ccda76896679c32509d92477"
   file: "app/station"
   skip_cleanup: true
   overwrite: true
