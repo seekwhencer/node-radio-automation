@@ -10,7 +10,7 @@
     "prod": "export NODE_DEBUG=true && NODE_ENV=production && node --experimental-modules  index.js",
     "custom": "export NODE_DEBUG=true && NODE_ENV=custom && node --experimental-modules index.js",
     "bundle": "node_modules/.bin/webpack --config config/webpack-app-pkg.config.js",
-    "build": "node node_modules/pkg/lib-es5/bin.js dist/app.js --output station --targets node12-linux-x64",
+    "build": "node node_modules/pkg/lib-es5/bin.js dist/app.js --output station --targets node10-linux-x64",
     "dist": "npm run bundle && npm run build",
     "test": ""
   },
