@@ -14,7 +14,7 @@ after_script:
 
 deploy:
   provider: releases
-  api_key: "32b359488a69b4299da8e892f216dc3448d90d06"
+  api_key: "37695e73abce933eac09314a1a5f1c53ca6e67f0"
   file: "../app/station"
   skip_cleanup: true
   on:
