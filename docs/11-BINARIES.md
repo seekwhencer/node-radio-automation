@@ -56,3 +56,22 @@ app/station-darwin64
 Beware: some things, important things a are **relative** to the app path. if you copy the binary to any other place,
 copy the upper audio folder too. A weired result can be, that the downloaded podcasts will be stored - one folder up from
 the app folder... ;) ... (with the actual configuration)
+
+## The binary, somewhere on your disk
+
+You need a folder structure like this (at the moment) to run the binary:
+
+```
+/.../data/audio                  # the audio root folder
+/.../data/radio/app              # the app folder
+/.../data/radio/app/station      # the binary
+/.../data/radio/storage          # will be created or copy it 
+```
+then start it:
+```
+cd /.../data/radio/app
+./station
+```
+You can use symlinks for the  
+`/.../data/audio` and  
+`/.../data/radio/storage` folder.
