@@ -35,7 +35,7 @@
     "dateformat": "^3.0.3",
     "eslint": "^6.0.1",
     "eslint-loader": "^2.2.1",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "express-formidable": "^1.2.0",
     "express-ws": "^4.0.0",
     "formidable": "^1.2.1",
